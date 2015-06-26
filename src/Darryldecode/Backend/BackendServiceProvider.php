@@ -27,7 +27,12 @@ class BackendServiceProvider extends ServiceProvider {
 
         $this->publishes([
             __DIR__.'/Database/Migrations' => database_path('migrations'),
+            __DIR__.'/Database/Seeders' => database_path('seeds'),
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/Tests' => base_path('tests'),
+        ], 'tests');
     }
 
     /**

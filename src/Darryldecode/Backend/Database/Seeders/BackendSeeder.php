@@ -1,4 +1,4 @@
-<?php namespace Darryldecode\Backend\Database\Seeders;
+<?php
 
 use Darryldecode\Backend\Components\ContentBuilder\Models\ContentType;
 use Illuminate\Database\Seeder;
@@ -19,6 +19,8 @@ class BackendSeeder extends Seeder {
         $this->seedUser();
         $this->seedDummyUsers();
         $this->seedDummyContentTypes();
+
+        Model::reguard();
     }
 
     protected function seedUser()
@@ -63,11 +65,11 @@ class BackendSeeder extends Seeder {
     protected function seedDummyContentTypes()
     {
         ContentType::create(array(
-            'type' => 'Blog',
+            'type' => 'blog',
             'enable_revisions' => true
         ));
         ContentType::create(array(
-            'type' => 'Events',
+            'type' => 'events',
             'enable_revisions' => true
         ));
     }
