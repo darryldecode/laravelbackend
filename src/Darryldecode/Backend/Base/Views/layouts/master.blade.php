@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="cb">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Content Builder</title>
+
+    @include('backend::includes.styles')
+
+    <script type="text/javascript">
+        var BASE_URL  = '{{config('app.url')}}',
+            ADMIN_URL = '{{config('app.url').'/'.config('backend.backend.base_url')}}',
+            STORAGE_URL = '{{config('app.url').'/'.config('backend.backend.uploads_folder_name').'/'}}',
+                _CSRF = '{{csrf_token()}}';
+    </script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body id="backend">
+
+    <div data-ng-controller="MasterController" class="container" id="backend-wrapper" data-user-id="{{Auth::user()->id}}">
+
+        @include('backend::includes.navigation')
+
+        <div id="content">
+            @yield('content')
+        </div>
+
+    </div>
+
+    @include('backend::includes.scripts')
+
+</body>
+
+</html>

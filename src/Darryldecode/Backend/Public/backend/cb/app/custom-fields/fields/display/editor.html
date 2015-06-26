@@ -1,0 +1,64 @@
+<div class="form-group">
+
+    <!-- sort field handle -->
+    <div class="sort-handle">
+        <i class="fa fa-arrows"></i>
+    </div>
+
+    <!-- delete field / edit field control -->
+    <span class="pull-right">
+        <a href="" data-ng-click="fieldGroup.editField(f.key, $index)" class="btn btn-clear btn-xs">Edit</a>
+        <a href="" data-ng-click="fieldGroup.deleteField($index)" class="btn btn-clear btn-xs">Delete</a>
+    </span>
+
+    <div class="clearfix"></div>
+
+    <!-- if editor type is ace field -->
+    <div data-ng-if=" f.data.type == 'ace' " class="editor-holder">
+        EDITOR: <b><i>Code Editor</i></b>
+    </div>
+
+    <!-- if editor type is mce field -->
+    <div data-ng-if=" f.data.type == 'mce' " class="editor-holder">
+        EDITOR: <b><i>WYSIWYG Editor</i></b>
+    </div>
+
+    <!-- if editor type is md field -->
+    <div data-ng-if=" f.data.type == 'md' " class="editor-holder">
+        EDITOR: <b><i>Mark Down Editor</i></b>
+    </div>
+
+    <!-- edit mode -->
+    <div class="edit-field edit-field-{{f.key}}-{{$index}}">
+        <table class="table">
+            <tr>
+                <td>Label:</td>
+                <td><input data-ng-model="f.data.label" type="text"></td>
+            </tr>
+            <tr>
+                <td>Place Holder:</td>
+                <td><input data-ng-model="f.data.placeHolder" type="text"></td>
+            </tr>
+            <tr>
+                <td>Default Value:</td>
+                <td><input data-ng-model="f.data.value" type="text"></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input data-ng-model="f.data.name" type="text"></td>
+            </tr>
+            <tr>
+                <td>Required?</td>
+                <td><input data-ng-model="f.data.required" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td>Editor Type:</td>
+                <td>
+                    <select data-ng-model="f.data.type" data-ng-options="t.value as t.label for t in f.data.types" class="form-control">
+                        <option value="">--select editor--</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
