@@ -12,4 +12,13 @@ return [
      */
     'base_url' => 'backend',
 
+    /*
+     * The login url
+     */
+    'login_route' => 'login', // this will be "backend/login"
+
+    /*
+     * The registration route
+     */
+    'logout_route' => 'logout', // this will be "backend/logout"
 ];

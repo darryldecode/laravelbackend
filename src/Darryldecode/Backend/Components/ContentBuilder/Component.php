@@ -49,18 +49,29 @@ class Component implements ComponentInterface {
             ),
         );
 
-        foreach(ContentType::all() as $type)
-        {
-            array_push($availablePermissions, array(
-                'title' => 'Manage '.$type->type,
-                'description' => 'Enable\'s the user to manage '.$type->type.'. This includes access and modification capabilities',
-                'permission' => $type->type.'.manage',
-            ));
-            array_push($availablePermissions, array(
-                'title' => 'Delete '.$type->type.' Entry',
-                'description' => 'Authorize user to perform delete action any '.$type->type.' entries.',
-                'permission' => $type->type.'.delete',
-            ));
+        // when "php artisan" command is run, all application registered services are run,
+        // so during "php artisan package:publish" stuffs this will throw error as ContentType::all()
+        // has no migrations yet. Let's try catch here so we can solve that problem
+
+        try {
+
+            foreach(ContentType::all() as $type)
+            {
+                array_push($availablePermissions, array(
+                    'title' => 'Manage '.$type->type,
+                    'description' => 'Enable\'s the user to manage '.$type->type.'. This includes access and modification capabilities',
+                    'permission' => $type->type.'.manage',
+                ));
+                array_push($availablePermissions, array(
+                    'title' => 'Delete '.$type->type.' Entry',
+                    'description' => 'Authorize user to perform delete action any '.$type->type.' entries.',
+                    'permission' => $type->type.'.delete',
+                ));
+            }
+
+        } catch(\Exception $e) {
+
+            // there is an error, do nothing
         }
 
         return $availablePermissions;
@@ -85,20 +96,29 @@ class Component implements ComponentInterface {
         // the contents navigation
         $contentsNavigation = new ComponentNavigation('Contents','fa fa-book','',true);
 
-        foreach(ContentType::all() as $type)
-        {
-            $n = new ComponentNavigation(
-                $type->type,
-                'fa fa-pencil-square',
-                url(config('backend.backend.base_url').'/contents/'.$type->type)
-            );
+        // when "php artisan" command is run, all application registered services are run,
+        // so during "php artisan package:publish" stuffs this will throw error as ContentType::all()
+        // has no migrations yet. Let's try catch here so we can solve that problem
+        try {
 
-            // the permission requirements to check
-            $permissionManage = $type->type.'.manage';
+            foreach(ContentType::all() as $type)
+            {
+                $n = new ComponentNavigation(
+                    $type->type,
+                    'fa fa-pencil-square',
+                    url(config('backend.backend.base_url').'/contents/'.$type->type)
+                );
 
-            $n->setRequiredPermissions([$permissionManage]);
+                // the permission requirements to check
+                $permissionManage = $type->type.'.manage';
 
-            $contentsNavigation->addSubMenu($n);
+                $n->setRequiredPermissions([$permissionManage]);
+
+                $contentsNavigation->addSubMenu($n);
+            }
+        } catch(\Exception $e) {
+
+            // there is an error, do nothing
         }
 
         $navs = new ComponentNavigationCollection();
