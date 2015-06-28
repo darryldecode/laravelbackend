@@ -12,7 +12,7 @@
     <script type="text/javascript">
         var BASE_URL  = '{{config('app.url')}}',
             ADMIN_URL = '{{config('app.url').'/'.config('backend.backend.base_url')}}',
-            STORAGE_URL = '{{config('app.url').'/'.config('backend.backend.uploads_folder_name').'/'}}',
+            STORAGE_URL = '{{config('app.url').'/uploads/'}}',
                 _CSRF = '{{csrf_token()}}';
     </script>
 

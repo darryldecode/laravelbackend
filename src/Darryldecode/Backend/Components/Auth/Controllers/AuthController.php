@@ -54,6 +54,6 @@ class AuthController extends BaseController {
     {
         Auth::logout();
 
-        return redirect(config('backend.backend.login_route'));
+        return redirect(trim(config('backend.backend.base_url'),'/').'/'.trim(config('backend.backend.login_route'),'/'));
     }
 }
