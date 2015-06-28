@@ -12,4 +12,15 @@ use App\Http\Controllers\Controller;
 
 abstract class BaseController extends Controller {
 
+    /**
+     * @var \Darryldecode\Backend\Components\User\Models\User
+     */
+    protected $user;
+
+    public function __construct()
+    {
+        $app = app();
+        $this->app = $app;
+        $this->user = $app['auth']->user();
+    }
 }

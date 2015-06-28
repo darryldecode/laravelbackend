@@ -13,6 +13,12 @@ use Darryldecode\Backend\Base\Controllers\BaseController;
 
 class DashboardController extends BaseController {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('backend.authenticated');
+    }
+
     public function index()
     {
         return view('dashboard::dashboard');

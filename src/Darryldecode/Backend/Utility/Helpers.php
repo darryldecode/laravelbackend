@@ -166,4 +166,24 @@ class Helpers {
         if($month ==11) return 'November';
         if($month ==12) return 'December';
     }
+
+    /**
+     * redirect to dashboard
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function redirectDashboard()
+    {
+        return redirect()->intended(config('backend.backend.base_url').'/dashboard');
+    }
+
+    /**
+     * redirect to login page
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public static function redirectLogin()
+    {
+        return redirect(config('backend.backend.base_url').'/'.config('backend.backend.login_route'));
+    }
 } 

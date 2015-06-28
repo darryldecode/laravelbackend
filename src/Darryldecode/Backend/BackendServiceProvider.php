@@ -3,18 +3,29 @@
 use Darryldecode\Backend\Base\Registrar\ComponentLoader;
 use Darryldecode\Backend\Base\Registrar\Registrar;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider {
 
     /**
      * Register the service provider.
-     *
+     * @param Router $router \Illuminate\Contracts\Http\Kernel
      */
-    public function boot()
+    public function boot(Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/Base/Views', 'backend');
         $this->bootBackend();
+
+        $router->middleware(
+            'backend.guest',
+            'Darryldecode\Backend\Base\Middleware\RedirectIfAuthenticated'
+        );
+
+        $router->middleware(
+            'backend.authenticated',
+            'Darryldecode\Backend\Base\Middleware\Authenticate'
+        );
 
         $this->publishes([
             __DIR__.'/Public/backend/cb' => public_path('darryldecode/backend/cb'),

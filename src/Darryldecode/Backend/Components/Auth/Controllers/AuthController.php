@@ -4,6 +4,7 @@ namespace Darryldecode\Backend\Components\Auth\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
 
+use Darryldecode\Backend\Utility\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,15 +12,17 @@ class AuthController extends BaseController {
 
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        parent::__construct();
+        $this->middleware('backend.guest',array('except'=>'getLogout'));
     }
 
     /**
      * displays the login page
      *
+     * @param Request $request
      * @return \Illuminate\View\View
      */
-    public function getLogin()
+    public function getLogin(Request $request)
     {
         return view('authManager::login');
     }

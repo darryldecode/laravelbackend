@@ -22,7 +22,7 @@ class PasswordController extends BaseController {
 
     public function __construct()
     {
-        $this->middleware('guest');
+        parent::__construct();
     }
 
     /**

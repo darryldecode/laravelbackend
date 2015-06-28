@@ -29,6 +29,8 @@ class NavigationController extends BaseController {
      */
     public function __construct(Request $request, Response $response)
     {
+        parent::__construct();
+        $this->middleware('backend.authenticated');
         $this->request = $request;
         $this->response = $response;
     }

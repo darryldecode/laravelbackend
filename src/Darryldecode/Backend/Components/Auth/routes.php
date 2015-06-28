@@ -16,7 +16,7 @@ Route::group(array('prefix'=> config('backend.backend.login_route')), function()
 });
 
 // logout route
-Route::get(config('backend.backend.logout_route'), 'AuthController@getLogout');
+Route::get('logout', 'AuthController@getLogout');
 
 // Password reset link request routes...
 Route::get('password/email', 'PasswordController@getEmail');

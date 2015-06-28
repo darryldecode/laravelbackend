@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">BACKEND</a>
+            <a class="navbar-brand" href="{{url(config('backend.backend.base_url').'/dashboard')}}">BACKEND</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -27,6 +27,9 @@
                         </li>
                     </ul>
 
+                </li>
+                <li>
+                    <a href="{{url(config('backend.backend.base_url').'/logout')}}">Logout</a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
