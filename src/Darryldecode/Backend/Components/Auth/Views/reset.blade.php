@@ -1,4 +1,4 @@
-<form method="POST" action="{{config('backend.backend.base_url')}}/password/reset">
+<form method="POST" action="/{{config('backend.backend.base_url')}}/password/reset">
     {!! csrf_field() !!}
     <input type="hidden" name="token" value="{{ $token }}">
 

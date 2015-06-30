@@ -19,10 +19,9 @@ class AuthController extends BaseController {
     /**
      * displays the login page
      *
-     * @param Request $request
      * @return \Illuminate\View\View
      */
-    public function getLogin(Request $request)
+    public function getLogin()
     {
         return view('authManager::login');
     }
@@ -38,10 +37,10 @@ class AuthController extends BaseController {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            return redirect()->intended(config('backend.backend.base_url').'/dashboard');
+            return redirect()->intended(Helpers::getDashboardRoute());
         }
 
-        return redirect(config('backend.backend.login_route'))
+        return redirect(Helpers::getLoginRoute())
             ->withInput($request->only('email', 'remember'))
             ->withErrors([
                 'email' => 'These credentials do not match our records.',
@@ -57,6 +56,6 @@ class AuthController extends BaseController {
     {
         Auth::logout();
 
-        return redirect(trim(config('backend.backend.base_url'),'/').'/'.trim(config('backend.backend.login_route'),'/'));
+        return redirect(Helpers::getLoginRoute());
     }
 }

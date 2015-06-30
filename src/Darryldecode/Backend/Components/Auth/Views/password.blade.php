@@ -1,4 +1,4 @@
-<form method="POST" action="{{config('backend.backend.base_url')}}/password/email">
+<form method="POST" action="/{{config('backend.backend.base_url')}}/password/email">
     {!! csrf_field() !!}
 
     <div>

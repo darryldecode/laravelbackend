@@ -186,4 +186,24 @@ class Helpers {
     {
         return redirect(config('backend.backend.base_url').'/'.config('backend.backend.login_route'));
     }
+
+    /**
+     * returns the dashboard route
+     *
+     * @return string
+     */
+    public static function getDashboardRoute()
+    {
+        return config('backend.backend.base_url').'/dashboard';
+    }
+
+    /**
+     * returns the login route
+     *
+     * @return string
+     */
+    public static function getLoginRoute()
+    {
+        return trim(config('backend.backend.base_url'),'/').'/'.trim(config('backend.backend.login_route'),'/');
+    }
 } 

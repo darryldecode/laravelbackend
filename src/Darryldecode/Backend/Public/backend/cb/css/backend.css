@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'dancing_script';
-    src: url('/cb/fonts/dancing-script/dancing_script-webfont.eot');
-    src: url('/cb/fonts/dancing-script/dancing_script-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/cb/fonts/dancing-script/dancing_script-webfont.woff') format('woff'),
-    url('/cb/fonts/dancing-script/dancing_script-webfont.ttf') format('truetype'),
-    url('/cb/fonts/dancing-script/dancing_script-webfont.svg#ostrich_sansmedium') format('svg');
+    src: url('/darryldecode/backend/cb/fonts/dancing-script/dancing_script-webfont.eot');
+    src: url('/darryldecode/backend/cb/fonts/dancing-script/dancing_script-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/darryldecode/backend/cb/fonts/dancing-script/dancing_script-webfont.woff') format('woff'),
+    url('/darryldecode/backend/cb/fonts/dancing-script/dancing_script-webfont.ttf') format('truetype'),
+    url('/darryldecode/backend/cb/fonts/dancing-script/dancing_script-webfont.svg#ostrich_sansmedium') format('svg');
     font-weight: normal;
     font-style: normal;
 }
