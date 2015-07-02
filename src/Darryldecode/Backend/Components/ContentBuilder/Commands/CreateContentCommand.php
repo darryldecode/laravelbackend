@@ -80,15 +80,15 @@ class CreateContentCommand extends Command implements SelfHandling {
 		$this->taxonomies = $taxonomies;
 	}
 
-	/**
-	 * Execute the command.
-	 *
-	 * @param Content $content
-	 * @param Factory $validator
-	 * @param ContentType $contentType
-	 * @param Dispatcher $dispatcher
-	 * @return CommandResult
-	 */
+    /**
+     * Execute the command.
+     *
+     * @param Content $content
+     * @param Factory $validator
+     * @param ContentType $contentType
+     * @param Dispatcher $dispatcher
+     * @return CommandResult
+     */
 	public function handle(Content $content, Factory $validator, ContentType $contentType, Dispatcher $dispatcher)
 	{
 		// get content available permissions

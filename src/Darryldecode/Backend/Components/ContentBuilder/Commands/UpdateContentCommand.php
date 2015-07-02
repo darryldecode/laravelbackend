@@ -11,6 +11,7 @@ namespace Darryldecode\Backend\Components\ContentBuilder\Commands;
 use Darryldecode\Backend\Base\Commands\Command;
 use Darryldecode\Backend\Base\Commands\CommandResult;
 use Darryldecode\Backend\Components\ContentBuilder\Models\Content;
+use Darryldecode\Backend\Components\ContentBuilder\Models\ContentRevisions;
 use Darryldecode\Backend\Components\ContentBuilder\Models\ContentType;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -132,6 +133,9 @@ class UpdateContentCommand extends Command implements SelfHandling {
         // fire event updating
         $dispatcher->fire($cType->type.'.updating', array($c));
 
+        // hold the current content so we can use it later if revisions is enabled
+        $oldBody = $c->body;
+
         $c->title = $this->title ? $this->title : $c->title;
         $c->body = $this->body ? $this->body : $c->body;
         $c->slug = $this->slug ? $this->slug : $c->slug;
@@ -177,6 +181,19 @@ class UpdateContentCommand extends Command implements SelfHandling {
 
         // save
         $c->save();
+
+        // check if revisions is enabled so we can deal with it
+        if( $cType->enable_revisions == ContentType::REVISIONS_ENABLED )
+        {
+            if( $oldBody != $c->body )
+            {
+                $c->revisions()->create(array(
+                    'old_content' => $oldBody,
+                    'new_content' => $c->body,
+                    'author_id' => $this->user->id
+                ));
+            }
+        }
 
         // fire event updated
         $dispatcher->fire($cType->type.'.updated', array($c));

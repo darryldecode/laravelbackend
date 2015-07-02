@@ -13,6 +13,9 @@ use Illuminate\Support\Str;
 
 class ContentType extends BaseModel {
 
+    const REVISIONS_ENABLED = 1;
+    const REVISIONS_DISABLED = 0;
+
     static $requiredActionPermission = 'superuser';
 
     protected $table = 'content_types';
