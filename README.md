@@ -23,7 +23,7 @@ Laravel Backend is an instant backend for laravel 5. It is a component base arch
     "darryldecode/laravelbackend": "dev-master"
 }
 ```
-then you can do: composer update "darryldecode/laravelbackend" to update/install the package
+then you can do: ```composer update "darryldecode/laravelbackend"``` to update/install the package
 
 ---
 ***Step 2:***
