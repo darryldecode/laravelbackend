@@ -54,6 +54,7 @@
                 <input type="checkbox" name="remember"> Remember Me
             </div>
             <div class="form-group">
+                <input class="form-control" type="hidden" name="ru" value="{{(isset($_GET['ru']) ? $_GET['ru'] : '')}}">
                 <button class="btn btn-default" type="submit">Login</button>
             </div>
         </form>

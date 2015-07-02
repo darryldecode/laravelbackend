@@ -38,7 +38,10 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return Helpers::redirectLogin();
+
+                $returnURL = array('ru'=>$request->path());
+
+                return Helpers::redirectLogin($returnURL);
             }
         }
 

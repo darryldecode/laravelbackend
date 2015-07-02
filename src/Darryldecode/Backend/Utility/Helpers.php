@@ -170,6 +170,19 @@ class Helpers {
     /**
      * redirect to dashboard
      *
+     * @param string $url
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function redirectBackend($url = null)
+    {
+        if( is_null($url) ) self::redirectDashboard();
+
+        return redirect()->intended(config('backend.backend.base_url').'/'.trim($url,'/'));
+    }
+
+    /**
+     * redirect to dashboard
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public static function redirectDashboard()
@@ -180,11 +193,16 @@ class Helpers {
     /**
      * redirect to login page
      *
+     * @param null|array $queryString
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public static function redirectLogin()
+    public static function redirectLogin($queryString = null)
     {
-        return redirect(config('backend.backend.base_url').'/'.config('backend.backend.login_route'));
+        if( is_null($queryString) ) return redirect(config('backend.backend.base_url').'/'.config('backend.backend.login_route'));
+
+        $queryString = http_build_query($queryString);
+
+        return redirect(config('backend.backend.base_url').'/'.config('backend.backend.login_route').'?'.$queryString);
     }
 
     /**

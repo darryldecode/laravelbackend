@@ -36,7 +36,13 @@ class AuthController extends BaseController {
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials, $request->has('remember')))
+        {
+            if( $request->get('ru') != '' )
+            {
+                return redirect()->intended($request->get('ru'));
+            }
+
             return redirect()->intended(Helpers::getDashboardRoute());
         }
 
