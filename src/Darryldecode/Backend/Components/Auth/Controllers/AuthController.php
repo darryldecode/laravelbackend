@@ -46,7 +46,7 @@ class AuthController extends BaseController {
             return redirect()->intended(Helpers::getDashboardRoute());
         }
 
-        return redirect(Helpers::getLoginRoute())
+        return redirect()->back()
             ->withInput($request->only('email', 'remember'))
             ->withErrors([
                 'email' => 'These credentials do not match our records.',

@@ -1,0 +1,7 @@
+<?php
+
+Route::get('/{{componentUrl}}', array(
+    'before' => array(),
+    'as' => '{{componentNamespace}}',
+    'uses' => '{{componentNamespace}}Controller@index'
+));

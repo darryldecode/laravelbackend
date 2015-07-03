@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Backend\Components\{{componentNamespace}}\Controllers;
+
+use Darryldecode\Backend\Base\Controllers\BaseController;
+
+class {{componentNamespace}}Controller extends BaseController {
+
+    public function index()
+    {
+        return view('{{componentNamespace}}::index');
+    }
+}
