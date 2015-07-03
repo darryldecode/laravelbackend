@@ -71,8 +71,8 @@ class UploadCommand extends Command implements SelfHandling {
      */
     protected function normalizePath($path)
     {
-        if( $this->path == '/' ) return '/';
+        if( $path == '/' ) return '/';
 
-        return ltrim($this->path, '/');
+        return ltrim($path, '/');
     }
 }
