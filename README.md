@@ -1,12 +1,13 @@
-# LARAVEL BACKEND (still on active development)
+# LARAVEL BACKEND
 
-Laravel Backend is an instant backend for laravel 5. It is a component base architecture for its several built in components and is very flexible.
+Laravel Backend is an instant backend for laravel 5.1~. It is a component base architecture and is very flexible.
 
 ### Built-in Components:
   - User Management with Roles & Permissions (base on individual module), throotling
   - Content Type Builder w/ Custom Fields (inspired from WordPress)
   - Navigation Builder
   - Media Manager
+  - (want more?) You can even make your custom component easily aswell!
 
 ### INSTALLATION
 ---
@@ -72,10 +73,16 @@ changed the local disks:
         to:
             'root'   => public_path('uploads'),
 ```
+- on app/Console/Kernel.php
+```
+add this on the $commands property array, this will enable package's built in consoles
+
+        \Darryldecode\Backend\Base\Console\ComponentMake::class
+```
 
 ---
 
-***CONRGATULATIONS!*** Your instant laravel 5 backend is ready! you can login by navigating to: ```/backend/login```
+***CONRGATULATIONS!*** Your instant laravel 5.1 backend is ready! you can login by navigating to: ```/backend/login```
 
 - user: admin@gmail.com
 - pass: admin
