@@ -38,11 +38,13 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
      * @param int $perPage
      * @param string $orderBy
      * @param string $orderSort
+     * @param bool $disablePermissionChecking
      */
     public function __construct($paginated = true,
                                 $perPage = 8,
                                 $orderBy = 'created_at',
-                                $orderSort = 'DESC')
+                                $orderSort = 'DESC',
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->paginated = $paginated;
@@ -50,6 +52,7 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
         $this->orderBy = $orderBy;
         $this->orderSort = $orderSort;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -60,9 +63,12 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
     public function handle(Navigation $navigation, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // fire before create event

@@ -52,20 +52,21 @@ class CreateContentCommand extends Command implements SelfHandling {
 	 */
 	private $taxonomies;
 
-	/**
-	 * Create a new command instance.
-	 * @param string $title
-	 * @param string $body
-	 * @param string $slug
-	 * @param $status
-	 * @param int $authorId
-	 * @param int $contentTypeId
-	 * @param null|array $permissionRequirements
-	 * @param array $taxonomies
-	 * @param array $miscData
-	 * @param array $metaData
-	 */
-	public function __construct($title, $body, $slug, $status, $authorId, $contentTypeId, $permissionRequirements = null, $taxonomies = array(), $miscData = array(), $metaData = array())
+    /**
+     * Create a new command instance.
+     * @param string $title
+     * @param string $body
+     * @param string $slug
+     * @param $status
+     * @param int $authorId
+     * @param int $contentTypeId
+     * @param null|array $permissionRequirements
+     * @param array $taxonomies
+     * @param array $miscData
+     * @param array $metaData
+     * @param bool $disablePermissionChecking
+     */
+	public function __construct($title, $body, $slug, $status, $authorId, $contentTypeId, $permissionRequirements = null, $taxonomies = array(), $miscData = array(), $metaData = array(), $disablePermissionChecking = false)
 	{
 		parent::__construct();
 		$this->title = $title;
@@ -78,6 +79,7 @@ class CreateContentCommand extends Command implements SelfHandling {
 		$this->status = $status;
 		$this->metaData = $metaData;
 		$this->taxonomies = $taxonomies;
+        $this->disablePermissionChecking = $disablePermissionChecking;
 	}
 
     /**
@@ -101,10 +103,13 @@ class CreateContentCommand extends Command implements SelfHandling {
 		}
 
 		// check if user has permission
-		if( ! $this->user->hasAnyPermission([$cTypeManage]) )
-		{
-			return new CommandResult(false, "Not enough permission.", null, 403);
-		}
+		if( ! $this->disablePermissionChecking )
+        {
+            if( ! $this->user->hasAnyPermission([$cTypeManage]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
+        }
 
 		// validate data
 		$validationResult = $validator->make(array(

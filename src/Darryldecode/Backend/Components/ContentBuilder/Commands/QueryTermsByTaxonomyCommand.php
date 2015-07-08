@@ -23,12 +23,14 @@ class QueryTermsByTaxonomyCommand extends Command implements SelfHandling {
 
     /**
      * @param null $taxonomyId
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($taxonomyId = null)
+    public function __construct($taxonomyId = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->taxonomyId = $taxonomyId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**

@@ -24,19 +24,21 @@ class CreateTypeTaxonomyTerm extends Command implements SelfHandling {
 	 */
 	private $slug;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param string $term
-	 * @param $slug
-	 * @param int $contentTypeTaxonomyId
-	 */
-	public function __construct($term = null, $slug = null, $contentTypeTaxonomyId = null)
+    /**
+     * Create a new command instance.
+     *
+     * @param string $term
+     * @param $slug
+     * @param int $contentTypeTaxonomyId
+     * @param bool $disablePermissionChecking
+     */
+	public function __construct($term = null, $slug = null, $contentTypeTaxonomyId = null, $disablePermissionChecking = false)
 	{
 		parent::__construct();
 		$this->term = $term;
 		$this->contentTypeTaxonomyId = $contentTypeTaxonomyId;
 		$this->slug = $slug;
+        $this->disablePermissionChecking = $disablePermissionChecking;
 	}
 
 	/**
@@ -70,10 +72,13 @@ class CreateTypeTaxonomyTerm extends Command implements SelfHandling {
 		$canManageOnThisType = $type->type.'.manage';
 
 		// check if user has permission
-		if( ! $this->user->hasAnyPermission([$canManageOnThisType]) )
-		{
-			return new CommandResult(false, "Not enough permission.", null, 403);
-		}
+		if( ! $this->disablePermissionChecking )
+        {
+            if( ! $this->user->hasAnyPermission([$canManageOnThisType]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
+        }
 
 		// validate data
 		$validationResult = $validator->make(array(

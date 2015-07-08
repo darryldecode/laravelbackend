@@ -24,20 +24,22 @@ class CreateContentTypeTaxonomyCommand extends Command implements SelfHandling {
 	 */
 	private $description;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param string $taxonomy
-	 * @param string $description
-	 * @param int $contentTypeId
-	 */
-	public function __construct($taxonomy = null, $description = null, $contentTypeId = null)
+    /**
+     * Create a new command instance.
+     *
+     * @param string $taxonomy
+     * @param string $description
+     * @param int $contentTypeId
+     * @param bool $disablePermissionChecking
+     */
+	public function __construct($taxonomy = null, $description = null, $contentTypeId = null, $disablePermissionChecking = false)
 	{
 		parent::__construct();
 		$this->taxonomy = $taxonomy;
 		$this->contentTypeId = $contentTypeId;
 		$this->description = $description;
 		$this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
 	}
 
 	/**
@@ -51,10 +53,13 @@ class CreateContentTypeTaxonomyCommand extends Command implements SelfHandling {
 	public function handle(ContentType $contentType, Validator $validator, Dispatcher $dispatcher)
 	{
 		// validate authorization
-		if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
-		{
-			return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
-		}
+        if( ! $this->disablePermissionChecking )
+        {
+            if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
+        }
 
 		// validate data
 		$validationResult = $validator->make(array(

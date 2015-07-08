@@ -33,13 +33,15 @@ class QueryFormGroupCommand extends Command implements SelfHandling {
      * @param null $contentTypeId
      * @param bool $paginated
      * @param int $perPage
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($contentTypeId = null, $paginated = true, $perPage = 6)
+    public function __construct($contentTypeId = null, $paginated = true, $perPage = 6, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->contentTypeId = $contentTypeId;
         $this->paginated = $paginated;
         $this->perPage = $perPage;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -78,9 +80,12 @@ class QueryFormGroupCommand extends Command implements SelfHandling {
         // the query should be forbidden
         $cTypeManage = $cType->type.'.manage';
 
-        if( ! $this->user->hasAnyPermission([$cTypeManage,'contentBuilder.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission([$cTypeManage,'contentBuilder.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // fire before query
@@ -113,9 +118,12 @@ class QueryFormGroupCommand extends Command implements SelfHandling {
      */
     protected function queryAll($contentTypeFormGroup, $dispatcher)
     {
-        if( ! $this->user->isSuperUser() )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->isSuperUser() )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // fire before query

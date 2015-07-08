@@ -50,7 +50,14 @@ class ComponentMake extends Command {
         $componentNamespace     = $this->formatToComponentNamespace($componentTitle);
         $componentUrl           = $this->formatToComponentUrl($componentTitle);
 
+        $backendCustomComponentsPath = app_path().'/Backend';
         $componentPath = app_path().'/Backend/Components/'.$componentNamespace;
+
+        if( ! $this->filesystem->isDirectory($backendCustomComponentsPath) )
+        {
+            $this->filesystem->makeDirectory($backendCustomComponentsPath);
+            $this->filesystem->makeDirectory($backendCustomComponentsPath.'/Components');
+        }
 
         if( $this->filesystem->isDirectory($componentPath) )
         {

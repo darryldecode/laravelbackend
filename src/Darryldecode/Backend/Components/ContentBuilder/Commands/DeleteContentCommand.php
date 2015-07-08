@@ -23,11 +23,13 @@ class DeleteContentCommand extends Command implements SelfHandling {
 
     /**
      * @param $id
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($id)
+    public function __construct($id, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -47,9 +49,12 @@ class DeleteContentCommand extends Command implements SelfHandling {
         $cTypeDeletePermission = $c->type->type.'.delete';
 
         // check if user has permission
-        if( ! $this->user->hasAnyPermission([$cTypeDeletePermission]) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission([$cTypeDeletePermission]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // fire deleting event

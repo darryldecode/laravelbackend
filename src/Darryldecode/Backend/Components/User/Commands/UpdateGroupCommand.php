@@ -35,14 +35,16 @@ class UpdateGroupCommand extends Command implements SelfHandling {
      * @param $id
      * @param string $name
      * @param array $permissions
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($id = null, $name = null, $permissions = array())
+    public function __construct($id = null, $name = null, $permissions = array(), $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->name = $name;
         $this->permissions = $permissions;
         $this->args = get_defined_vars();
         $this->id = $id;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -56,9 +58,12 @@ class UpdateGroupCommand extends Command implements SelfHandling {
     public function handle(Group $group, Dispatcher $dispatcher, Validator $validator)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // fire updating

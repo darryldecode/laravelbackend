@@ -22,12 +22,14 @@ class DeleteContentTypeCommand extends Command implements SelfHandling {
 
     /**
      * @param $contentTypeId
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($contentTypeId = null)
+    public function __construct($contentTypeId = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->contentTypeId = $contentTypeId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -38,9 +40,12 @@ class DeleteContentTypeCommand extends Command implements SelfHandling {
     public function handle(Dispatcher $dispatcher, ContentType $contentType)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         if( ! $cType = $contentType->find($this->contentTypeId) )

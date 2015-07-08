@@ -21,6 +21,15 @@ abstract class Command {
      */
     protected $args;
 
+    /**
+     * disable the permission checking on a command, this will be helpful
+     * when the commands are being used as an API or something custom that does not need
+     * to check a user permission. Just in case you need it to work freely
+     *
+     * @var bool
+     */
+    protected $disablePermissionChecking = false;
+
 	public function __construct()
     {
         $app = app();

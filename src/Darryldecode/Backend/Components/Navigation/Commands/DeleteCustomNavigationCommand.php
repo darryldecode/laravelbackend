@@ -25,11 +25,16 @@ class DeleteCustomNavigationCommand extends Command implements SelfHandling {
      */
     private $id;
 
-    public function __construct($id = null)
+    /**
+     * @param null $id
+     * @param bool $disablePermissionChecking
+     */
+    public function __construct($id = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
         $this->args = func_get_args();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -41,9 +46,12 @@ class DeleteCustomNavigationCommand extends Command implements SelfHandling {
     public function handle(Navigation $navigation, Factory $validator, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['navigationBuilder.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['navigationBuilder.delete']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // make sure we have a navigation to delete

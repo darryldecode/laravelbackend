@@ -51,8 +51,9 @@ class CreateUserCommand extends Command implements SelfHandling {
      * @param $password
      * @param $permissions
      * @param $groups
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($firstName, $lastName, $email, $password, $permissions, $groups)
+    public function __construct($firstName, $lastName, $email, $password, $permissions, $groups, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->firstName = $firstName;
@@ -61,6 +62,7 @@ class CreateUserCommand extends Command implements SelfHandling {
         $this->password = $password;
         $this->permissions = $permissions;
         $this->groups = $groups;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -73,9 +75,12 @@ class CreateUserCommand extends Command implements SelfHandling {
     public function handle(User $user, Factory $validator, Dispatcher $dispatcher, Group $group)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // validate data

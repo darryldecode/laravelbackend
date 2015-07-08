@@ -39,21 +39,31 @@ class UpdateNavigationCommand extends Command implements SelfHandling {
      */
     private $data = array();
 
-    public function __construct($id = null, $name = null, $data = null)
+    /**
+     * @param null $id
+     * @param null $name
+     * @param null $data
+     * @param bool $disablePermissionChecking
+     */
+    public function __construct($id = null, $name = null, $data = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->data = $data;
         $this->args = func_get_args();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     public function handle(Navigation $navigation, Factory $validator, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // validate data

@@ -72,6 +72,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @param string $orderSort
      * @param bool $paginated
      * @param int $perPage
+     * @param bool $disablePermissionChecking
      */
     public function __construct($firstName = null,
                                 $lastName = null,
@@ -81,7 +82,8 @@ class QueryUsersCommand extends Command implements SelfHandling {
                                 $orderBy = 'created_at',
                                 $orderSort = 'DESC',
                                 $paginated = true,
-                                $perPage = 15)
+                                $perPage = 15,
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->firstName = $firstName;
@@ -94,6 +96,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
         $this->perPage = $perPage;
         $this->with = $with;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -105,9 +108,12 @@ class QueryUsersCommand extends Command implements SelfHandling {
     public function handle(User $user, Group $group, Dispatcher $dispatcher)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // fire before query event

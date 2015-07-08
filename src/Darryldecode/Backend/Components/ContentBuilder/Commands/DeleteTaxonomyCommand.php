@@ -23,12 +23,14 @@ class DeleteTaxonomyCommand extends Command implements SelfHandling {
 
     /**
      * @param null $taxonomyId
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($taxonomyId = null)
+    public function __construct($taxonomyId = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->taxonomyId = $taxonomyId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -39,9 +41,12 @@ class DeleteTaxonomyCommand extends Command implements SelfHandling {
     public function handle(ContentTypeTaxonomy $contentTypeTaxonomy, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // fire creating event

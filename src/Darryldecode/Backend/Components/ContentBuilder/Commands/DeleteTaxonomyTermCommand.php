@@ -26,13 +26,15 @@ class DeleteTaxonomyTermCommand extends Command implements SelfHandling {
     /**
      * @param null $taxonomyId
      * @param null $termId
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($taxonomyId = null, $termId = null)
+    public function __construct($taxonomyId = null, $termId = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->taxonomyId = $taxonomyId;
         $this->termId = $termId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -70,9 +72,12 @@ class DeleteTaxonomyTermCommand extends Command implements SelfHandling {
         $canManageOnThisType = $type->type.'.manage';
 
         // check if user has permission
-        if( ! $this->user->hasAnyPermission([$canManageOnThisType]) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission([$canManageOnThisType]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // fire creating event

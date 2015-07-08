@@ -29,13 +29,15 @@ class CreateNavigationCommand extends Command implements SelfHandling {
     /**
      * @param null $name
      * @param array $data
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($name = null, $data = array())
+    public function __construct($name = null, $data = array(), $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->name = $name;
         $this->data = $data;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -47,9 +49,12 @@ class CreateNavigationCommand extends Command implements SelfHandling {
     public function handle(Navigation $navigation, Factory $validator, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['navigationBuilder.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // validate data

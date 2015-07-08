@@ -63,6 +63,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @param int $perPage
      * @param string $sortBy
      * @param string $sortOrder
+     * @param bool $disablePermissionChecking
      */
     public function __construct($type = null,
                                 $status = 'any',
@@ -72,7 +73,8 @@ class QueryContentsCommand extends Command implements SelfHandling {
                                 $paginated = true,
                                 $perPage = 8,
                                 $sortBy = 'created_at',
-                                $sortOrder = 'DESC')
+                                $sortOrder = 'DESC',
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->type = $type;
@@ -85,6 +87,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
         $this->status = $status;
         $this->authorId = $authorId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**

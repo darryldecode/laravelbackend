@@ -57,6 +57,7 @@ class UpdateUserCommand extends Command implements SelfHandling {
      * @param null $password
      * @param null $permissions
      * @param null $groups
+     * @param bool $disablePermissionChecking
      */
     public function __construct($id = null,
                                 $firstName = null,
@@ -64,7 +65,8 @@ class UpdateUserCommand extends Command implements SelfHandling {
                                 $email = null,
                                 $password = null,
                                 $permissions = null,
-                                $groups = null)
+                                $groups = null,
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->firstName = $firstName;
@@ -75,6 +77,7 @@ class UpdateUserCommand extends Command implements SelfHandling {
         $this->groups = $groups;
         $this->id = $id;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -86,9 +89,12 @@ class UpdateUserCommand extends Command implements SelfHandling {
     public function handle(User $user, Dispatcher $dispatcher, Group $group)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // fire creating

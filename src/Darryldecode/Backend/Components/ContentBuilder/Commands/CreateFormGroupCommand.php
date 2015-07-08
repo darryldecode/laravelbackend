@@ -47,12 +47,14 @@ class CreateFormGroupCommand extends Command implements SelfHandling {
      * @param array $conditions
      * @param array $fields
      * @param null $contentTypeId
+     * @param bool $disablePermissionChecking
      */
     public function __construct($name = null,
                                 $formName = null,
                                 $conditions = array(),
                                 $fields = array(),
-                                $contentTypeId = null)
+                                $contentTypeId = null,
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->name = $name;
@@ -61,6 +63,7 @@ class CreateFormGroupCommand extends Command implements SelfHandling {
         $this->fields = $fields;
         $this->contentTypeId = $contentTypeId;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -73,9 +76,12 @@ class CreateFormGroupCommand extends Command implements SelfHandling {
     public function handle(Factory $validator, Dispatcher $dispatcher, ContentType $contentType, ContentTypeFormGroup $contentTypeFormGroup)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         // validate data

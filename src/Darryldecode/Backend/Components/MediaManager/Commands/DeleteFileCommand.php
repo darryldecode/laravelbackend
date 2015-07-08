@@ -23,11 +23,13 @@ class DeleteFileCommand extends Command implements SelfHandling {
 
     /**
      * @param null|string|array $paths
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($paths = null)
+    public function __construct($paths = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->paths = $paths;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -37,9 +39,12 @@ class DeleteFileCommand extends Command implements SelfHandling {
     public function handle(Filesystem $filesystem)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['media.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['media.delete']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         if( is_null($this->paths) )

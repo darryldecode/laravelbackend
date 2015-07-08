@@ -19,17 +19,19 @@ class CreateContentTypeCommand extends Command implements SelfHandling {
 	 */
 	private $enableRevision;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param string $type
-	 * @param string $enableRevision
-	 */
-	public function __construct($type, $enableRevision = 'no')
+    /**
+     * Create a new command instance.
+     *
+     * @param string $type
+     * @param string $enableRevision
+     * @param bool $disablePermissionChecking
+     */
+	public function __construct($type, $enableRevision = 'no', $disablePermissionChecking = false)
 	{
 		parent::__construct();
 		$this->type = $type;
 		$this->enableRevision = $enableRevision;
+        $this->disablePermissionChecking = $disablePermissionChecking;
 	}
 
 	/**
@@ -43,10 +45,13 @@ class CreateContentTypeCommand extends Command implements SelfHandling {
 	public function handle(Factory $validator, ContentType $contentType, Dispatcher $dispatcher)
 	{
 		// validate authorization
-		if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
-		{
-			return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
-		}
+        if( ! $this->disablePermissionChecking )
+        {
+            if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
+        }
 
 		// validate data
 		$validationResult = $validator->make(array(

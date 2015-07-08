@@ -28,12 +28,14 @@ class MakeDirectoryCommand extends Command implements SelfHandling {
     /**
      * @param null $path
      * @param null $dirName
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($path = null, $dirName = null)
+    public function __construct($path = null, $dirName = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->path = $path;
         $this->dirName = $dirName;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -43,9 +45,12 @@ class MakeDirectoryCommand extends Command implements SelfHandling {
     public function handle(Filesystem $filesystem)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['media.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['media.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         $path = (is_null($this->path)) ? '/' : $this->path;

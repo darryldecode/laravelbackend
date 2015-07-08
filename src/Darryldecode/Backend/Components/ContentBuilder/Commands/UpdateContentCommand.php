@@ -74,6 +74,7 @@ class UpdateContentCommand extends Command implements SelfHandling {
      * @param null $taxonomies
      * @param null $miscData
      * @param null $metaData
+     * @param bool $disablePermissionChecking
      */
     public function __construct($id,
                                 $title = null,
@@ -85,7 +86,8 @@ class UpdateContentCommand extends Command implements SelfHandling {
                                 $permissionRequirements = null,
                                 $taxonomies = null,
                                 $miscData = null,
-                                $metaData = null)
+                                $metaData = null,
+                                $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
@@ -100,6 +102,7 @@ class UpdateContentCommand extends Command implements SelfHandling {
         $this->miscData = $miscData;
         $this->metaData = $metaData;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -120,9 +123,12 @@ class UpdateContentCommand extends Command implements SelfHandling {
         }
 
         // check if user has permission
-        if( ! $this->user->hasAnyPermission([$cTypeManage]) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission([$cTypeManage]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         if( ! $c = $content->find($this->id) )

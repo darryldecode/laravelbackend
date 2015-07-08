@@ -22,12 +22,14 @@ class DeleteFormGroupCommand extends Command implements SelfHandling {
 
     /**
      * @param null $id
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($id = null)
+    public function __construct($id = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -38,9 +40,12 @@ class DeleteFormGroupCommand extends Command implements SelfHandling {
     public function handle(ContentTypeFormGroup $contentTypeFormGroup, Dispatcher $dispatcher)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['contentBuilder.delete']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         if( ! $formGroup = $contentTypeFormGroup->find($this->id) )

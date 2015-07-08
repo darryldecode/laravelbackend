@@ -22,12 +22,14 @@ class QueryContentTypeCommand extends Command implements SelfHandling {
 
     /**
      * @param null|string $type
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($type = null)
+    public function __construct($type = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->type = $type;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**

@@ -23,11 +23,13 @@ class ListCommand extends Command implements SelfHandling {
 
     /**
      * @param null $path
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($path = null)
+    public function __construct($path = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->path = $path;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**

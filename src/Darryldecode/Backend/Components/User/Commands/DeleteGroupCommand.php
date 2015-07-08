@@ -26,12 +26,14 @@ class DeleteGroupCommand extends Command implements SelfHandling {
 
     /**
      * @param $id
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($id = null)
+    public function __construct($id = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->id = $id;
         $this->args = get_defined_vars();
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -45,9 +47,12 @@ class DeleteGroupCommand extends Command implements SelfHandling {
     public function handle(User $user, Group $group, Dispatcher $dispatcher)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.delete']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.delete']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // find the group

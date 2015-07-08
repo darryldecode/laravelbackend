@@ -27,14 +27,16 @@ class CreateGroupCommand extends Command implements SelfHandling {
     private $permissions;
 
     /**
-     * @param $name
-     * @param $permissions
+     * @param string $name
+     * @param array $permissions
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($name = '', $permissions = array())
+    public function __construct($name = '', $permissions = array(), $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->name = $name;
         $this->permissions = $permissions;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -48,9 +50,12 @@ class CreateGroupCommand extends Command implements SelfHandling {
     public function handle(Validator $validator, Dispatcher $dispatcher, Group $group)
     {
         // check user permission
-        if( ! $this->user->hasAnyPermission(['user.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            if( ! $this->user->hasAnyPermission(['user.manage']) )
+            {
+                return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
+            }
         }
 
         // validate data

@@ -28,12 +28,14 @@ class UploadCommand extends Command implements SelfHandling {
     /**
      * @param null $files
      * @param null $path
+     * @param bool $disablePermissionChecking
      */
-    public function __construct($files = null, $path = null)
+    public function __construct($files = null, $path = null, $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->files = $files;
         $this->path = $path;
+        $this->disablePermissionChecking = $disablePermissionChecking;
     }
 
     /**
@@ -43,9 +45,12 @@ class UploadCommand extends Command implements SelfHandling {
     public function handle(Repository $config)
     {
         // check if user has permission
-        if( ! $this->user->hasAnyPermission(['media.manage']) )
+        if( ! $this->disablePermissionChecking )
         {
-            return new CommandResult(false, "Not enough permission.", null, 403);
+            if( ! $this->user->hasAnyPermission(['media.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
         }
 
         $path = (is_null($this->path)) ? '/' : $this->path;
