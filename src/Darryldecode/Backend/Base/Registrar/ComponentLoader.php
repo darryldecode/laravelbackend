@@ -9,7 +9,6 @@
 namespace Darryldecode\Backend\Base\Registrar;
 
 use Illuminate\Filesystem\Filesystem;
-use Darryldecode\Backend\Base\Registrar\ComponentInterface;
 
 class ComponentLoader {
 

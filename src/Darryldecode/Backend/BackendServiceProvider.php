@@ -2,6 +2,7 @@
 
 use Darryldecode\Backend\Base\Registrar\ComponentLoader;
 use Darryldecode\Backend\Base\Registrar\Registrar;
+use Darryldecode\Backend\Base\Registrar\WidgetLoader;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -76,6 +77,14 @@ class BackendServiceProvider extends ServiceProvider {
         {
             $this->loadViewsFrom($view['dir'], $view['namespace']);
         }
+
+        // load built-in widgets
+        $builtInWidgetsLoader = new WidgetLoader(__DIR__.'/Widgets', new Filesystem());
+        $customWidgetsLoader  = new WidgetLoader(app_path().'/Backend/Widgets', new Filesystem());
+
+        // add widgets
+        $backendRegistrar->addWidget($builtInWidgetsLoader->getAvailableWidgetInstances());
+        $backendRegistrar->addWidget($customWidgetsLoader->getAvailableWidgetInstances());
 
         $this->app['backend'] = $backendRegistrar;
     }

@@ -28,8 +28,8 @@
                     </ul>
 
                 </li>
-                <li>
-                    <a href="{{url(config('backend.backend.base_url').'/logout')}}">Logout</a>
+                <li class="bc-user-dashboard-control">
+                    <a popover-placement="bottom" popover="Logout" popover-trigger="mouseenter" href="{{url(config('backend.backend.base_url').'/logout')}}"><b>{{Auth::user()->first_name}}</b> <i class="fa fa-power-off"></i></a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: darryl
- * Date: 7/2/2015
- * Time: 7:43 PM
- */
 
 namespace Darryldecode\Backend\Base\Console;
 
@@ -50,13 +44,17 @@ class ComponentMake extends Command {
         $componentNamespace     = $this->formatToComponentNamespace($componentTitle);
         $componentUrl           = $this->formatToComponentUrl($componentTitle);
 
-        $backendCustomComponentsPath = app_path().'/Backend';
-        $componentPath = app_path().'/Backend/Components/'.$componentNamespace;
+        $backendPath    = app_path().'/Backend';
+        $componentPath  = $backendPath.'/Components/'.$componentNamespace;
 
-        if( ! $this->filesystem->isDirectory($backendCustomComponentsPath) )
+        if( ! $this->filesystem->isDirectory($backendPath) )
         {
-            $this->filesystem->makeDirectory($backendCustomComponentsPath);
-            $this->filesystem->makeDirectory($backendCustomComponentsPath.'/Components');
+            $this->filesystem->makeDirectory($backendPath);
+        }
+
+        if( ! $this->filesystem->isDirectory($backendPath.'/Components') )
+        {
+            $this->filesystem->makeDirectory($backendPath.'/Components');
         }
 
         if( $this->filesystem->isDirectory($componentPath) )
@@ -106,7 +104,7 @@ class ComponentMake extends Command {
         $routesScaffold = str_replace('{{componentUrl}}',$componentUrl,$routesScaffold);
         $this->filesystem->put($componentPath.'/routes.php',$routesScaffold);
 
-        $this->info(PHP_EOL.'Creating successfully created!'.PHP_EOL);
+        $this->info(PHP_EOL.'Component successfully created!'.PHP_EOL);
     }
 
     /**

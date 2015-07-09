@@ -190,6 +190,13 @@ input[type="checkbox"] {
     font-size: 12px;
 }
 
+/* MAIN NAVIGATION */
+
+li.bc-user-dashboard-control {
+    border-left: 1px solid #ddd;
+    margin-left: 10px;
+}
+
 /* BREADCRUMBS */
 
 #breadcrumbs {

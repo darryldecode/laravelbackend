@@ -11,9 +11,18 @@ namespace Darryldecode\Backend\Base\Registrar;
 class Registrar {
 
     /**
+     * backend active components
+     *
      * @var array
      */
     protected $activeComponents = array();
+
+    /**
+     * backend active widgets
+     *
+     * @var array
+     */
+    protected $activeWidgets = array();
 
     /**
      * @var array
@@ -64,6 +73,29 @@ class Registrar {
         else
         {
             array_push($this->activeComponents, $component);
+        }
+
+        return $this;
+    }
+
+    /**
+     * add widget to registrar
+     *
+     * @param \Darryldecode\Backend\Base\Registrar\WidgetInterface|array $widget
+     * @return $this
+     */
+    public function addWidget($widget)
+    {
+        if(is_array($widget))
+        {
+            foreach($widget as $w)
+            {
+                $this->addWidget($w);
+            }
+        }
+        else
+        {
+            array_push($this->activeWidgets, $widget);
         }
 
         return $this;
@@ -167,5 +199,15 @@ class Registrar {
     public function getActiveComponents()
     {
         return $this->activeComponents;
+    }
+
+    /**
+     * returns all the registered active widgets
+     *
+     * @return array
+     */
+    public function getActiveWidgets()
+    {
+        return $this->activeWidgets;
     }
 }
