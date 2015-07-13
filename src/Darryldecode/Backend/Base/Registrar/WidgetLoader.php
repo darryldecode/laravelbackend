@@ -63,6 +63,8 @@ class WidgetLoader {
                     {
                         $disabledWidgetsArray = \Config::get('backend.backend.disabled_widgets');
 
+                        if( is_null($disabledWidgetsArray) ) continue;
+
                         if( $widgetInstance->isWidgetActive() && (!in_array($widgetInstance->getWidgetInfo()['name'],$disabledWidgetsArray)) )
                         {
                             array_push(
