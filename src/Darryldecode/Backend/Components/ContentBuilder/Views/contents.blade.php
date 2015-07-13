@@ -50,6 +50,7 @@
 
                         <table data-ng-if="contents.data.length>0" class="table">
                             <tr>
+                                <th>ID</th>
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th><i class="fa fa-user"></i> Author</th>
@@ -58,6 +59,7 @@
                                 <th class="action text-center"><i class="fa fa-bolt"></i></th>
                             </tr>
                             <tr data-ng-repeat="c in contents.data" class="content-item-@{{$index}}">
+                                <td>[@{{c.id}}]</td>
                                 <td>@{{c.title}}</td>
                                 <td>@{{c.status}}</td>
                                 <td>@{{c.author.first_name}}</td>

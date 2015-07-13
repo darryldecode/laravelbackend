@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @foreach($widgets as $widget)
+    @forelse($widgets as $widget)
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -14,6 +14,12 @@
                 <?php include_once $widget->getWidgetTemplate(); ?>
             </div>
         </div>
-    @endforeach
+    @empty
+        <div class="panel panel-default">
+            <div class="panel-body text-center" style="min-height: 230px; padding-top: 100px;">
+                <i>No widgets yet..</i>
+            </div>
+        </div>
+    @endforelse
 
 @stop

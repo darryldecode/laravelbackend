@@ -18,20 +18,22 @@
                         </div>
                     </div>
                 </div>
-                <ul class="list-group">
-                    <li data-ng-repeat="nav in customNavigationList.data" class="list-group-item clearfix">
-                        <i class="fa fa-flag"></i> @{{nav.name}}
-                        <span class="pull-right">
-                            <button data-ng-click="navigation.configure(nav, 'drawer-configure')" class="btn btn-clear btn-xs"><i class="fa fa-cog"></i> Configure</button>
-                            <button data-ng-click="navigation.trash(nav.id)" data-ng-disabled="navigation.trashing" class="btn btn-clear btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                        </span>
-                    </li>
-                    <li data-ng-if="customNavigationList.data.length==0" class="list-group-item">
-                        <div class="well text-center">
-                            No Navigation yet..
-                        </div>
-                    </li>
-                </ul>
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Navigation Name</th>
+                    </tr>
+                    <tr data-ng-repeat="nav in customNavigationList.data">
+                        <td>[@{{nav.id}}]</td>
+                        <td>
+                            <i class="fa fa-flag"></i> @{{nav.name}}
+                            <span class="pull-right">
+                                <button data-ng-click="navigation.configure(nav, 'drawer-configure')" class="btn btn-clear btn-xs"><i class="fa fa-cog"></i> Configure</button>
+                                <button data-ng-click="navigation.trash(nav.id)" data-ng-disabled="navigation.trashing" class="btn btn-clear btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 

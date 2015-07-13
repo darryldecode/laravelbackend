@@ -11,4 +11,11 @@ return [
      * The login url
      */
     'login_route' => 'login', // this will be "backend/login"
+
+    /*
+     * Disabled widgets
+     */
+    'disabled_widgets' => array(
+        'Dashboard Welcome Message'
+    ),
 ];
