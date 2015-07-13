@@ -77,7 +77,8 @@ changed the local disks:
 ```
 add this on the $commands property array, this will enable package's built in consoles
 
-        \Darryldecode\Backend\Base\Console\ComponentMake::class
+        \Darryldecode\Backend\Base\Console\ComponentMake::class,
+        \Darryldecode\Backend\Base\Console\WidgetMake::class
 ```
 
 ---
