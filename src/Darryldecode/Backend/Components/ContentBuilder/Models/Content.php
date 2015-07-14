@@ -148,4 +148,30 @@ class Content extends BaseModel {
     {
         return $this->hasMany('Darryldecode\Backend\Components\ContentBuilder\Models\ContentRevisions','content_id');
     }
+
+    /**
+     * Scope for start date
+     *
+     * @param $query
+     * @param $startDate
+     * @return bool
+     */
+    public function scopeOfStartDate($query, $startDate)
+    {
+        if( $startDate === false ) return false;
+        return $query->where('created_at','>=',$startDate);
+    }
+
+    /**
+     * scope for end date
+     *
+     * @param $query
+     * @param $endDate
+     * @return bool
+     */
+    public function scopeOfEndDate($query, $endDate)
+    {
+        if( $endDate === false ) return false;
+        return $query->where('created_at','<=',$endDate);
+    }
 }

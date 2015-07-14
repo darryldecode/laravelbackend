@@ -22,6 +22,7 @@
                 <div class="table-responsive animated fadeIn">
                     <table class="table table-hover">
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th colspan="2" class="action text-center"><i class="fa fa-bolt"></i></th>
@@ -30,6 +31,7 @@
                             <td colspan="4" class="text-center">Loading <i class="fa fa-spinner fa-spin"></i></td>
                         </tr>
                         <tr data-ng-repeat="u in users.data" class="user-item-@{{::$index}}" >
+                            <td>[@{{::u.id}}]</td>
                             <td><i class="fa fa-user"></i> @{{::u.first_name}} @{{::u.last_name}}</td>
                             <td>@{{::u.email}}</td>
                             <td class="action text-center">

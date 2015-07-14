@@ -52,6 +52,14 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @var null
      */
     private $authorId;
+    /**
+     * @var null
+     */
+    private $startDate;
+    /**
+     * @var null
+     */
+    private $endDate;
 
     /**
      * @param null $type
@@ -64,6 +72,8 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @param string $sortBy
      * @param string $sortOrder
      * @param bool $disablePermissionChecking
+     * @param null $startDate
+     * @param null $endDate
      */
     public function __construct($type = null,
                                 $status = 'any',
@@ -74,7 +84,9 @@ class QueryContentsCommand extends Command implements SelfHandling {
                                 $perPage = 8,
                                 $sortBy = 'created_at',
                                 $sortOrder = 'DESC',
-                                $disablePermissionChecking = false)
+                                $disablePermissionChecking = false,
+                                $startDate = null,
+                                $endDate = null)
     {
         parent::__construct();
         $this->type = $type;
@@ -88,6 +100,8 @@ class QueryContentsCommand extends Command implements SelfHandling {
         $this->authorId = $authorId;
         $this->args = get_defined_vars();
         $this->disablePermissionChecking = $disablePermissionChecking;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -185,6 +199,17 @@ class QueryContentsCommand extends Command implements SelfHandling {
             }
         }
 
+        // setup date ranges
+        if( !is_null($this->startDate) && ($this->startDate!='') )
+        {
+            $q->ofStartDate($this->startDate);
+        }
+        if( !is_null($this->endDate) && ($this->endDate!='') )
+        {
+            $q->ofEndDate($this->endDate);
+        }
+
+        // decide whether request wants paginated version or not
         if( $this->paginated )
         {
             $res = $q->paginate($this->perPage);
