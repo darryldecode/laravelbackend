@@ -397,10 +397,10 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
 
     // extracts selected terms use in filter
     function extractTermsFromSelectedFilterObjects(selected) {
-        var arr = [];
+        var taxString = '';
         angular.forEach(selected, function(term,i) {
-            arr.push(term.slug);
+            taxString += ':'+term.taxonomy.taxonomy+'|'+term.slug+'';
         });
-        return arr.join(':');
+        return taxString;
     }
 }]);

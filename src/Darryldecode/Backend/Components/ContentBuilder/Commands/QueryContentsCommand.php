@@ -179,23 +179,20 @@ class QueryContentsCommand extends Command implements SelfHandling {
         // check if terms are provided so we can include it in query conditions
         if( !is_null($this->terms) && ($this->terms != '') )
         {
-            // if terms is in array format, the request probably don't contain "terms" query string
-            // because an empty [] is set to it as default when it is not provided
-            if( !is_array($this->terms) )
-            {
-                $q->whereHas('terms', function ($q)
-                {
-                    $terms = $this->extractTerms($this->terms);
+            $tax = $this->extractTerms($this->terms);
 
-                    if( count($terms) > 1 )
+            if(count($tax) > 0)
+            {
+                foreach($tax as $k => $v)
+                {
+                    $q->whereHas('terms', function ($q) use ($k, $v)
                     {
-                        $q->whereIn('slug', $terms);
-                    }
-                    elseif( count($terms) == 1 )
-                    {
-                        $q->where('slug', $terms[0]);
-                    }
-                });
+                        $q->whereHas('taxonomy', function ($q) use ($k)
+                        {
+                            $q->where('taxonomy', $k);
+                        })->whereIn('slug',$v);
+                    });
+                }
             }
         }
 
@@ -224,7 +221,17 @@ class QueryContentsCommand extends Command implements SelfHandling {
 
     /**
      * Just extracts the terms from param
-     * Ex. terms=term1:term2:term3 to array(term1,term2,term3)
+     *
+     * Example.
+     *
+     * from:
+     *  terms=:Size|small:Color|blue:Availability|yes:Size|medium
+     * to:
+     *  array(
+     *      Size => array('small','medium'),
+     *      Color => array('blue'),
+     *      Availability => array('yes'),
+     * )
      *
      * @param $terms
      * @return array
@@ -233,6 +240,24 @@ class QueryContentsCommand extends Command implements SelfHandling {
     {
         if( is_array($terms) ) return $terms;
 
-        return explode(':',$terms);
+        $t = array();
+
+        $terms = explode(':', trim($terms,':'));
+
+        foreach($terms as $tx)
+        {
+            $x = explode('|',$tx);
+
+            if( array_key_exists($x[0], $t) )
+            {
+                array_push($t[$x[0]],$x[1]);
+            }
+            else
+            {
+                $t[$x[0]] = array($x[1]);
+            }
+        }
+
+        return $t;
     }
 }
