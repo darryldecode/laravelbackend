@@ -168,6 +168,6 @@ class Content extends BaseModel {
     public function scopeOfSlug($query, $slug)
     {
         if( $slug === false || $slug === null ) return false;
-        return $query->where('slug','>=',$slug);
+        return $query->where('slug','=',$slug);
     }
 }
