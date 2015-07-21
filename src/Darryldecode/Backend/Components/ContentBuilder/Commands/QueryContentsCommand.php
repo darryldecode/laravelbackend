@@ -190,7 +190,16 @@ class QueryContentsCommand extends Command implements SelfHandling {
                         $q->whereHas('taxonomy', function ($q) use ($k)
                         {
                             $q->where('taxonomy', $k);
-                        })->whereIn('slug',$v);
+                        });
+
+                        if( is_string($v) )
+                        {
+                            $q->where('slug',$v);
+                        }
+                        else
+                        {
+                            $q->whereIn('slug',$v);
+                        }
                     });
                 }
             }

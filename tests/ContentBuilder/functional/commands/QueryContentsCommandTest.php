@@ -97,7 +97,9 @@ class QueryContentsCommandTest extends TestCase {
             'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryContentsCommand',
             array(
                 'type' => 'Blog',
-                'terms' => 'technology'
+                'terms' => array(
+                    'category' => 'technology'
+                )
             )
         );
 
@@ -131,7 +133,9 @@ class QueryContentsCommandTest extends TestCase {
             'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryContentsCommand',
             array(
                 'type' => 'Blog',
-                'terms' => 'programming:health'
+                'terms' => array(
+                    'category' => 'health'
+                )
             )
         );
 
