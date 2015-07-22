@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Content Builder</title>
+    <title>{{Config::get('backend.backend.backend_title')}}</title>
 
     @include('backend::includes.styles')
 
@@ -33,7 +33,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center lb-login-title">LARAVEL BACKEND</h1>
+    <h1 class="text-center lb-login-title">{{Config::get('backend.backend.backend_title')}}</h1>
     <div class="lb-login-form">
         @if($errors->first())
             <div class="alert alert-danger">

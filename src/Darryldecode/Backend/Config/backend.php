@@ -18,4 +18,9 @@ return [
     'disabled_widgets' => array(
         'Dashboard Welcome Message'
     ),
+
+    /*
+     * The title to be use on Backend
+     */
+    'backend_title' => 'Laravel Backend'
 ];

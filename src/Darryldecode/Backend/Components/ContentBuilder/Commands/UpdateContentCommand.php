@@ -137,7 +137,7 @@ class UpdateContentCommand extends Command implements SelfHandling {
         };
 
         // fire event updating
-        $dispatcher->fire($cType->type.'.updating', array($c));
+        $dispatcher->fire($cType->type.'.updating', array($c, $this->args));
 
         // hold the current content so we can use it later if revisions is enabled
         $oldBody = $c->body;
