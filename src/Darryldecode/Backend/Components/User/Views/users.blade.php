@@ -179,7 +179,7 @@
                                     <input data-ng-model="user.email" type="email" class="form-control" placeholder="Email">
                                 </div>
                                 <div class="form-group">
-                                    <label>New Password</label>
+                                    <label>New Password <small><i>(Leave blank if no password changes)</i></small></label>
                                     <input data-ng-model="user.password" type="password" class="form-control" placeholder="Password">
                                 </div>
                                 <div class="form-group">

@@ -205,9 +205,9 @@ angular.module('cb.user').controller('ManageUsersController', ['$scope','$window
     });
 
     // Query Initial Data
-    function queryInitialData()
-    {
+    function queryInitialData() {
         UsersFactory.get({perPage:$scope.pagination.perPage}).then(function (success) {
+            $scope.pagination.current = 1;
             $scope.users = success.data.data;
         }, function (error) {
             GlobalLoaderService.show(error.data.message || 'An error has occurred.', 'danger').hide(4000);
