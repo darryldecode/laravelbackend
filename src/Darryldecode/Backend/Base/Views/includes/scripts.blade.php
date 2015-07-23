@@ -1,10 +1,10 @@
 <script type="text/javascript" src="/darryldecode/backend/vendor/jquery-2.1.3/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/jquery-ui-1.11.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.3.10/angular.min.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.3.10/angular-animate.min.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.3.10/angular-cookies.min.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.3.10/angular-sanitize.min.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.3.10/angular-loader.min.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.4.3/angular.min.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.4.3/angular-animate.min.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.4.3/angular-cookies.min.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.4.3/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/angularjs-1.4.3/angular-loader.min.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/bootstrap-3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/ui-bootstrap-0.12.0/ui-bootstrap-tpls-0.12.0.min.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/bootstrap-extensions/bootstrap-switch-master/dist/js/bootstrap-switch.min.js"></script>
