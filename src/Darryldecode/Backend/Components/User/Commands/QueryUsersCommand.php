@@ -126,7 +126,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
             ->ofLastName($this->lastName)
             ->ofEmail($this->email);
 
-        if( is_int($this->groupId) )
+        if( ($this->groupId) && ($this->groupId!='') )
         {
             $q->whereHas('groups', function($q)
             {
