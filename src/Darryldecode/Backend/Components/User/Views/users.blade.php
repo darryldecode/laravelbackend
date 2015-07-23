@@ -16,7 +16,25 @@
                         <div class="control-panel text-right">
                             <button data-ng-click="drawer.show('drawer-create')" class="btn btn-default"><i class="fa fa-plus"></i> New User</button>
                             <a href="{{route('backend.groups')}}" class="btn btn-default"><i class="fa fa-wrench"></i> Manage Groups</a>
+                            <button data-ng-click="filter.toggle()" class="btn btn-default" title="Open Query Filter"><i class="fa fa-filter"></i></button>
                         </div>
+                    </div>
+                </div>
+                <div class="row" data-ng-if="filter.isOpen">
+                    <div class="col-lg-12 col-md-12">
+                        <table class="table">
+                            <tr>
+                                <td><input data-ng-model="filter.firstName" type="text" class="form-control" placeholder="First Name"></td>
+                                <td><input data-ng-model="filter.lastName" type="text" class="form-control" placeholder="Last Name"></td>
+                                <td><input data-ng-model="filter.email" type="text" class="form-control" placeholder="Email"></td>
+                                <td>
+                                    <select data-ng-model="filter.group" data-ng-options="g.id as g.name for g in groups">
+                                        <option value="">--group--</option>
+                                    </select>
+                                </td>
+                                <td><button class="btn btn-default" data-ng-click="filter.filter()" data-ng-disabled="filter.isQuerying">Filter</button></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="table-responsive animated fadeIn">
@@ -28,7 +46,7 @@
                             <th colspan="2" class="action text-center"><i class="fa fa-bolt"></i></th>
                         </tr>
                         <tr data-ng-show="!users.data.length">
-                            <td colspan="4" class="text-center">Loading <i class="fa fa-spinner fa-spin"></i></td>
+                            <td colspan="4" class="text-center">No Results Found.</td>
                         </tr>
                         <tr data-ng-repeat="u in users.data" class="user-item-@{{::$index}}" >
                             <td>[@{{::u.id}}]</td>

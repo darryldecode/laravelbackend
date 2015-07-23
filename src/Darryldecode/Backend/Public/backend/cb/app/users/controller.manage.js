@@ -198,6 +198,35 @@ angular.module('cb.user').controller('ManageUsersController', ['$scope','$window
         });
     };
 
+    // filter results
+    $scope.filter = {};
+    $scope.filter.isQuerying = false;
+    $scope.filter.isOpen = false;
+    $scope.filter.firstName = '';
+    $scope.filter.lastName = '';
+    $scope.filter.email = '';
+    $scope.filter.group = '';
+    $scope.filter.toggle = function () {
+        if( $scope.filter.isOpen ) queryInitialData();
+        $scope.filter.isOpen = !$scope.filter.isOpen;
+    };
+    $scope.filter.filter = function () {
+        $scope.filter.isQuerying = true;
+        UsersFactory.get({
+            perPage: $scope.pagination.perPage,
+            groupId: $scope.filter.group,
+            firstName: $scope.filter.firstName,
+            lastName: $scope.filter.lastName,
+            email: $scope.filter.email
+        }).then(function (success) {
+            $scope.filter.isQuerying = false;
+            $scope.pagination.current = 1;
+            $scope.users = success.data.data;
+        }, function (error) {
+            GlobalLoaderService.show(error.data.message || 'An error has occurred.', 'danger').hide(4000);
+        });
+    };
+
     // watch if password match
     $scope.$watch('user.passwordConfirm', function () {
         if( $scope.user.password == '' ) return;

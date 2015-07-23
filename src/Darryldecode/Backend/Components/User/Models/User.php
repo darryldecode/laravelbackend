@@ -296,19 +296,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function scopeOfFirstName($query, $firstName)
 	{
-		if( $firstName === null ) return false;
+		if( $firstName === null || $firstName === '' ) return false;
 
-		return $query->where('first_name','like',"%{$firstName}%");
+		return $query->where('first_name','LIKE',"%{$firstName}%");
 	}
 	public function scopeOfLastName($query, $lastName)
 	{
-		if( $lastName === null ) return false;
+		if( $lastName === null || $lastName === '' ) return false;
 
-		return $query->where('last_name','like',"%{$lastName}%");
+		return $query->where('last_name','LIKE',"%{$lastName}%");
 	}
 	public function scopeOfEmail($query, $email)
 	{
-		if( $email === null ) return false;
+		if( $email === null || $email === '' ) return false;
 
 		return $query->where('email','=',$email);
 	}

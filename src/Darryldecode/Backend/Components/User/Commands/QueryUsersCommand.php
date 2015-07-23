@@ -121,41 +121,26 @@ class QueryUsersCommand extends Command implements SelfHandling {
 
         $results = null;
 
-        // if group Id has been provided, we will query
-        // the users by group, or else, we will query
-        // users regardless of its group
+        $q = $user->with(array_merge(array('groups'),$this->with))
+            ->ofFirstName($this->firstName)
+            ->ofLastName($this->lastName)
+            ->ofEmail($this->email);
+
         if( is_int($this->groupId) )
         {
-            $q = $this->app['db']->table('user_group_pivot_table')
-                ->select('*')
-                ->where('group_id',$this->groupId)
-                ->join('users','user_group_pivot_table.user_id','=','users.id')
-                ->join('groups','user_group_pivot_table.group_id','=','groups.id');
+            $q->whereHas('groups', function($q)
+            {
+                $q->where('groups.id',$this->groupId);
+            });
+        }
 
-            if( $this->paginated )
-            {
-                $results = $q->paginate($this->perPage);
-            }
-            else
-            {
-                $results = $q->get();
-            }
+        if( $this->paginated )
+        {
+            $results = $q->paginate($this->perPage);
         }
         else
         {
-            $q = $user->with(array_merge(array('groups'),$this->with))
-                ->ofFirstName($this->firstName)
-                ->ofLastName($this->lastName)
-                ->ofEmail($this->email);
-
-            if( $this->paginated )
-            {
-                $results = $q->paginate($this->perPage);
-            }
-            else
-            {
-                $results = $q->get();
-            }
+            $results = $q->get();
         }
 
         // fire after query event
