@@ -52,6 +52,10 @@ class DeleteUserCommand extends Command implements SelfHandling {
             {
                 return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
             }
+            if( $this->user->id == $this->id )
+            {
+                return new CommandResult(false, "Cannot delete self.", null, 400);
+            }
         }
 
         // find the user
