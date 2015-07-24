@@ -59,10 +59,15 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @var array
      */
     protected $args = array();
+    /**
+     * @var int|null
+     */
+    private $id;
 
     /**
      * query users by parameters, note that when querying by groupId, with relations is disabled
      *
+     * @param int|null $id
      * @param string $firstName
      * @param string $lastName
      * @param string $email
@@ -74,7 +79,8 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @param int $perPage
      * @param bool $disablePermissionChecking
      */
-    public function __construct($firstName = null,
+    public function __construct($id = null,
+                                $firstName = null,
                                 $lastName = null,
                                 $email = null,
                                 $groupId = null,
@@ -86,6 +92,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
                                 $disablePermissionChecking = false)
     {
         parent::__construct();
+        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
@@ -121,32 +128,46 @@ class QueryUsersCommand extends Command implements SelfHandling {
 
         $results = null;
 
-        $q = $user->with(array_merge(array('groups'),$this->with))
-            ->ofFirstName($this->firstName)
-            ->ofLastName($this->lastName)
-            ->ofEmail($this->email);
-
-        if( ($this->groupId) && ($this->groupId!='') )
+        // if user ID is provided, we will query it by ID
+        // no need extra work here..
+        if( $this->id && ($this->id!='') )
         {
-            $q->whereHas('groups', function($q)
+            $results = $user->with(array_merge(array('groups'),$this->with))->find($this->id);
+
+            if(!$results)
             {
-                $q->where('groups.id',$this->groupId);
-            });
-        }
-
-        if( $this->paginated )
-        {
-            $results = $q->paginate($this->perPage);
+                return new CommandResult(false, "User does not exist.", null, 404);
+            }
         }
         else
         {
-            $results = $q->get();
+            $q = $user->with(array_merge(array('groups'),$this->with))
+                ->ofFirstName($this->firstName)
+                ->ofLastName($this->lastName)
+                ->ofEmail($this->email);
+
+            if( ($this->groupId) && ($this->groupId!='') )
+            {
+                $q->whereHas('groups', function($q)
+                {
+                    $q->where('groups.id',$this->groupId);
+                });
+            }
+
+            if( $this->paginated )
+            {
+                $results = $q->paginate($this->perPage);
+            }
+            else
+            {
+                $results = $q->get();
+            }
         }
 
         // fire after query event
         $dispatcher->fire('user.afterQuery', array($results));
 
         // return result
-        return new CommandResult(true, "Query users successful.", $results, 200);
+        return new CommandResult(true, "Query user(s) successful.", $results, 200);
     }
 }

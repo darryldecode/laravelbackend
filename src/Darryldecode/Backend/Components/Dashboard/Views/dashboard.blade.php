@@ -22,4 +22,7 @@
         </div>
     @endforelse
 
+    <div class="text-center">
+        <small>© Laravel Backend | <a href="{{route('dashboard.info')}}">ABOUT <i class="fa fa-info-circle"></i></a></small>
+    </div>
 @stop

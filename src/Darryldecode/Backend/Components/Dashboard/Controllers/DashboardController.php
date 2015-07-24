@@ -41,4 +41,14 @@ class DashboardController extends BaseController {
 
         return view('dashboard::dashboard',compact('widgets'));
     }
+
+    /**
+     * Display the about this application info page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function info()
+    {
+        return view('dashboard::info');
+    }
 }

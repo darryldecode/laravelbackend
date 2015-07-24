@@ -27,13 +27,17 @@
 <script type="text/javascript" src="/darryldecode/backend/vendor/bootstrap-markdown-2.8.0/bootstrap-markdown.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/js/backend.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/cb/app/common/directives/angular-boostrap-switch.js"></script>
 
+<script type="text/javascript" src="/darryldecode/backend/cb/app/common/directives/angular-boostrap-switch.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/directives/directives.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/filters/filters.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/services/Services.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/services/AlertService.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/services/GlobalLoaderService.js"></script>
+
+<script type="text/javascript" src="/darryldecode/backend/cb/app/dashboard/dashboard.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/cb/app/dashboard/factory.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/cb/app/dashboard/controller.info.js"></script>
 
 <script type="text/javascript" src="/darryldecode/backend/cb/app/navigation/navigation.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/navigation/factory.js"></script>
