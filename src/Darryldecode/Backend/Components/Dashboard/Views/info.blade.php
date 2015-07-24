@@ -13,12 +13,18 @@
                 <div class="panel-body">
                     <table class="table table-bordered">
                         <tr>
-                            <td>Version</td>
-                            <td>0.1</td>
+                            <td>Current Version</td>
+                            <td><label class="label label-info">0.1</label></td>
                         </tr>
                         <tr>
                             <td>Details</td>
-                            <td>Initial Release.</td>
+                            <td>Pre-Release</td>
+                        </tr>
+                        <tr>
+                            <td>Documentation:</td>
+                            <td>
+                                <a href="http://laravelbackend.com/docs/1.0/?page=installation.php" target="_blank">http://laravelbackend.com/docs/1.0/?page=installation.php</a>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -32,7 +38,33 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    some..
+                    <ul class="list-group">
+                        <li data-ng-repeat="r in releases" class="list-group-item">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>Version:</td>
+                                    <td>
+                                        <label class="label label-info">@{{::r.tag_name}}</label> | <b>@{{::r.name}}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Details:</td>
+                                    <td>@{{::r.body}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Author:</td>
+                                    <td>
+                                        <img class="img-circle" data-ng-src="@{{::r.author.avatar_url}}" style="width: 20px;">
+                                        <a href="@{{::r.author.login}}" target="_blank"><small>@{{::r.author.login}}</small></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Release Link:</td>
+                                    <td><a href="@{{::r.html_url}}" target="_blank">@{{::r.html_url}}</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

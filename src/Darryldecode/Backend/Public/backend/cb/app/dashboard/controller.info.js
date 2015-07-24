@@ -5,7 +5,7 @@ angular.module('cb.dashboard').controller('DashboardInfoController', ['$scope','
     $scope.releases = [];
 
     DashboardFactory.getReleases().then(function(success) {
-        console.log(success);
+        $scope.releases = success.data;
     }, function(error) {
         console.log(error);
     });
