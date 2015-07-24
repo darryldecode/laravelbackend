@@ -23,7 +23,7 @@
                         <tr>
                             <td>Documentation:</td>
                             <td>
-                                <a href="http://laravelbackend.com/docs/1.0/?page=installation.php" target="_blank">http://laravelbackend.com/docs/1.0/?page=installation.php</a>
+                                <a href="http://laravelbackend.com/docs/1.0/?page=installation.php" target="_blank">Go to docs →</a>
                             </td>
                         </tr>
                     </table>
@@ -55,7 +55,7 @@
                                     <td>Author:</td>
                                     <td>
                                         <img class="img-circle" data-ng-src="@{{::r.author.avatar_url}}" style="width: 20px;">
-                                        <a href="@{{::r.author.login}}" target="_blank"><small>@{{::r.author.login}}</small></a>
+                                        <a href="@{{::r.author.html_url}}" target="_blank"><small>@{{::r.author.login}}</small></a>
                                     </td>
                                 </tr>
                                 <tr>
