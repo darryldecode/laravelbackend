@@ -28,9 +28,11 @@ angular.module('cb',[
     'cb.content',
     'cb.customFields',
     'cb.mediaManager',
-    'cb.navigation'
+    'cb.navigation',
+    'cb.dashboard'
 ])
 
+    .constant('GITHUB_API', 'https://api.github.com/repos/darryldecode/laravelbackend')
     .constant('ADMIN_URL', ADMIN_URL)
     .constant('BASE_URL', BASE_URL)
     .constant('STORAGE_URL', STORAGE_URL)
