@@ -83,7 +83,7 @@ class UserController extends BaseController {
                 'firstName' => $this->request->get('firstName', null),
                 'lastName' => $this->request->get('lastName', null),
                 'email' => $this->request->get('email', null),
-                'password' => $this->request->get('password', array()),
+                'password' => $this->request->get('password', null),
                 'permissions' => $this->request->get('permissions', array()),
                 'groups' => $this->request->get('groups', array()),
             )

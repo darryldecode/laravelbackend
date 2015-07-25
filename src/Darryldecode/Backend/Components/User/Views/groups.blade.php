@@ -85,12 +85,15 @@
                                     <li data-ng-if="!groups.length" class="list-group-item text-center">Loading groups <i class="fa fa-spinner fa-spin"></i></li>
                                     <li data-ng-repeat="g in groups" class="list-group-item group-item-@{{$index}}">
                                         <p>
-                                            <b>Group:</b> @{{g.name}}
-                                            <button data-ng-click="edit.edit(g)" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i> Edit</button>
-                                            <button data-ng-click="group.trash(g.id, $index)" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i> Delete</button>
+                                            Group Name: <b>@{{g.name}}</b><br>
+                                            Group ID: <b>[@{{g.id}}]</b>
+                                            <span class="pull-right">
+                                                <button data-ng-click="edit.edit(g)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i> Edit</button>
+                                                <button data-ng-click="group.trash(g.id, $index)" class="btn btn-warning btn-xs"><i class="fa fa-trash-o"></i> Delete</button>
+                                            </span>
                                         </p>
                                         <p>
-                                            <b><i class="fa fa-lock"></i> Permissions:</b>
+                                            <i class="fa fa-lock"></i> Permissions:
                                             <div class="clearfix">
                                                 <label data-ng-repeat="(k,v) in g.permissions" class="permission pull-left label label-@{{(v==-1) ? 'danger' : 'success'}}">
                                                     @{{k}}

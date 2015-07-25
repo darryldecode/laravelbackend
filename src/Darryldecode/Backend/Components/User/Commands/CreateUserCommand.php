@@ -49,11 +49,11 @@ class CreateUserCommand extends Command implements SelfHandling {
      * @param $lastName
      * @param $email
      * @param $password
-     * @param $permissions
-     * @param $groups
+     * @param array $permissions
+     * @param array $groups
      * @param bool $disablePermissionChecking
      */
-    public function __construct($firstName, $lastName, $email, $password, $permissions, $groups, $disablePermissionChecking = false)
+    public function __construct($firstName, $lastName, $email, $password, $permissions = array(), $groups = array(), $disablePermissionChecking = false)
     {
         parent::__construct();
         $this->firstName = $firstName;

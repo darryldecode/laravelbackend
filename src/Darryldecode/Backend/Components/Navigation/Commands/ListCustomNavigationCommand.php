@@ -32,15 +32,21 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
      * @var string
      */
     private $orderSort;
+    /**
+     * @var null
+     */
+    private $id;
 
     /**
+     * @param int|null $id
      * @param bool $paginated
      * @param int $perPage
      * @param string $orderBy
      * @param string $orderSort
      * @param bool $disablePermissionChecking
      */
-    public function __construct($paginated = true,
+    public function __construct($id = null,
+                                $paginated = true,
                                 $perPage = 8,
                                 $orderBy = 'created_at',
                                 $orderSort = 'DESC',
@@ -53,6 +59,7 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
         $this->orderSort = $orderSort;
         $this->args = get_defined_vars();
         $this->disablePermissionChecking = $disablePermissionChecking;
+        $this->id = $id;
     }
 
     /**
@@ -74,13 +81,23 @@ class ListCustomNavigationCommand extends Command implements SelfHandling {
         // fire before create event
         $dispatcher->fire('navigationBuilder.beforeQuery', array($this->args));
 
-        if( $this->paginated )
+        if( $this->id && ($this->id!='') )
         {
-            $res = $navigation->with(array())->paginate($this->perPage);
+            if( ! $res = $navigation->with(array())->find($this->id) )
+            {
+                return new CommandResult(false, "Navigation does not exist.", null, 404);
+            }
         }
         else
         {
-            $res = $navigation->all();
+            if( $this->paginated )
+            {
+                $res = $navigation->with(array())->paginate($this->perPage);
+            }
+            else
+            {
+                $res = $navigation->all();
+            }
         }
 
         // fire after create

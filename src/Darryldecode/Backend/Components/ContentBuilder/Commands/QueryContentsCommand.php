@@ -60,6 +60,10 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @var null
      */
     private $endDate;
+    /**
+     * @var null
+     */
+    private $queryHook;
 
     /**
      * @param null $type
@@ -74,6 +78,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @param bool $disablePermissionChecking
      * @param null $startDate
      * @param null $endDate
+     * @param null $queryHook
      */
     public function __construct($type = null,
                                 $status = 'any',
@@ -86,7 +91,8 @@ class QueryContentsCommand extends Command implements SelfHandling {
                                 $sortOrder = 'DESC',
                                 $disablePermissionChecking = false,
                                 $startDate = null,
-                                $endDate = null)
+                                $endDate = null,
+                                $queryHook = null)
     {
         parent::__construct();
         $this->type = $type;
@@ -102,6 +108,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
         $this->disablePermissionChecking = $disablePermissionChecking;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->queryHook = $queryHook;
     }
 
     /**
@@ -213,6 +220,15 @@ class QueryContentsCommand extends Command implements SelfHandling {
         if( !is_null($this->endDate) && ($this->endDate!='') )
         {
             $q->ofEndDate($this->endDate);
+        }
+
+        // trigger query hook if provided
+        if( !is_null($this->queryHook) && (is_callable($this->queryHook)) )
+        {
+            if( $res = call_user_func($this->queryHook,$q) )
+            {
+                $q = $res;
+            }
         }
 
         // decide whether request wants paginated version or not
