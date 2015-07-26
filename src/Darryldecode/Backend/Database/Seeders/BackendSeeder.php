@@ -17,8 +17,7 @@ class BackendSeeder extends Seeder {
         Model::unguard();
 
         $this->seedUser();
-        $this->seedDummyUsers();
-        $this->seedDummyContentTypes();
+        $this->seedSampleContentTypes();
 
         Model::reguard();
     }
@@ -45,31 +44,10 @@ class BackendSeeder extends Seeder {
         $user->groups()->attach($group);
     }
 
-    protected function seedDummyUsers()
-    {
-        $faker = Faker::create();
-
-        foreach(range(0,30) as $i)
-        {
-            $user = \Darryldecode\Backend\Components\User\Models\User::create(array(
-                'first_name' => $faker->firstName,
-                'last_name' => $faker->lastName,
-                'email' => $faker->email,
-                'password' => $faker->word,
-                'permissions' => array(
-                ),
-            ));
-        }
-    }
-
-    protected function seedDummyContentTypes()
+    protected function seedSampleContentTypes()
     {
         ContentType::create(array(
             'type' => 'blog',
-            'enable_revisions' => true
-        ));
-        ContentType::create(array(
-            'type' => 'events',
             'enable_revisions' => true
         ));
     }
