@@ -22,14 +22,19 @@ class QueryContentCommand extends Command implements SelfHandling {
      * @var null
      */
     private $title;
+    /**
+     * @var null
+     */
+    private $queryHook;
 
     /**
      * @param null $id
      * @param null $slug
      * @param null $title
      * @param bool $disablePermissionChecking
+     * @param null|callable $queryHook
      */
-    public function __construct($id = null, $slug = null, $title = null, $disablePermissionChecking = false)
+    public function __construct($id = null, $slug = null, $title = null, $disablePermissionChecking = false, $queryHook = null)
     {
         parent::__construct();
         $this->id = $id;
@@ -37,6 +42,7 @@ class QueryContentCommand extends Command implements SelfHandling {
         $this->title = $title;
         $this->args = func_get_args();
         $this->disablePermissionChecking = $disablePermissionChecking;
+        $this->queryHook = $queryHook;
     }
 
     /**
@@ -75,6 +81,14 @@ class QueryContentCommand extends Command implements SelfHandling {
             'revisions',
             'type'
         ));
+
+        if( !is_null($this->queryHook) && (is_callable($this->queryHook)) )
+        {
+            if( $res = call_user_func($this->queryHook,$q) )
+            {
+                $q = $res;
+            }
+        }
 
         if( !is_null($this->id) && ($this->id != '') )
         {

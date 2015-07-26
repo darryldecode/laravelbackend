@@ -63,7 +63,7 @@ class QueryContentsCommandTest extends TestCase {
         $result = $this->commandDispatcher->dispatchFromArray(
             'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryContentsCommand',
             array(
-                'type' => 'Blog'
+                'type' => 'Blog',
             )
         );
 
