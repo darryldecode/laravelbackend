@@ -22,5 +22,14 @@ return [
     /*
      * The title to be use on Backend
      */
-    'backend_title' => 'Laravel Backend'
+    'backend_title' => 'Laravel Backend',
+
+    /*
+     * Media Manager thumbnails
+     */
+    'thumb_sizes' => array(
+        'small' => array(150,120),
+        'medium' => array(300,200),
+        'large' => array(600,450),
+    ),
 ];

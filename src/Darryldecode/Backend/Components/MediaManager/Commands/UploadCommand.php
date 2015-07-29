@@ -10,6 +10,7 @@ namespace Darryldecode\Backend\Components\MediaManager\Commands;
 
 use Darryldecode\Backend\Base\Commands\Command;
 use Darryldecode\Backend\Base\Commands\CommandResult;
+use Darryldecode\Backend\Components\MediaManager\Services\Image;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -40,9 +41,10 @@ class UploadCommand extends Command implements SelfHandling {
 
     /**
      * @param Repository $config
+     * @param Image $image
      * @return CommandResult
      */
-    public function handle(Repository $config)
+    public function handle(Repository $config,Image $image)
     {
         // check if user has permission
         if( ! $this->disablePermissionChecking )
@@ -58,10 +60,31 @@ class UploadCommand extends Command implements SelfHandling {
         // upload files
         foreach($this->files as $file)
         {
+            // save the file
             $file->move(
                 $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path),
                 $file->getClientOriginalName()
             );
+
+            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).$file->getClientOriginalName();
+            $file_name = pathinfo($filePath, PATHINFO_FILENAME);
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+            // produce thumbnail sizes
+            $sizes = $config->get('backend.backend.thumb_sizes');
+
+            if( getimagesize($filePath) )
+            {
+                foreach($sizes as $key => $dimension)
+                {
+                    $image::createThumbnail(
+                        $filePath,
+                        $dimension[0],
+                        $dimension[1],
+                        $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).$this->produceThumbFileName($file_name,$key,$extension)
+                    );
+                }
+            }
         }
 
         // all good
@@ -79,5 +102,19 @@ class UploadCommand extends Command implements SelfHandling {
         if( $path == '/' ) return '/';
 
         return ltrim($path, '/');
+    }
+
+    /**
+     * produce proper thumbname according to size
+     * ex. from myFile.jpg -> myFile_small.jpg
+     *
+     * @param $file_name
+     * @param $file_size_name
+     * @param $file_extension
+     * @return string
+     */
+    protected function produceThumbFileName($file_name, $file_size_name, $file_extension)
+    {
+        return $file_name.'_'.$file_size_name.'.'.$file_extension;
     }
 }
