@@ -66,7 +66,7 @@ class UploadCommand extends Command implements SelfHandling {
                 $file->getClientOriginalName()
             );
 
-            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).$file->getClientOriginalName();
+            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$file->getClientOriginalName();
             $file_name = pathinfo($filePath, PATHINFO_FILENAME);
             $extension = pathinfo($filePath, PATHINFO_EXTENSION);
 
@@ -81,7 +81,7 @@ class UploadCommand extends Command implements SelfHandling {
                         $filePath,
                         $dimension[0],
                         $dimension[1],
-                        $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).$this->produceThumbFileName($file_name,$key,$extension)
+                        $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$this->produceThumbFileName($file_name,$key,$extension)
                     );
                 }
             }
