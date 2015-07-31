@@ -14,11 +14,11 @@
                     <table class="table table-bordered">
                         <tr>
                             <td>Current Version</td>
-                            <td><label class="label label-info">0.1</label></td>
+                            <td><label class="label label-info">{{$version['version']}}</label></td>
                         </tr>
                         <tr>
                             <td>Details</td>
-                            <td>Pre-Release</td>
+                            <td>{{$version['name']}}</td>
                         </tr>
                         <tr>
                             <td>Documentation:</td>

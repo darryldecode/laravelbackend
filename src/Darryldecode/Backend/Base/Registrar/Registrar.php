@@ -11,6 +11,12 @@ namespace Darryldecode\Backend\Base\Registrar;
 class Registrar {
 
     /**
+     * the laravel backend version
+     */
+    const VERSION = '1.0';
+    const VERSION_NAME = 'Alpha';
+
+    /**
      * backend active components
      *
      * @var array
@@ -209,5 +215,18 @@ class Registrar {
     public function getActiveWidgets()
     {
         return $this->activeWidgets;
+    }
+
+    /**
+     * returns the current version
+     *
+     * @return array
+     */
+    public function getVersion()
+    {
+        return array(
+            'version' => self::VERSION,
+            'name' => self::VERSION_NAME,
+        );
     }
 }

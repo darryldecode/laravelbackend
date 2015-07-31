@@ -49,6 +49,8 @@ class DashboardController extends BaseController {
      */
     public function info()
     {
-        return view('dashboard::info');
+        $version = app('backend')->getVersion();
+
+        return view('dashboard::info',compact('version'));
     }
 }
