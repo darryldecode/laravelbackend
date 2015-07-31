@@ -40,7 +40,18 @@ class Throttle extends BaseModel {
      *
      * @var array
      */
-    protected $fillable = ['name', 'permissions', 'user_id'];
+    protected $fillable = [
+        'name',
+        'permissions',
+        'user_id',
+        'banned',
+        'suspended',
+        'attempts',
+        'ip_address',
+        'last_attempt_at',
+        'suspended_at',
+        'banned_at'
+    ];
 
     /**
      * Attempt limit.
