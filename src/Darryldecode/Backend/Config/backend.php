@@ -32,4 +32,15 @@ return [
         'medium' => array(300,200),
         'large' => array(600,450),
     ),
+
+    /*
+     * built-in component models being used
+     *
+     * NOTE:
+     *
+     * The purpose of this is for extensibility, if you want to extend relationships for user/content model
+     * you can change this to your own and make sure to extend this models
+     */
+    'user_model'    => 'Darryldecode\Backend\Components\User\Models\User',
+    'content_model' => 'Darryldecode\Backend\Components\ContentBuilder\Models\Content',
 ];

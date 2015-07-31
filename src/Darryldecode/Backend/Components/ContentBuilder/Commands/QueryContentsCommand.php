@@ -14,6 +14,7 @@ use Darryldecode\Backend\Components\ContentBuilder\Models\Content;
 use Darryldecode\Backend\Components\ContentBuilder\Models\ContentType;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Config\Repository;
 
 class QueryContentsCommand extends Command implements SelfHandling {
     /**
@@ -64,6 +65,10 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @var null
      */
     private $queryHook;
+    /**
+     * @var array
+     */
+    private $with;
 
     /**
      * @param null $type
@@ -75,6 +80,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
      * @param int $perPage
      * @param string $sortBy
      * @param string $sortOrder
+     * @param array $with
      * @param bool $disablePermissionChecking
      * @param null $startDate
      * @param null $endDate
@@ -89,6 +95,7 @@ class QueryContentsCommand extends Command implements SelfHandling {
                                 $perPage = 8,
                                 $sortBy = 'created_at',
                                 $sortOrder = 'DESC',
+                                $with = array(),
                                 $disablePermissionChecking = false,
                                 $startDate = null,
                                 $endDate = null,
@@ -109,21 +116,23 @@ class QueryContentsCommand extends Command implements SelfHandling {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->queryHook = $queryHook;
+        $this->with = $with;
     }
 
     /**
      * @param Dispatcher $dispatcher
      * @param ContentType $contentType
      * @param Content $content
+     * @param Repository $config
      * @return CommandResult
      */
-    public function handle(Dispatcher $dispatcher, ContentType $contentType, Content $content)
+    public function handle(Dispatcher $dispatcher, ContentType $contentType, Content $content, Repository $config)
     {
         // fire before query
         $dispatcher->fire('contents.beforeQuery', array($this->args));
 
         // query
-        $results = $this->query($contentType, $content);
+        $results = $this->query($contentType, $content, $config);
 
         // fire after query
         $dispatcher->fire('contents.afterQuery', array($results));
@@ -137,18 +146,22 @@ class QueryContentsCommand extends Command implements SelfHandling {
      *
      * @param ContentType $contentType
      * @param Content $content
+     * @param $config
      * @return mixed
      */
-    protected function query($contentType, $content)
+    protected function query($contentType, $content, $config)
     {
-        $q = $content->with(array(
+        // prepare content model used
+        $content = $this->createContentModel($content, $config);
+
+        $q = $content->with(array_merge(array(
             'terms',
             'author',
             'metaData',
             'type.formGroups',
             'revisions',
             'type'
-        ));
+        ),$this->with));
 
         // check if there is status provided
         if( ($this->status) && ($this->status != 'any') )
@@ -284,5 +297,23 @@ class QueryContentsCommand extends Command implements SelfHandling {
         }
 
         return $t;
+    }
+
+    /**
+     * @param $content \Darryldecode\Backend\Components\ContentBuilder\Models\Content
+     * @param $config \Illuminate\Contracts\Config\Repository
+     * @return mixed
+     */
+    protected function createContentModel($content, $config)
+    {
+        $contentModelUsed = $config->get('backend.backend.content_model');
+        $contentModelUsed = new $contentModelUsed();
+
+        if( $contentModelUsed instanceof Content )
+        {
+            return $contentModelUsed;
+        }
+
+        return $content;
     }
 }

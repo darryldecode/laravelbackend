@@ -12,6 +12,7 @@ use Darryldecode\Backend\Base\Commands\Command;
 use Darryldecode\Backend\Base\Commands\CommandResult;
 use Darryldecode\Backend\Components\User\Models\User;
 use Darryldecode\Backend\Components\User\Models\Group;
+use Illuminate\Config\Repository;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -110,9 +111,10 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @param User $user
      * @param Group $group
      * @param Dispatcher $dispatcher
+     * @param Repository $config
      * @return CommandResult
      */
-    public function handle(User $user, Group $group, Dispatcher $dispatcher)
+    public function handle(User $user, Group $group, Dispatcher $dispatcher, Repository $config)
     {
         // check user permission
         if( ! $this->disablePermissionChecking )
@@ -122,6 +124,9 @@ class QueryUsersCommand extends Command implements SelfHandling {
                 return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
             }
         }
+
+        // prepare the user model
+        $user = $this->createUserModel($user, $config);
 
         // fire before query event
         $dispatcher->fire('user.beforeQuery', array($this->args));
@@ -169,5 +174,23 @@ class QueryUsersCommand extends Command implements SelfHandling {
 
         // return result
         return new CommandResult(true, "Query user(s) successful.", $results, 200);
+    }
+
+    /**
+     * @param $user \Darryldecode\Backend\Components\User\Models\User
+     * @param $config \Illuminate\Config\Repository
+     * @return mixed
+     */
+    protected function createUserModel($user, $config)
+    {
+        $userModelUsed = $config->get('backend.backend.user_model');
+        $userModelUsed = new $userModelUsed();
+
+        if( $userModelUsed instanceof User )
+        {
+            return $userModelUsed;
+        }
+
+        return $user;
     }
 }
