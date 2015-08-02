@@ -108,7 +108,7 @@ class Content extends BaseModel {
 
         foreach($metaData as $k => $v)
         {
-            $meta[$v['key']] = $v['value'];
+            $meta[$v['form_group_name']][$v['key']] = $v['value'];
         }
 
         return $meta;

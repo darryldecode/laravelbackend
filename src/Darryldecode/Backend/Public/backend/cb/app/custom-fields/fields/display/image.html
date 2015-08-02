@@ -23,6 +23,10 @@
     <!-- edit mode -->
     <div class="edit-field edit-field-{{f.key}}-{{$index}}">
         <div class="form-group text-left">
+            <label>Field Name:</label>
+            <textarea class="form-control" data-ng-model="f.data.name"></textarea>
+        </div>
+        <div class="form-group text-left">
             <label>Label:</label>
             <textarea class="form-control" data-ng-model="f.data.label"></textarea>
         </div>
