@@ -131,6 +131,8 @@ class QueryContentsCommand extends Command implements SelfHandling {
         // fire before query
         $dispatcher->fire('contents.beforeQuery', array($this->args));
 
+        /** @todo add permission check here: {contentType}.manage */
+
         // query
         $results = $this->query($contentType, $content, $config);
 
@@ -175,8 +177,9 @@ class QueryContentsCommand extends Command implements SelfHandling {
             $q->where('author_id', $this->authorId);
         }
 
-        // check if type is provided so we can include it in our query conditions
-        if( !is_null($this->type) && ($this->type != '') )
+        // check if type is provided, we need to provide content type
+        // we will not allow to query all of contents
+        if( ! is_null($this->type) && ($this->type != '') )
         {
             if( is_numeric($this->type) )
             {
@@ -193,7 +196,22 @@ class QueryContentsCommand extends Command implements SelfHandling {
                 {
                     $q->where('type',$cType->type);
                 });
+
+                // let's check first if the user querying has the permission to access this kind of content
+                if( ! $this->disablePermissionChecking )
+                {
+                    $requiredPermission = $cType->type.'.manage';
+
+                    if( ! $this->user->hasAnyPermission([$requiredPermission]) )
+                    {
+                        return new CommandResult(false, "Not enough permission.", null, 403);
+                    }
+                }
             }
+        }
+        else
+        {
+            return new CommandResult(false, "Content Type should be provided.", null, 400);
         }
 
         // check if terms are provided so we can include it in query conditions
@@ -306,7 +324,11 @@ class QueryContentsCommand extends Command implements SelfHandling {
      */
     protected function createContentModel($content, $config)
     {
-        $contentModelUsed = $config->get('backend.backend.content_model');
+        if( ! $contentModelUsed = $config->get('backend.backend.content_model') )
+        {
+            return $content;
+        };
+
         $contentModelUsed = new $contentModelUsed();
 
         if( $contentModelUsed instanceof Content )

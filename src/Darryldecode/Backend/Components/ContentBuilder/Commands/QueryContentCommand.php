@@ -64,6 +64,8 @@ class QueryContentCommand extends Command implements SelfHandling {
         // fire before query
         $dispatcher->fire('content.beforeQuery', array($this->args));
 
+        /** @todo add permission check here: {contentType}.manage */
+
         // query
         $results = $this->query($contentType, $content, $config);
 
@@ -104,12 +106,24 @@ class QueryContentCommand extends Command implements SelfHandling {
 
         if( !is_null($this->id) && ($this->id != '') )
         {
-            return $q->find($this->id);
+            $result = $q->find($this->id);
         }
         else
         {
-            return $q->ofSlug($this->slug)->ofTitle($this->title)->first();
+            $result = $q->ofSlug($this->slug)->ofTitle($this->title)->first();
         }
+
+        if( ! $this->disablePermissionChecking )
+        {
+            $requiredPermission = $result->type->type.'.manage';
+
+            if( ! $this->user->hasAnyPermission([$requiredPermission]) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -119,7 +133,11 @@ class QueryContentCommand extends Command implements SelfHandling {
      */
     protected function createContentModel($content, $config)
     {
-        $contentModelUsed = $config->get('backend.backend.content_model');
+        if( ! $contentModelUsed = $config->get('backend.backend.content_model') )
+        {
+            return $content;
+        };
+
         $contentModelUsed = new $contentModelUsed();
 
         if( $contentModelUsed instanceof Content )

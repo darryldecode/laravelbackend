@@ -42,6 +42,15 @@ class QueryContentTypeCommand extends Command implements SelfHandling {
         // begin before query
         $dispatcher->fire('contentType.beforeQuery', array($this->args));
 
+        // check if has permission
+        if( ! $this->disablePermissionChecking )
+        {
+            if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+            {
+                return new CommandResult(false, "Not enough permission.", null, 403);
+            }
+        }
+
         // begin query
         $results = $contentType->with(array('terms.taxonomy','taxonomies','taxonomies.terms','formGroups'))->ofType($this->type)->get();
 
