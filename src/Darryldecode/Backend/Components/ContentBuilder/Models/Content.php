@@ -48,6 +48,13 @@ class Content extends BaseModel {
     );
 
     /**
+     * the custom fields of this content
+     *
+     * @var array
+     */
+    protected $appends = ['custom_fields'];
+
+    /**
      * @param $req
      */
     public function setPermissionRequirementsAttribute($req)
@@ -77,6 +84,14 @@ class Content extends BaseModel {
     public function getMiscDataAttribute()
     {
         return (Helpers::is_serialized($this->attributes['misc_data'])) ? unserialize($this->attributes['misc_data']) : $this->attributes['misc_data'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFieldsAttribute()
+    {
+        return self::parseMetaData($this->metaData->toArray());
     }
 
     /**
