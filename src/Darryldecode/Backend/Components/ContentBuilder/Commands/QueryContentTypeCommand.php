@@ -45,9 +45,24 @@ class QueryContentTypeCommand extends Command implements SelfHandling {
         // check if has permission
         if( ! $this->disablePermissionChecking )
         {
-            if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+            // if $type->type is not provided, the request referrer should be from
+            // the admin UI Content Type Builder component.
+            // so we will check if the user has permission (contentBuilder.manage)
+            // on the other hand,
+            // if $type->type is provided, we will check if user has permission to manage that type
+            if( ! is_null($this->type) && ($this->type!='') )
             {
-                return new CommandResult(false, "Not enough permission.", null, 403);
+                if( ! $this->user->hasAnyPermission([$this->type.'.manage']) )
+                {
+                    return new CommandResult(false, "Not enough permission.", null, 403);
+                }
+            }
+            else
+            {
+                if( ! $this->user->hasAnyPermission(['contentBuilder.manage']) )
+                {
+                    return new CommandResult(false, "Not enough permission.", null, 403);
+                }
             }
         }
 
