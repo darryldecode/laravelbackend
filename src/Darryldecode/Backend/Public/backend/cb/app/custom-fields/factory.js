@@ -117,12 +117,27 @@ angular.module('cb.customFields').factory('CustomFieldsFactory',['$http',functio
                 }
             },
             {
+                label: "Image Field",
+                key: "image",
+                templateCreate: "/darryldecode/backend/cb/app/custom-fields/fields/create/image.html",
+                templateDisplay: "/darryldecode/backend/cb/app/custom-fields/fields/display/image.html",
+                data: {
+                    label: "Image",
+                    description: 'Some field description here..',
+                    name: '',
+                    value: '',
+                    disabled: false,
+                    required: true
+                }
+            },
+            {
                 label: "Gallery Field",
                 key: "gallery",
                 templateCreate: "/darryldecode/backend/cb/app/custom-fields/fields/create/gallery.html",
                 templateDisplay: "/darryldecode/backend/cb/app/custom-fields/fields/display/gallery.html",
                 data: {
                     label: "My Gallery",
+                    description: 'Some field description here..',
                     name: '',
                     required: true,
                     items: []

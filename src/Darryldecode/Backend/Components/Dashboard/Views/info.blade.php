@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="row" data-ng-controller="DashboardInfoController">
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-12 col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-12 col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">

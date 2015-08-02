@@ -1,4 +1,11 @@
 <div>
+    <div class="image-upload-description pull-left text-left">
+        <h4>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</h4>
+        <p>{{f.data.description}}</p>
+    </div>
+
+    <div class="clearfix"></div>
+
     <ul class="list-group">
         <li data-ng-if="content.customFields[group.form_name][f.data.name].length==0" class="list-group-item"><div class="alert text-center">No items yet..</div></li>
         <li data-ng-repeat="img in content.customFields[group.form_name][f.data.name] track by $index" class="list-group-item">
@@ -21,6 +28,6 @@
         </li>
     </ul>
     <div class="form-group text-right">
-        <button data-ng-click="gallery.showMediaModal(group.form_name, f.data.name)" class="btn btn-default"><i class="fa fa-image"></i> Add Images</button>
+        <button data-ng-click="gallery.showMediaModal(group.form_name, f.data.name)" class="btn btn-default"><i class="fa fa-image"></i> Add Gallery Images</button>
     </div>
 </div>

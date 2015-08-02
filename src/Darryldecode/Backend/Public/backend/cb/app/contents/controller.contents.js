@@ -212,6 +212,62 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
         $scope.content.customFields[formGroup][galleryFieldName].splice(index,1);
     };
 
+
+    /**
+     * Image Custom Field
+     *
+     * if there is an image custom field to the current content,
+     * below are the controls to show the media manager modal to choose
+     * images from and to be added on this field
+     *
+     * @type {{}}
+     */
+    $scope.image = {};
+    $scope.image.limit = 1;
+
+    // shows the media modal so we can select files to be place on the image field
+    $scope.image.showMediaModal = function (formGroup, imageFieldName) {
+
+        // lets define if its not yet define so we don't get errors
+        if( ! $scope.content.customFields[formGroup] ) {
+            $scope.content.customFields[formGroup] = {};
+        }
+
+        // if the field is not yet filled or being initialize, this is probably a fresh field added to this content
+        // so we will define it as an empty array so we can push items on it.
+        if( (!$scope.content.customFields[formGroup][imageFieldName]) || ($scope.content.customFields[formGroup][imageFieldName].length==0) ) {
+            $scope.content.customFields[formGroup][imageFieldName] = [];
+        }
+
+        var m = $modal.open({
+            templateUrl: BASE_URL + '/darryldecode/backend/cb/app/contents/modals/gallery.html',
+            controller: 'GalleryModalController',
+            size: 'lg'
+        });
+
+        m.result.then(function (selectedFiles) {
+            for(var prop in selectedFiles) {
+
+                if( $scope.image.limit > 1 ) continue;
+
+                if( selectedFiles[prop] == true ) {
+                    var imageSrc = STORAGE_URL + prop;
+                    $scope.content.customFields[formGroup][imageFieldName].push({
+                        relativePath: prop,
+                        fullPath: imageSrc
+                    });
+                    $scope.image.limit++;
+                }
+            }
+        });
+    };
+
+    // remove an image on a specific gallery
+    $scope.image.remove = function (formGroup, imageFieldName) {
+        $scope.content.customFields[formGroup][imageFieldName] = [];
+        $scope.image.limit = 1;
+    };
+
     /**
      * Editor
      *

@@ -1,0 +1,22 @@
+<div class="form-group text-right">
+    <div>
+        <div class="image-upload-description pull-left text-left">
+            <h4>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</h4>
+            <p>{{f.data.description}}</p>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <!-- image preview -->
+        <div data-ng-if="content.customFields[group.form_name][f.data.name].length" class="row text-left">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <file-preview size="120" file-source="{{content.customFields[group.form_name][f.data.name][0].relativePath}}"></file-preview>
+            </div>
+        </div>
+
+        <div class="form-group text-right">
+            <button data-ng-if="content.customFields[group.form_name][f.data.name].length" data-ng-click="image.remove(group.form_name, f.data.name)" class="btn btn-warning"><i class="fa fa-close"></i> remove</button>
+            <button data-ng-if="!content.customFields[group.form_name][f.data.name].length" data-ng-click="image.showMediaModal(group.form_name, f.data.name)" class="btn btn-default"><i class="fa fa-image"></i> Add Image</button>
+        </div>
+    </div>
+</div>
