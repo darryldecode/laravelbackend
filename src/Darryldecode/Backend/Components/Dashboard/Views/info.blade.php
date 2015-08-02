@@ -37,7 +37,7 @@
                         RELEASES:
                     </h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body released-body-list">
                     <ul class="list-group">
                         <li data-ng-repeat="r in releases" class="list-group-item">
                             <table class="table table-striped">

@@ -431,6 +431,15 @@ ul.ul-clear li {
     color: #FFF !important;
 }
 
+/* DASHBOARD */
+.released-body-list {
+    max-height: 500px;
+    overflow: auto;
+}
+.released-body-list table td:first-child {
+    width: 110px;
+}
+
 /* BOOT SWITCH */
 .bootstrap-switch {
     z-index: auto;

@@ -62,16 +62,18 @@ angular.module('cb.customFields').controller('ManageCustomFieldsController', ['$
 
             if( field.key == $scope.fieldGroup.fieldToBeAdded ) {
 
+                var fieldCopy = angular.copy(field);
+
                 // the name of the custom field, this will be the key for this custom field
                 // when save on our database and is used for queries
-                field.data.name = field.key + '_' + $scope.fieldGroup.lastAddedFieldId;
+                fieldCopy.data.name = field.key + '_' + $scope.fieldGroup.lastAddedFieldId;
 
                 // the key of the field, this is only used to hold a unique value of the field
                 // so we can avoid duplicate error when a same field is added to a form group
-                field.key  = field.key + '_' + $scope.fieldGroup.lastAddedFieldId;
+                fieldCopy.key  = field.key + '_' + $scope.fieldGroup.lastAddedFieldId;
 
                 // copy it to avoid reference effect
-                $scope.fieldGroup.fields.push(angular.copy(field));
+                $scope.fieldGroup.fields.push(fieldCopy);
             }
 
         });
