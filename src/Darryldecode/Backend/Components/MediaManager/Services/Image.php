@@ -26,8 +26,10 @@ class Image {
         $manager = new ImageManager();
 
         $manager->make($imagePath)
-            ->resize($width, $height)
-            ->save($target);
+            ->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($target);
 
         return true;
     }
