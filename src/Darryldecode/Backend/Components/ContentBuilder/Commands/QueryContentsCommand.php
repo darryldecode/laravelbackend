@@ -262,6 +262,9 @@ class QueryContentsCommand extends Command implements SelfHandling {
             }
         }
 
+        // sort order
+        $q->orderBy($this->sortBy, $this->sortOrder);
+
         // decide whether request wants paginated version or not
         if( $this->paginated )
         {
