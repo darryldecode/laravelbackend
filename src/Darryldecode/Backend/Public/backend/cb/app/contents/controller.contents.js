@@ -94,10 +94,7 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
         $scope.content.isDoing = true;
 
         ContentFactory.createContent(dataToBeSave).then(function(success) {
-            resetContentState();
-            queryContentsByType($scope.contentType.id, {});
-            $scope.drawer.hide($scope.drawer.mode);
-            $scope.content.isDoing = false;
+            location.reload();
         }, function (error) {
             GlobalLoaderService.show(error.data.message || 'An error has occurred.','danger').hide(3500);
             $scope.content.isDoing = false;
