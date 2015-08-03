@@ -380,6 +380,13 @@ ul.ul-clear li {
     font-size: 12px;
     margin: 0 5px;
 }
+.file-thumb .label-file-size {
+    left: 15px;
+    top: 0;
+    position: absolute;
+    font-weight: normal;
+    font-size: 80%;
+}
 
 /* CONTENTS */
 .editor-wrap {

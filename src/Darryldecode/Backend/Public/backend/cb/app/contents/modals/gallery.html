@@ -48,6 +48,7 @@
                     </div>
                     <div data-ng-repeat="f in files.files" class="col-lg-3 col-md-3 col-sm-4">
                         <div class="file-thumb">
+                            <label class="label label-info pull-left label-file-size">Size: {{::getSizeName(f)}}</label>
                             <div class="gallery-select-control">
                                 <input data-ng-model="selectedFiles[f]" type="checkbox">
                             </div>
