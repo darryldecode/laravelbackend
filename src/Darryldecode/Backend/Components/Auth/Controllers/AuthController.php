@@ -4,6 +4,7 @@ namespace Darryldecode\Backend\Components\Auth\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Darryldecode\Backend\Components\User\Models\Throttle;
 use Darryldecode\Backend\Components\User\Models\User;
 use Darryldecode\Backend\Utility\Helpers;
@@ -35,9 +36,10 @@ class AuthController extends BaseController {
      * @param Request $request
      * @param Throttle $throttle
      * @param User $user
+     * @param Dispatcher $dispatcher
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function postLogin(Request $request, Throttle $throttle, User $user)
+    public function postLogin(Request $request, Throttle $throttle, User $user, Dispatcher $dispatcher)
     {
         $credentials = $request->only('email', 'password');
 
@@ -49,6 +51,8 @@ class AuthController extends BaseController {
         // if authentication is good
         if( $result->isSuccessful() )
         {
+            $dispatcher->fire('auth.loginSuccess', array($result->getData()));
+
             if( $request->get('ru') != '' )
             {
                 return redirect()->intended($request->get('ru'));
@@ -65,11 +69,14 @@ class AuthController extends BaseController {
     /**
      * Log the user out of the application.
      *
+     * @param Dispatcher $dispatcher
      * @return \Illuminate\Http\Response
      */
-    public function getLogout()
+    public function getLogout(Dispatcher $dispatcher)
     {
         Auth::logout();
+
+        $dispatcher->fire('auth.logout');
 
         return redirect(Helpers::getLoginRoute());
     }
