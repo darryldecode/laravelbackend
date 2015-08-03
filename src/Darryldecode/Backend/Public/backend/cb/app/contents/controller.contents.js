@@ -69,6 +69,13 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
     // saves new content
     $scope.content.save = function () {
 
+        var validation = checkRequiredFields();
+
+        if( ! validation.success ) {
+            AlertService.showAlert(validation.message);
+            return false;
+        }
+
         var dataToBeSave = {
             title: $scope.content.title,
             slug: $scope.content.slug,
@@ -113,6 +120,13 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
 
     // update content
     $scope.content.updateSave = function () {
+
+        var validation = checkRequiredFields();
+
+        if( ! validation.success ) {
+            AlertService.showAlert(validation.message);
+            return false;
+        }
 
         var dataToBeUpdated = {
             title: $scope.content.title,
@@ -458,5 +472,34 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
             taxString += ':'+term.taxonomy.taxonomy+'|'+term.slug+'';
         });
         return taxString;
+    }
+
+    // this will check all custom fields that are required
+    function checkRequiredFields() {
+
+        var result = {
+            success: true,
+            message: ''
+        };
+
+        angular.forEach($scope.contentType.form_groups, function(group, i) {
+            angular.forEach(group.fields, function(field, i) {
+                if( field.data.required == true ) {
+
+                    if( ! $scope.content.customFields.hasOwnProperty(group.form_name) ) {
+                        result.success = false;
+                        result.message = field.data.label + ' is required!';
+                        return;
+                    }
+
+                    if( (!$scope.content.customFields[group.form_name].hasOwnProperty(field.data.name)) || ($scope.content.customFields[group.form_name][field.data.name].length == 0) ) {
+                        result.success = false;
+                        result.message = field.data.label + ' is required!';
+                    }
+                }
+            });
+        });
+
+        return result;
     }
 }]);

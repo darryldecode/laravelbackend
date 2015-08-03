@@ -24,8 +24,8 @@
     <!-- edit mode -->
     <div class="edit-field edit-field-{{f.key}}-{{$index}}">
         <div class="form-group text-left">
-            <label>Field Name:</label>
-            <textarea class="form-control" data-ng-model="f.data.label"></textarea>
+            <label>Field Key:</label>
+            <textarea class="form-control" data-ng-model="f.data.name"></textarea>
         </div>
         <div class="form-group text-left">
             <label>Label:</label>
@@ -34,6 +34,10 @@
         <div class="form-group text-left">
             <label>Description:</label>
             <textarea class="form-control" data-ng-model="f.data.description"></textarea>
+        </div>
+        <div class="form-group text-left">
+            <td>Required?</td>
+            <td><input data-ng-model="f.data.required" type="checkbox"></td>
         </div>
     </div>
 </div>
