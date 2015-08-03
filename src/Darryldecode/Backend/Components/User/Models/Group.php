@@ -44,7 +44,7 @@ class Group extends BaseModel {
      */
     public static $rules = array(
         'name' => 'required',
-        'permissions' => 'required|array',
+        'permissions' => 'array',
     );
 
     /**

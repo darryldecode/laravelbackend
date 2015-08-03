@@ -68,18 +68,29 @@ angular.module('cb.content').controller('GalleryModalController', ['$scope','$ti
 
     // just a helper on view
     $scope.getLastSegment = function (path) {
-        return path.split('/').pop();
+
+        var separators = ["/","\\\\"];
+
+        return path.split(new RegExp(separators.join('|'), 'g')).pop();
     };
 
     // get size name. Eg. ( name_large.jpg -> large )
     $scope.getSizeName = function(path) {
         var sizeName = 'Original';
         var fileName = $scope.getLastSegment(path);
-        var f = fileName.split('_');
-        if(f.length >= 2) {
-            sizeName = f[1].split('.')[0];
+
+        if( isImage(fileName) ) {
+            var f = fileName.split('_');
+            if(f.length >= 2) {
+                sizeName = f[f.length - 1].split('.')[0];
+            }
         }
+
         return sizeName;
+
+        function isImage(src) {
+            return (/(.*)\.(?:jpe?g|gif|png)$/i).test(src);
+        }
     };
 
     // uploads the files

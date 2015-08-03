@@ -57,11 +57,11 @@
                             <div class="col-lg-5 col-md-5 custom-field-left">
                                 <h5 class="drawer-title-secondary"><i class="fa fa-info-circle"></i> FORM DETAILS:</h5>
                                 <div class="form-group">
-                                    <label>Name:</label>
+                                    <label>Form Display Name:</label>
                                     <input data-ng-model="fieldGroup.name" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Form Name:</label>
+                                    <label>Form Name-Key: <small><i>(This should be unique. You will not be able to change this after.)</i></small></label>
                                     <input data-ng-model="fieldGroup.formName" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
@@ -111,12 +111,12 @@
                             <div class="col-lg-5 col-md-5 custom-field-left">
                                 <h5 class="drawer-title-secondary"><i class="fa fa-info-circle"></i> FORM DETAILS:</h5>
                                 <div class="form-group">
-                                    <label>Name:</label>
+                                    <label>Form Display Name:</label>
                                     <input data-ng-model="fieldGroup.name" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Form Name:</label>
-                                    <input data-ng-model="fieldGroup.formName" type="text" class="form-control">
+                                    <label>Form Name-Key:</label>
+                                    <input disabled="disabled" value="@{{::fieldGroup.formName}}" type="text" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Form For:</label>

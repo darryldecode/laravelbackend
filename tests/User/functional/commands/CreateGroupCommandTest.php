@@ -69,7 +69,7 @@ class CreateGroupCommandTest extends TestCase {
         $this->assertEquals('Not enough permission.', $result->getMessage());
     }
 
-    public function testRequiredFields()
+    public function testRequiredNameField()
     {
         // create user and logged in (the user who will perform the action)
         $user = User::create(array(
@@ -98,24 +98,22 @@ class CreateGroupCommandTest extends TestCase {
         $this->assertFalse($result->isSuccessful(), 'Transaction should not be successful.');
         $this->assertEquals(400, $result->getStatusCode(), 'Status code should be 400.');
         $this->assertEquals('The name field is required.', $result->getMessage());
+    }
 
-        // dummy request | name permissions field should be required
-        $request = Request::create('','POST',array(
-            'name' => 'moderator',
-            'permissions' => '',
+    public function testPermissionsFieldShouldBeAnArray()
+    {
+        // create user and logged in (the user who will perform the action)
+        $user = User::create(array(
+            'first_name' => 'darryl',
+            'email' => 'darryl@gmail.com',
+            'password' => 'pass$darryl',
+            'permissions' => array(
+                'superuser' => 1
+            )
         ));
 
-        // begin
-        $result = $this->commandDispatcher->dispatchFrom(
-            'Darryldecode\Backend\Components\User\Commands\CreateGroupCommand',
-            $request
-        );
+        $this->application['auth']->loginUsingId($user->id);
 
-        $this->assertFalse($result->isSuccessful(), 'Transaction should not be successful.');
-        $this->assertEquals(400, $result->getStatusCode(), 'Status code should be 400.');
-        $this->assertEquals('The permissions field is required.', $result->getMessage());
-
-        // dummy request | name permissions field should be an array
         $request = Request::create('','POST',array(
             'name' => 'moderator',
             'permissions' => 'Not an array',
@@ -173,5 +171,35 @@ class CreateGroupCommandTest extends TestCase {
         $this->assertCount(2,$group->permissions);
         $this->assertArrayHasKey('forum.create',$group->permissions);
         $this->assertArrayHasKey('forum.delete',$group->permissions);
+    }
+
+    public function testShouldCreateGroupEvenWithoutPermissionsYet()
+    {
+        // create user and logged in (the user who will perform the action)
+        $user = User::create(array(
+            'first_name' => 'darryl',
+            'email' => 'darryl@gmail.com',
+            'password' => 'pass$darryl',
+            'permissions' => array(
+                'superuser' => 1
+            )
+        ));
+
+        $this->application['auth']->loginUsingId($user->id);
+
+        $request = Request::create('','POST',array(
+            'name' => 'moderator',
+            'permissions' => array(),
+        ));
+
+        // begin
+        $result = $this->commandDispatcher->dispatchFrom(
+            'Darryldecode\Backend\Components\User\Commands\CreateGroupCommand',
+            $request
+        );
+
+        $this->assertTrue($result->isSuccessful(), 'Transaction should be successful.');
+        $this->assertEquals(201, $result->getStatusCode(), 'Status code should be 400.');
+        $this->assertEquals('Group successfully created.', $result->getMessage());
     }
 }

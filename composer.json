@@ -1,7 +1,7 @@
 {
     "name": "darryldecode/laravelbackend",
     "description": "Laravel 5 Backend",
-    "keywords": ["laravel", "backend", "administrator", "dashboard"],
+    "keywords": ["laravel", "laravel admin package", "backend", "administrator", "dashboard", "admin"],
     "license": "MIT",
     "authors": [
         {

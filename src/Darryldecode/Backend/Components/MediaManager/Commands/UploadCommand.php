@@ -60,13 +60,16 @@ class UploadCommand extends Command implements SelfHandling {
         // upload files
         foreach($this->files as $file)
         {
+            // normalize file name
+            $normalizedFileName = $this->normalizeFileName($file->getClientOriginalName());
+
             // save the file
             $file->move(
                 $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path),
-                $file->getClientOriginalName()
+                $normalizedFileName
             );
 
-            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$file->getClientOriginalName();
+            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$normalizedFileName;
             $file_name = pathinfo($filePath, PATHINFO_FILENAME);
             $extension = pathinfo($filePath, PATHINFO_EXTENSION);
 
@@ -116,5 +119,16 @@ class UploadCommand extends Command implements SelfHandling {
     protected function produceThumbFileName($file_name, $file_size_name, $file_extension)
     {
         return $file_name.'_'.$file_size_name.'.'.$file_extension;
+    }
+
+    /**
+     * when uploading a file, we will remove dashes because dashes are use in UI as size convention
+     *
+     * @param $string
+     * @return mixed
+     */
+    protected function normalizeFileName($string)
+    {
+        return str_replace('_','',$string);
     }
 }
