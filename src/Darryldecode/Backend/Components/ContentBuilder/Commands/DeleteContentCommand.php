@@ -40,7 +40,7 @@ class DeleteContentCommand extends Command implements SelfHandling {
     public function handle(Content $content, Dispatcher $dispatcher)
     {
         // get the content
-        if( ! $c = $content->with(array('type'))->find($this->id) )
+        if( ! $c = $content->with(array('type','metaData'))->find($this->id) )
         {
             return new CommandResult(false, "Content not found.", null, 404);
         }
@@ -61,6 +61,7 @@ class DeleteContentCommand extends Command implements SelfHandling {
         $dispatcher->fire($c->type->type.'.deleting', array($c));
 
         // begin delete
+        $c->metaData()->delete();
         $c->delete();
 
         // fire deleted event
