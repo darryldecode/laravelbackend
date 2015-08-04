@@ -51,7 +51,7 @@ class AuthController extends BaseController {
         // if authentication is good
         if( $result->isSuccessful() )
         {
-            $dispatcher->fire('auth.loginSuccess', array($result->getData()));
+            $dispatcher->fire('backend.auth.success', array($result->getData()));
 
             if( $request->get('ru') != '' )
             {
@@ -76,7 +76,7 @@ class AuthController extends BaseController {
     {
         Auth::logout();
 
-        $dispatcher->fire('auth.logout');
+        $dispatcher->fire('backend.auth.logout');
 
         return redirect(Helpers::getLoginRoute());
     }

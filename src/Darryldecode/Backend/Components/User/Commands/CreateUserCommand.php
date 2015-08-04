@@ -86,6 +86,7 @@ class CreateUserCommand extends Command implements SelfHandling {
         // validate data
         $validationResult = $validator->make(array(
             'first_name' => $this->firstName,
+            'last_name' => $this->lastName,
             'email' => $this->email,
             'password' => $this->password,
         ), $this->user->getValidationRules());

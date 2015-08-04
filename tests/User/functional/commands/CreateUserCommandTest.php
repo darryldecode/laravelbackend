@@ -72,19 +72,9 @@ class CreateUserCommandTest extends TestCase {
         $this->assertEquals('Not enough permission.', $result->getMessage());
     }
 
-    public function testRequiredFieldsPermissions()
+    public function testShouldRequireFirstNameField()
     {
-        // create user and logged in
-        $user = User::create(array(
-            'first_name' => 'darryl',
-            'email' => 'darryl@gmail.com',
-            'password' => 'pass$darryl',
-            'permissions' => array(
-                'superuser' => 1
-            )
-        ));
-
-        $this->application['auth']->loginUsingId($user->id);
+        $this->createUserAndLoggedIn(array('superuser' => 1));
 
         // dummy request, required first name
         $request = Request::create('','GET',array(
@@ -105,6 +95,11 @@ class CreateUserCommandTest extends TestCase {
         $this->assertFalse($result->isSuccessful(), 'Transaction should not be successful.');
         $this->assertEquals(400, $result->getStatusCode(), 'Status code should be 400');
         $this->assertEquals('The first name field is required.', $result->getMessage());
+    }
+
+    public function testShouldRequireLastName()
+    {
+        $this->createUserAndLoggedIn(array('superuser' => 1));
 
         // dummy request, required email
         $request = Request::create('','GET',array(
@@ -124,13 +119,18 @@ class CreateUserCommandTest extends TestCase {
 
         $this->assertFalse($result->isSuccessful(), 'Transaction should not be successful.');
         $this->assertEquals(400, $result->getStatusCode(), 'Status code should be 400');
-        $this->assertEquals('The email field is required.', $result->getMessage());
+        $this->assertEquals('The last name field is required.', $result->getMessage());
+    }
 
-        // dummy request, required valid email
+    public function testShouldRequireEmail()
+    {
+        $this->createUserAndLoggedIn(array('superuser' => 1));
+
+        // dummy request, required email
         $request = Request::create('','GET',array(
             'firstName' => 'John',
-            'lastName' => '',
-            'email' => 'some invalid email',
+            'lastName' => 'Doe',
+            'email' => '',
             'password' => '',
             'permissions' => '',
             'groups' => array(),
@@ -144,13 +144,18 @@ class CreateUserCommandTest extends TestCase {
 
         $this->assertFalse($result->isSuccessful(), 'Transaction should not be successful.');
         $this->assertEquals(400, $result->getStatusCode(), 'Status code should be 400');
-        $this->assertEquals('The email must be a valid email address.', $result->getMessage());
+        $this->assertEquals('The email field is required.', $result->getMessage());
+    }
 
-        // dummy request, required unique email
+    public function testShouldRequireEmailToBeUnique()
+    {
+        $this->createUserAndLoggedIn(array('superuser' => 1));
+
+        // dummy request, required email
         $request = Request::create('','GET',array(
             'firstName' => 'John',
-            'lastName' => '',
-            'email' => 'darryl@gmail.com', // this email is already used aboved
+            'lastName' => 'Doe',
+            'email' => 'darryl@gmail.com', // existing email
             'password' => '',
             'permissions' => '',
             'groups' => array(),
@@ -279,5 +284,18 @@ class CreateUserCommandTest extends TestCase {
         $this->assertTrue($createdUser->inGroup($blogger) ,'User should be in blogger group');
         $this->assertTrue($createdUser->inGroup($artist), 'User should be in artist group');
         $this->assertFalse($createdUser->inGroup($moderator), 'User should not be in moderator group');
+    }
+
+    protected function createUserAndLoggedIn($permissions)
+    {
+        // create user and logged in
+        $user = User::create(array(
+            'first_name' => 'darryl',
+            'email' => 'darryl@gmail.com',
+            'password' => 'pass$darryl',
+            'permissions' => $permissions
+        ));
+
+        $this->application['auth']->loginUsingId($user->id);
     }
 }
