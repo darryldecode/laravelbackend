@@ -46,6 +46,7 @@ class UserTest extends TestCase {
     {
         $userData = array(
             'first_name' => 'Darryl',
+            'last_name' => 'Fernandez',
             'email' => 'Darryl',
         );
 
@@ -60,6 +61,7 @@ class UserTest extends TestCase {
         // create first our user
         $user1 = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
         ));
@@ -67,6 +69,7 @@ class UserTest extends TestCase {
         // now lets validate our first user with the same email
         $user2 = array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
         );
@@ -82,6 +85,7 @@ class UserTest extends TestCase {
         // create first our user
         $user1 = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
         ));
@@ -89,6 +93,7 @@ class UserTest extends TestCase {
         // now lets validate our first user with the same email
         $user2 = array(
             'first_name' => 'jane',
+            'last_name' => 'Fernandez',
             'email' => 'jane@gmail.com',
             'password' => 'short',
         );
@@ -104,6 +109,7 @@ class UserTest extends TestCase {
         // create first our user
         $user1 = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
             'permissions' => array(
@@ -123,6 +129,7 @@ class UserTest extends TestCase {
         // create first our user
         $user1 = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
             'permissions' => array(
@@ -148,6 +155,7 @@ class UserTest extends TestCase {
 
         $user = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
             'permissions' => array(
@@ -191,6 +199,7 @@ class UserTest extends TestCase {
 
         $user = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
             'permissions' => array(
@@ -247,6 +256,7 @@ class UserTest extends TestCase {
 
         $user = User::create(array(
             'first_name' => 'darryl',
+            'last_name' => 'Fernandez',
             'email' => 'darryl@gmail.com',
             'password' => 'pass$darryl',
             'permissions' => array(

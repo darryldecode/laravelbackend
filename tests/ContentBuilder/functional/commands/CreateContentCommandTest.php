@@ -166,7 +166,7 @@ class CreateContentCommandTest extends TestCase {
 
         // begin
         $result = $this->commandDispatcher->dispatchFrom(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentCommand',
+            Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentCommand::class,
             $request
         );
 
@@ -186,9 +186,9 @@ class CreateContentCommandTest extends TestCase {
 
         $contentMeta = Content::parseMetaData($content->metaData->toArray());
 
-        $this->assertCount(2, $contentMeta);
-        $this->assertArrayHasKey('meta1', $contentMeta);
-        $this->assertArrayHasKey('meta2', $contentMeta);
+        $this->assertCount(2, $contentMeta['form_1']);
+        $this->assertArrayHasKey('meta1', $contentMeta['form_1']);
+        $this->assertArrayHasKey('meta2', $contentMeta['form_1']);
     }
 
     protected function createContentType()

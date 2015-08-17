@@ -9,6 +9,7 @@ use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Validation\Factory;
 use Darryldecode\Backend\Utility\Helpers;
+use Illuminate\Contracts\Config\Repository;
 
 class CreateContentCommand extends Command implements SelfHandling {
 	/**
@@ -89,10 +90,13 @@ class CreateContentCommand extends Command implements SelfHandling {
      * @param Factory $validator
      * @param ContentType $contentType
      * @param Dispatcher $dispatcher
+     * @param Repository $config
      * @return CommandResult
      */
-	public function handle(Content $content, Factory $validator, ContentType $contentType, Dispatcher $dispatcher)
+	public function handle(Content $content, Factory $validator, ContentType $contentType, Dispatcher $dispatcher, Repository $config)
 	{
+        $content = $this->createContentModel($content, $config);
+
 		// get content available permissions
 		try {
 			$cType = $contentType->findOrFail($this->contentTypeId);
@@ -118,7 +122,7 @@ class CreateContentCommand extends Command implements SelfHandling {
 			'slug' => $this->slug,
 			'author_id' => $this->authorId,
 			'content_type_id' => $this->contentTypeId,
-		), Content::$rules);
+		), $content::$rules);
 
 		if( $validationResult->fails() )
 		{
@@ -173,4 +177,26 @@ class CreateContentCommand extends Command implements SelfHandling {
 		// return response
 		return new CommandResult(true, "Content successfully created.", $createdContent, 201);
 	}
+
+    /**
+     * @param $content \Darryldecode\Backend\Components\ContentBuilder\Models\Content
+     * @param $config \Illuminate\Contracts\Config\Repository
+     * @return mixed
+     */
+    protected function createContentModel($content, $config)
+    {
+        if( ! $contentModelUsed = $config->get('backend.backend.content_model') )
+        {
+            return $content;
+        };
+
+        $contentModelUsed = new $contentModelUsed();
+
+        if( $contentModelUsed instanceof Content )
+        {
+            return $contentModelUsed;
+        }
+
+        return $content;
+    }
 }

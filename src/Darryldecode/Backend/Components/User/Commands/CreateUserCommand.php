@@ -15,6 +15,7 @@ use Darryldecode\Backend\Components\User\Models\Group;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Config\Repository;
 
 class CreateUserCommand extends Command implements SelfHandling {
     /**
@@ -70,9 +71,10 @@ class CreateUserCommand extends Command implements SelfHandling {
      * @param Factory $validator
      * @param Dispatcher $dispatcher
      * @param Group $group
+     * @param Repository $config
      * @return CommandResult
      */
-    public function handle(User $user, Factory $validator, Dispatcher $dispatcher, Group $group)
+    public function handle(User $user, Factory $validator, Dispatcher $dispatcher, Group $group, Repository $config)
     {
         // check user permission
         if( ! $this->disablePermissionChecking )
@@ -82,6 +84,9 @@ class CreateUserCommand extends Command implements SelfHandling {
                 return new CommandResult(false, CommandResult::$responseForbiddenMessage, null, 403);
             }
         }
+
+        // prepare the user model
+        $user = $this->createUserModel($user, $config);
 
         // validate data
         $validationResult = $validator->make(array(
@@ -156,5 +161,23 @@ class CreateUserCommand extends Command implements SelfHandling {
         {
             return $permissions;
         }
+    }
+
+    /**
+     * @param $user \Darryldecode\Backend\Components\User\Models\User
+     * @param $config \Illuminate\Config\Repository
+     * @return mixed
+     */
+    protected function createUserModel($user, $config)
+    {
+        $userModelUsed = $config->get('backend.backend.user_model');
+        $userModelUsed = new $userModelUsed();
+
+        if( $userModelUsed instanceof User )
+        {
+            return $userModelUsed;
+        }
+
+        return $user;
     }
 }
