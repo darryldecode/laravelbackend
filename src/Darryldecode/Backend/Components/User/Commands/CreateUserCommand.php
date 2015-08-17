@@ -94,7 +94,7 @@ class CreateUserCommand extends Command implements SelfHandling {
             'last_name' => $this->lastName,
             'email' => $this->email,
             'password' => $this->password,
-        ), $this->user->getValidationRules());
+        ), $user->getValidationRules());
 
         if( $validationResult->fails() )
         {
@@ -170,7 +170,11 @@ class CreateUserCommand extends Command implements SelfHandling {
      */
     protected function createUserModel($user, $config)
     {
-        $userModelUsed = $config->get('backend.backend.user_model');
+        if( ! $userModelUsed = $config->get('backend.backend.user_model') )
+        {
+            return $user;
+        }
+
         $userModelUsed = new $userModelUsed();
 
         if( $userModelUsed instanceof User )

@@ -14,6 +14,7 @@ use Darryldecode\Backend\Components\User\Models\User;
 use Darryldecode\Backend\Components\User\Models\Group;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Config\Repository;
 
 class DeleteUserCommand extends Command implements SelfHandling {
     /**
@@ -41,9 +42,10 @@ class DeleteUserCommand extends Command implements SelfHandling {
      * @param User $user
      * @param Group $group
      * @param Dispatcher $dispatcher
+     * @param Repository $config
      * @return CommandResult
      */
-    public function handle(User $user, Group $group, Dispatcher $dispatcher)
+    public function handle(User $user, Group $group, Dispatcher $dispatcher, Repository $config)
     {
         // check user permission
         if( ! $this->disablePermissionChecking )
@@ -57,6 +59,9 @@ class DeleteUserCommand extends Command implements SelfHandling {
                 return new CommandResult(false, "Cannot delete self.", null, 400);
             }
         }
+
+        // prepare the user model
+        $user = $this->createUserModel($user, $config);
 
         // find the user
         if( ! $userToBeDelete = $user->find($this->id) )
@@ -76,5 +81,27 @@ class DeleteUserCommand extends Command implements SelfHandling {
 
         // all good
         return new CommandResult(true, "User successfully deleted.", null, 200);
+    }
+
+    /**
+     * @param $user \Darryldecode\Backend\Components\User\Models\User
+     * @param $config \Illuminate\Config\Repository
+     * @return mixed
+     */
+    protected function createUserModel($user, $config)
+    {
+        if( ! $userModelUsed = $config->get('backend.backend.user_model') )
+        {
+            return $user;
+        }
+
+        $userModelUsed = new $userModelUsed();
+
+        if( $userModelUsed instanceof User )
+        {
+            return $userModelUsed;
+        }
+
+        return $user;
     }
 }

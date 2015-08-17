@@ -183,7 +183,11 @@ class QueryUsersCommand extends Command implements SelfHandling {
      */
     protected function createUserModel($user, $config)
     {
-        $userModelUsed = $config->get('backend.backend.user_model');
+        if( ! $userModelUsed = $config->get('backend.backend.user_model') )
+        {
+            return $user;
+        }
+
         $userModelUsed = new $userModelUsed();
 
         if( $userModelUsed instanceof User )
