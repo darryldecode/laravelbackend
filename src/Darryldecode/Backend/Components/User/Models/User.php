@@ -173,6 +173,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 			return $found;
 		}
+        else if ( is_int($group) )
+        {
+            $this->groups->each(function($g) use ($group, &$found)
+            {
+                if( $g->id == $group )
+                {
+                    $found = true;
+                }
+            });
+
+            return $found;
+        }
 		else if ( is_object($group) )
 		{
 			$this->groups->each(function($g) use ($group, &$found)
