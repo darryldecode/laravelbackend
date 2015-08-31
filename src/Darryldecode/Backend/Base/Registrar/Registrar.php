@@ -13,7 +13,7 @@ class Registrar {
     /**
      * the laravel backend version
      */
-    const VERSION = '1.0.18';
+    const VERSION = '1.0.19';
     const VERSION_NAME = 'Alpha';
 
     /**
@@ -55,6 +55,20 @@ class Registrar {
      * @var array
      */
     protected $routes = array();
+
+    /**
+     * the header scripts
+     *
+     * @var array
+     */
+    protected $headerScripts = array();
+
+    /**
+     * the footer scripts
+     *
+     * @var array
+     */
+    protected $footerScripts = array();
 
     public function __construct()
     {
@@ -102,6 +116,8 @@ class Registrar {
         else
         {
             array_push($this->activeWidgets, $widget);
+            if(count($widget->getHeaderScripts()) > 0) array_push($this->headerScripts, $widget->getHeaderScripts());
+            if(count($widget->getFooterScripts()) > 0) array_push($this->footerScripts, $widget->getFooterScripts());
         }
 
         return $this;
@@ -154,6 +170,28 @@ class Registrar {
         foreach($this->activeComponents as $component)
         {
             array_push($this->views, $component->getViewsPath());
+        }
+    }
+
+    /**
+     * init added header scripts
+     */
+    public function initAddHeaderScripts()
+    {
+        foreach($this->activeComponents as $component)
+        {
+            if(count($component->getHeaderScripts()) > 0) array_push($this->headerScripts, $component->getHeaderScripts());
+        }
+    }
+
+    /**
+     * init added footer scripts
+     */
+    public function initAddFooterScripts()
+    {
+        foreach($this->activeComponents as $component)
+        {
+            if(count($component->getFooterScripts()) > 0) array_push($this->footerScripts, $component->getFooterScripts());
         }
     }
 
@@ -228,5 +266,25 @@ class Registrar {
             'version' => self::VERSION,
             'name' => self::VERSION_NAME,
         );
+    }
+
+    /**
+     * get added header scripts by all active components
+     *
+     * @return array
+     */
+    public function getAddedHeaderScripts()
+    {
+        return $this->headerScripts;
+    }
+
+    /**
+     * get added footer scripts by all active components
+     *
+     * @return array
+     */
+    public function getAddedFooterScripts()
+    {
+        return $this->footerScripts;
     }
 }

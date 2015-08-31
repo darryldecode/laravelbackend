@@ -46,6 +46,26 @@ class Widget implements WidgetInterface
     {
         return true;
     }
+
+    /**
+     * get component scripts for header
+     *
+     * @return array
+     */
+    public function getHeaderScripts()
+    {
+        // TODO: Implement getHeaderScripts() method.
+    }
+
+    /**
+     * get component scripts for footer
+     *
+     * @return array
+     */
+    public function getFooterScripts()
+    {
+        // TODO: Implement getFooterScripts() method.
+    }
 }
 
 return new Widget();

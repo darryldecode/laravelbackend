@@ -16,6 +16,23 @@
                 _CSRF = '{{csrf_token()}}';
     </script>
 
+    <!-- added header scripts-->
+    @foreach($app['backend']->getAddedHeaderScripts() as $links)
+        @foreach($links as $linkType => $links)
+            @if($linkType == 'css')
+                @foreach($links as $link)
+                    <link type="text/css" rel="stylesheet" href="{{$link}}"/>
+                @endforeach
+            @endif
+            @if($linkType == 'js')
+                @foreach($links as $link)
+                    <script src="{{$link}}" type="text/javascript"></script>
+                @endforeach
+            @endif
+        @endforeach
+    @endforeach
+    <!-- /added header scripts-->
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -37,6 +54,23 @@
     </div>
 
     @include('backend::includes.scripts')
+
+    <!-- added footer scripts-->
+    @foreach($app['backend']->getAddedFooterScripts() as $links)
+        @foreach($links as $linkType => $links)
+            @if($linkType == 'css')
+                @foreach($links as $link)
+                    <link type="text/css" rel="stylesheet" href="{{$link}}"/>
+                @endforeach
+            @endif
+            @if($linkType == 'js')
+                @foreach($links as $link)
+                    <script src="{{$link}}" type="text/javascript"></script>
+                @endforeach
+            @endif
+        @endforeach
+    @endforeach
+    <!-- /added footer scripts-->
 
 </body>
 

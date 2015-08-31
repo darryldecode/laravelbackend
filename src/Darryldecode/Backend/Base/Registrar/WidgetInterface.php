@@ -32,4 +32,18 @@ interface WidgetInterface {
      * @return bool
      */
     public function isWidgetActive();
+
+    /**
+     * get component scripts for header
+     *
+     * @return array
+     */
+    public function getHeaderScripts();
+
+    /**
+     * get component scripts for footer
+     *
+     * @return array
+     */
+    public function getFooterScripts();
 }

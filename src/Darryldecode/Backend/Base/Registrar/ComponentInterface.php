@@ -45,4 +45,18 @@ interface ComponentInterface {
      * @return array
      */
     public function getRoutesControl();
+
+    /**
+     * get component scripts for header
+     *
+     * @return array
+     */
+    public function getHeaderScripts();
+
+    /**
+     * get component scripts for footer
+     *
+     * @return array
+     */
+    public function getFooterScripts();
 }

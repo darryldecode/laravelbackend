@@ -94,6 +94,26 @@ class Component implements ComponentInterface {
             'namespace' => 'Darryldecode\\Backend\\Components\\Navigation\\Controllers',
         );
     }
+
+    /**
+     * get component scripts for header
+     *
+     * @return array
+     */
+    public function getHeaderScripts()
+    {
+        return array();
+    }
+
+    /**
+     * get component scripts for footer
+     *
+     * @return array
+     */
+    public function getFooterScripts()
+    {
+        return array();
+    }
 }
 
 return new Component;

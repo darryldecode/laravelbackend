@@ -71,6 +71,8 @@ class BackendServiceProvider extends ServiceProvider {
         $backendRegistrar->initViews();
         $backendRegistrar->initNavigation();
         $backendRegistrar->initPermissions();
+        $backendRegistrar->initAddHeaderScripts();
+        $backendRegistrar->initAddFooterScripts();
 
         // load views
         foreach($backendRegistrar->getViewsPaths() as $view)
