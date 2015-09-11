@@ -303,7 +303,31 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
     $scope.editor.mceConfig = {
         theme: "modern",
         skin: "light",
-        plugins: ["autoresize","image"]
+        plugins: ["autoresize","image"],
+        toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | BrowseImage',
+        setup : function(ed) {
+            ed.addButton('BrowseImage', {
+                title : 'Browse Uploads',
+                image : '/darryldecode/backend/cb/images/icons/file-browse-icon.png',
+                onclick : function() {
+
+                    var m = $modal.open({
+                        templateUrl: BASE_URL + '/darryldecode/backend/cb/app/contents/modals/gallery.html',
+                        controller: 'GalleryModalController',
+                        size: 'lg'
+                    });
+
+                    m.result.then(function (selectedFiles) {
+                        for(var prop in selectedFiles) {
+                            if( selectedFiles[prop] == true ) {
+                                var imageSrc = STORAGE_URL + prop;
+                                ed.execCommand('mceInsertContent', false, "<img src='"+imageSrc+"'>");
+                            }
+                        }
+                    });
+                }
+            });
+        }
     };
     $scope.editor.mode = 'mce'; // ace | mce | md
     $scope.editor.changeEditor = function (editor) {
