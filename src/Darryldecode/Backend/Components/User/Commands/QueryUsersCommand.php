@@ -149,7 +149,8 @@ class QueryUsersCommand extends Command implements SelfHandling {
             $q = $user->with(array_merge(array('groups'),$this->with))
                 ->ofFirstName($this->firstName)
                 ->ofLastName($this->lastName)
-                ->ofEmail($this->email);
+                ->ofEmail($this->email)
+                ->orderBy($this->orderBy, $this->orderSort);
 
             if( ($this->groupId) && ($this->groupId!='') )
             {

@@ -13,7 +13,7 @@ class Registrar {
     /**
      * the laravel backend version
      */
-    const VERSION = '1.0.20';
+    const VERSION = '1.0.21';
     const VERSION_NAME = 'Alpha';
 
     /**
