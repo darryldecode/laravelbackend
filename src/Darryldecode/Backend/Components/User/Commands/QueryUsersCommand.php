@@ -64,6 +64,10 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @var int|null
      */
     private $id;
+    /**
+     * @var null
+     */
+    private $queryHook;
 
     /**
      * query users by parameters, note that when querying by groupId, with relations is disabled
@@ -79,6 +83,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
      * @param bool $paginated
      * @param int $perPage
      * @param bool $disablePermissionChecking
+     * @param null|callable $queryHook
      */
     public function __construct($id = null,
                                 $firstName = null,
@@ -90,7 +95,8 @@ class QueryUsersCommand extends Command implements SelfHandling {
                                 $orderSort = 'DESC',
                                 $paginated = true,
                                 $perPage = 15,
-                                $disablePermissionChecking = false)
+                                $disablePermissionChecking = false,
+                                $queryHook = null)
     {
         parent::__construct();
         $this->id = $id;
@@ -105,6 +111,7 @@ class QueryUsersCommand extends Command implements SelfHandling {
         $this->with = $with;
         $this->args = get_defined_vars();
         $this->disablePermissionChecking = $disablePermissionChecking;
+        $this->queryHook = $queryHook;
     }
 
     /**
@@ -158,6 +165,15 @@ class QueryUsersCommand extends Command implements SelfHandling {
                 {
                     $q->where('groups.id',$this->groupId);
                 });
+            }
+
+            // trigger query hook if provided
+            if( !is_null($this->queryHook) && (is_callable($this->queryHook)) )
+            {
+                if( $res = call_user_func($this->queryHook,$q) )
+                {
+                    $q = $res;
+                }
             }
 
             if( $this->paginated )
