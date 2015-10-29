@@ -27,6 +27,11 @@ class AuthController extends BaseController {
      */
     public function getLogin()
     {
+        if (view()->exists('backend.auth.login'))
+        {
+            return view('backend.auth.password');
+        }
+
         return view('authManager::login');
     }
 

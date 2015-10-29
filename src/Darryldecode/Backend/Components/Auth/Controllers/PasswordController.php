@@ -33,7 +33,12 @@ class PasswordController extends BaseController {
      */
     public function getEmail()
     {
-        return view('authManager.password');
+        if (view()->exists('backend.auth.password'))
+        {
+            return view('backend.auth.password');
+        }
+
+        return view('authManager::password');
     }
 
     /**
@@ -71,7 +76,12 @@ class PasswordController extends BaseController {
             throw new NotFoundHttpException;
         }
 
-        return view('authManager.reset')->with('token', $token);
+        if (view()->exists('backend.auth.reset'))
+        {
+            return view('backend.auth.password');
+        }
+
+        return view('authManager::reset')->with('token', $token);
     }
 
     /**
