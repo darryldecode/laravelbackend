@@ -78,7 +78,7 @@ class PasswordController extends BaseController {
 
         if (view()->exists('backend.auth.reset'))
         {
-            return view('backend.auth.password');
+            return view('backend.auth.reset');
         }
 
         return view('authManager::reset')->with('token', $token);

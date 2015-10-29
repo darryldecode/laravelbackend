@@ -29,7 +29,7 @@ class AuthController extends BaseController {
     {
         if (view()->exists('backend.auth.login'))
         {
-            return view('backend.auth.password');
+            return view('backend.auth.login');
         }
 
         return view('authManager::login');
