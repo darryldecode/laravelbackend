@@ -74,6 +74,8 @@ class NavigationController extends BaseController {
         }
         else
         {
+            $this->triggerBeforeBackendHook();
+
             return view('navigationBuilder::navigation-builder');
         }
     }

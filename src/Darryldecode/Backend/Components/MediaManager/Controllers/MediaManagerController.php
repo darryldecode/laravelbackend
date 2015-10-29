@@ -58,6 +58,8 @@ class MediaManagerController extends BaseController {
         }
         else
         {
+            $this->triggerBeforeBackendHook();
+
             return view('mediaManager::mediaManager');
         }
     }

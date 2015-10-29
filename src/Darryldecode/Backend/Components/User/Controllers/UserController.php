@@ -66,6 +66,8 @@ class UserController extends BaseController {
         }
         else
         {
+            $this->triggerBeforeBackendHook();
+
             return view('userManager::users', compact('result'));
         }
     }

@@ -20,6 +20,7 @@ class DashboardController extends BaseController {
     {
         parent::__construct();
         $this->middleware('backend.authenticated');
+        $this->triggerBeforeBackendHook();
     }
 
     /**

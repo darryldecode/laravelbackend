@@ -43,4 +43,14 @@ return [
      */
     'user_model'    => 'Darryldecode\Backend\Components\User\Models\User',
     'content_model' => 'Darryldecode\Backend\Components\ContentBuilder\Models\Content',
+
+    /*
+     * Before Backend Access Hook
+     *
+     * Here you can check if user is in groups or has permissions to redirect to any route
+     * you want when it does not matches your criteria to access the backend
+     */
+    'before_backend_access' => function($user) {
+
+    }
 ];

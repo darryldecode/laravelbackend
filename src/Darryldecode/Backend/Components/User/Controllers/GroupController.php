@@ -61,6 +61,8 @@ class GroupController extends BaseController {
         }
         else
         {
+            $this->triggerBeforeBackendHook();
+
             return view('userManager::groups', compact('results'));
         }
     }

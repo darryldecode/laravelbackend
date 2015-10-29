@@ -23,4 +23,17 @@ abstract class BaseController extends Controller {
         $this->app = $app;
         $this->user = $app['auth']->user();
     }
+
+    /**
+     * The before backend access hook
+     */
+    public function triggerBeforeBackendHook()
+    {
+        $hook = config('backend.backend.before_backend_access');
+
+        if( is_callable($hook) )
+        {
+            $hook($this->user);
+        }
+    }
 }
