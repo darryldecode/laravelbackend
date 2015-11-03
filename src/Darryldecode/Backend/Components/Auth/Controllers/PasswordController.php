@@ -78,7 +78,7 @@ class PasswordController extends BaseController {
 
         if (view()->exists('backend.auth.reset'))
         {
-            return view('backend.auth.reset');
+            return view('backend.auth.reset')->with('token', $token);
         }
 
         return view('authManager::reset')->with('token', $token);
@@ -126,7 +126,7 @@ class PasswordController extends BaseController {
      */
     protected function resetPassword($user, $password)
     {
-        $user->password = bcrypt($password);
+        $user->password = $password; // no need to bcrypt here as passwords are automatically hashed in User Model
 
         $user->save();
 
