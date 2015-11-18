@@ -39,7 +39,7 @@ class ListCommand extends Command implements SelfHandling {
      */
     public function handle(Filesystem $filesystem, Repository $config)
     {
-        $path = (is_null($this->path)) ? '/' : $this->path;
+        $path = (is_null($this->path)) ? DIRECTORY_SEPARATOR : $this->path;
 
         $response = [];
         $response['files']          = $filesystem->files($path);
@@ -73,10 +73,9 @@ class ListCommand extends Command implements SelfHandling {
      */
     protected function breakDownPath($path)
     {
-
         if( $path == '/' ) return array('/');
 
-        $paths = explode('/',trim($path,'/'));
+        $paths = explode(DIRECTORY_SEPARATOR,trim($path,'/'));
 
         array_unshift($paths, '/');
 

@@ -58,7 +58,6 @@
                     </div>
                     <div data-ng-repeat="f in files.files" class="col-lg-2 col-md-2 col-sm-4">
                         <div class="file-thumb">
-                            <label class="label label-info pull-left label-file-size">Size: @{{::getSizeName(f)}}</label>
                             <file-preview file-source="@{{f}}"></file-preview>
                             <div class="text-wrap meta-data-holder trim-info-xs">
                                 <a href="" data-toggle="tooltip" data-placement="bottom" title="@{{f}}" class="file-name">@{{::getLastSegment(f)}}</a>

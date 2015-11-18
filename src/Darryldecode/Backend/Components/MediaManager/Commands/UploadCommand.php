@@ -42,9 +42,10 @@ class UploadCommand extends Command implements SelfHandling {
     /**
      * @param Repository $config
      * @param Image $image
+     * @param Filesystem $filesystem
      * @return CommandResult
      */
-    public function handle(Repository $config,Image $image)
+    public function handle(Repository $config,Image $image,Filesystem $filesystem)
     {
         // check if user has permission
         if( ! $this->disablePermissionChecking )
@@ -65,11 +66,11 @@ class UploadCommand extends Command implements SelfHandling {
 
             // save the file
             $file->move(
-                $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path),
+                $this->getCurrentFullPath($config,$path),
                 $normalizedFileName
             );
 
-            $filePath  = $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$normalizedFileName;
+            $filePath  = $this->getCurrentFullPath($config,$path).$normalizedFileName;
             $file_name = pathinfo($filePath, PATHINFO_FILENAME);
             $extension = pathinfo($filePath, PATHINFO_EXTENSION);
 
@@ -80,11 +81,18 @@ class UploadCommand extends Command implements SelfHandling {
             {
                 foreach($sizes as $key => $dimension)
                 {
+                    $targetDir = $this->getCurrentFullPath($config,$path).$key.DIRECTORY_SEPARATOR;
+
+                    if( ! $filesystem->exists($targetDir) )
+                    {
+                        $filesystem->makeDirectory($this->normalizePath($path).DIRECTORY_SEPARATOR.$key.DIRECTORY_SEPARATOR);
+                    }
+
                     $image::createThumbnail(
                         $filePath,
                         $dimension[0],
                         $dimension[1],
-                        $config->get('filesystems.disks.local.root').'/'.$this->normalizePath($path).'/'.$this->produceThumbFileName($file_name,$key,$extension)
+                        $targetDir.$file_name.'.'.$extension
                     );
                 }
             }
@@ -119,6 +127,16 @@ class UploadCommand extends Command implements SelfHandling {
     protected function produceThumbFileName($file_name, $file_size_name, $file_extension)
     {
         return $file_name.'_'.$file_size_name.'.'.$file_extension;
+    }
+
+    /**
+     * @param Repository $config
+     * @param string $path
+     * @return string
+     */
+    protected function getCurrentFullPath($config, $path)
+    {
+        return $config->get('filesystems.disks.local.root').DIRECTORY_SEPARATOR.$this->normalizePath($path).DIRECTORY_SEPARATOR;
     }
 
     /**
