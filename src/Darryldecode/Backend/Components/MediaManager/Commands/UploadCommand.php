@@ -81,18 +81,11 @@ class UploadCommand extends Command implements SelfHandling {
             {
                 foreach($sizes as $key => $dimension)
                 {
-                    $targetDir = $this->getCurrentFullPath($config,$path).$key.DIRECTORY_SEPARATOR;
-
-                    if( ! $filesystem->exists($targetDir) )
-                    {
-                        $filesystem->makeDirectory($this->normalizePath($path).DIRECTORY_SEPARATOR.$key.DIRECTORY_SEPARATOR);
-                    }
-
                     $image::createThumbnail(
                         $filePath,
                         $dimension[0],
                         $dimension[1],
-                        $targetDir.$file_name.'.'.$extension
+                        $this->getCurrentFullPath($config,$path).DIRECTORY_SEPARATOR.$this->produceThumbFileName($file_name,$key,$extension)
                     );
                 }
             }
