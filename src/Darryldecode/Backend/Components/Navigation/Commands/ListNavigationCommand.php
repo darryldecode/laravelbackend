@@ -14,7 +14,7 @@ use Darryldecode\Backend\Base\Commands\CommandResult;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Collection;
 
-class ListNavigationCommand extends Command implements SelfHandling {
+class ListNavigationCommand extends Command {
 
     public function __construct()
     {

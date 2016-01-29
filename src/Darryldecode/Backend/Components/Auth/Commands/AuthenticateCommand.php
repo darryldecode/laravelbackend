@@ -11,7 +11,7 @@ use Darryldecode\Backend\Components\User\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class AuthenticateCommand extends Command implements SelfHandling {
+class AuthenticateCommand extends Command {
     /**
      * @var null
      */

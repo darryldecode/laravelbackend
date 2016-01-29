@@ -9,6 +9,9 @@
 namespace Darryldecode\Backend\Components\User\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\User\Commands\CreateUserCommand;
+use Darryldecode\Backend\Components\User\Commands\QueryUsersCommand;
+use Darryldecode\Backend\Components\User\Commands\UpdateUserCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -42,20 +45,20 @@ class UserController extends BaseController {
      */
     public function index()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\QueryUsersCommand',
-            array(
-                'firstName' => $this->request->get('firstName', null),
-                'lastName' => $this->request->get('lastName', null),
-                'email' => $this->request->get('email', null),
-                'groupId' => $this->request->get('groupId', null),
-                'orderBy' => $this->request->get('orderBy', 'created_at'),
-                'orderSort' => $this->request->get('orderSort', 'DESC'),
-                'paginated' => $this->request->get('paginated', true),
-                'perPage' => $this->request->get('perPage', 15),
-                'with' => $this->request->get('with', array()),
-            )
-        );
+        $result = $this->dispatch(new QueryUsersCommand(
+            null,
+            $this->request->get('firstName', null),
+            $this->request->get('lastName', null),
+            $this->request->get('email', null),
+            $this->request->get('groupId', null),
+            $this->request->get('with', array()),
+            $this->request->get('orderBy', 'created_at'),
+            $this->request->get('orderSort', 'DESC'),
+            $this->request->get('paginated', true),
+            $this->request->get('perPage', 15),
+            false,
+            null
+        ));
 
         if($this->request->ajax())
         {
@@ -79,17 +82,15 @@ class UserController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\CreateUserCommand',
-            array(
-                'firstName' => $this->request->get('firstName', null),
-                'lastName' => $this->request->get('lastName', null),
-                'email' => $this->request->get('email', null),
-                'password' => $this->request->get('password', null),
-                'permissions' => $this->request->get('permissions', array()),
-                'groups' => $this->request->get('groups', array()),
-            )
-        );
+        $result = $this->dispatch(new CreateUserCommand(
+            $this->request->get('firstName', null),
+            $this->request->get('lastName', null),
+            $this->request->get('email', null),
+            $this->request->get('password', null),
+            $this->request->get('permissions', array()),
+            $this->request->get('groups', array()),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -105,18 +106,16 @@ class UserController extends BaseController {
      */
     public function putUpdate($userId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\UpdateUserCommand',
-            array(
-                'id' => $userId,
-                'firstName' => $this->request->get('firstName', null),
-                'lastName' => $this->request->get('lastName', null),
-                'email' => $this->request->get('email', null),
-                'password' => $this->request->get('password', null),
-                'permissions' => $this->request->get('permissions', null),
-                'groups' => $this->request->get('groups', null),
-            )
-        );
+        $result = $this->dispatch(new UpdateUserCommand(
+            $userId,
+            $this->request->get('firstName', null),
+            $this->request->get('lastName', null),
+            $this->request->get('email', null),
+            $this->request->get('password', null),
+            $this->request->get('permissions', null),
+            $this->request->get('groups', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),

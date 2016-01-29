@@ -9,6 +9,7 @@
 namespace Darryldecode\Backend\Components\User\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\User\Commands\QueryGroupsCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -42,15 +43,12 @@ class GroupController extends BaseController {
      */
     public function index()
     {
-        $results = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\QueryGroupsCommand',
-            array(
-                'name' => $this->request->get('name',null),
-                'with' => $this->request->get('with',array()),
-                'paginate' => $this->request->get('paginate',null),
-                'perPage' => $this->request->get('perPage',15),
-            )
-        );
+        $results = $this->dispatch(new QueryGroupsCommand(
+            $this->request->get('name',null),
+            $this->request->get('with',array()),
+            $this->request->get('paginate',null),
+            $this->request->get('perPage',15)
+        ));
 
         if( $this->request->ajax() )
         {

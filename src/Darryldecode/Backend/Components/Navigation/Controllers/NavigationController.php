@@ -9,6 +9,11 @@
 namespace Darryldecode\Backend\Components\Navigation\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\Navigation\Commands\CreateNavigationCommand;
+use Darryldecode\Backend\Components\Navigation\Commands\DeleteCustomNavigationCommand;
+use Darryldecode\Backend\Components\Navigation\Commands\ListCustomNavigationCommand;
+use Darryldecode\Backend\Components\Navigation\Commands\ListNavigationCommand;
+use Darryldecode\Backend\Components\Navigation\Commands\UpdateNavigationCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -42,10 +47,7 @@ class NavigationController extends BaseController {
      */
     public function index()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\Navigation\Commands\ListNavigationCommand',
-            array()
-        );
+        $result = $this->dispatch(new ListNavigationCommand());
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -62,10 +64,14 @@ class NavigationController extends BaseController {
     {
         if( $this->request->ajax() )
         {
-            $result = $this->dispatchFromArray(
-                'Darryldecode\Backend\Components\Navigation\Commands\ListCustomNavigationCommand',
-                array()
-            );
+            $result = $this->dispatch(new ListCustomNavigationCommand(
+                null,
+                true,
+                8,
+                'created_at',
+                'DESC',
+                false
+            ));
 
             return $this->response->json(array(
                 'data' => $result->getData()->toArray(),
@@ -87,10 +93,11 @@ class NavigationController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFrom(
-            'Darryldecode\Backend\Components\Navigation\Commands\CreateNavigationCommand',
-            $this->request
-        );
+        $result = $this->dispatch(new CreateNavigationCommand(
+                $this->request->get('name'),
+                $this->request->get('data'),
+                false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -106,13 +113,12 @@ class NavigationController extends BaseController {
      */
     public function putUpdate($id)
     {
-        $result = $this->dispatchFrom(
-            'Darryldecode\Backend\Components\Navigation\Commands\UpdateNavigationCommand',
-            $this->request,
-            array(
-                'id' => $id
-            )
-        );
+        $result = $this->dispatch(new UpdateNavigationCommand(
+            $id,
+            $this->request->get('name'),
+            $this->request->get('data'),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -128,12 +134,7 @@ class NavigationController extends BaseController {
      */
     public function delete($id)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\Navigation\Commands\DeleteCustomNavigationCommand',
-            array(
-                'id' => $id
-            )
-        );
+        $result = $this->dispatch(new DeleteCustomNavigationCommand($id, true));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
