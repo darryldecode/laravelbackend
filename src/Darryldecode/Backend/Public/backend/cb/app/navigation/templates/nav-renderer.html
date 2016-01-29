@@ -1,0 +1,13 @@
+<div class="nav-item">
+    <div ui-tree-handle><i class="fa fa-arrows"></i></div>
+    {{item.title}}
+    <span class="pull-right">
+        <button data-ng-click="navigation.addChild(item)" class="btn btn-xs btn-clear"><i class="fa fa-plus"></i> Add Child</button>
+        <button data-ng-click="navigation.edit(item)" class="btn btn-xs btn-clear"><i class="fa fa-pencil"></i> Edit</button>
+        <button data-ng-click="navigation.remove(this)" class="btn btn-xs btn-clear"><i class="fa fa-trash"></i> Remove</button>
+    </span>
+</div>
+<ol ui-tree-nodes="" data-ng-model="item.items">
+    <li data-ng-repeat="item in item.items" ui-tree-node data-ng-include=" '/darryldecode/backend/cb/app/navigation/templates/nav-renderer.html' ">
+    </li>
+</ol>

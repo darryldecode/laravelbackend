@@ -1,0 +1,6 @@
+<div class="form-group">
+
+    <!-- actual field -->
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+    <textarea data-ng-model="content.customFields[group.form_name][f.data.name]" data-ng-disabled="f.data.disabled" name="{{f.data.name}}" rows="{{f.data.rows}}" placeholder="{{f.data.placeHolder}}" class="form-control"></textarea>
+</div>

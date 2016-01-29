@@ -1,0 +1,20 @@
+<div class="form-group">
+
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+
+    <!-- if editor type is ace field -->
+    <div data-ng-if=" f.data.type == 'ace' " class="editor-holder">
+        <div data-ng-model="content.customFields[group.form_name][f.data.name]" ui-ace="editor.aceConfig"></div>
+    </div>
+
+    <!-- if editor type is mce field -->
+    <div data-ng-if=" f.data.type == 'mce' " class="editor-holder">
+        <textarea ui-tinymce="editor.mceConfig" data-ng-model="content.customFields[group.form_name][f.data.name]"></textarea>
+    </div>
+
+    <!-- if editor type is md field -->
+    <div data-ng-if=" f.data.type == 'md' " class="editor-holder">
+        <textarea class="textarea-md" data-ng-model="content.customFields[group.form_name][f.data.name]" data-provide="markdown" rows="10"></textarea>
+    </div>
+
+</div>

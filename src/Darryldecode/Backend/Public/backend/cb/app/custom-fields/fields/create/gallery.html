@@ -1,0 +1,33 @@
+<div>
+    <div class="image-upload-description pull-left text-left">
+        <h4>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</h4>
+        <p>{{f.data.description}}</p>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <ul class="list-group">
+        <li data-ng-if="content.customFields[group.form_name][f.data.name].length==0" class="list-group-item"><div class="alert text-center">No items yet..</div></li>
+        <li data-ng-repeat="img in content.customFields[group.form_name][f.data.name] track by $index" class="list-group-item">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <file-preview size="120" file-source="{{img.relativePath}}"></file-preview>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group text-right">
+                        <a data-ng-click="gallery.remove($index, group.form_name, f.data.name)"><i class="fa fa-close"></i> remove</a>
+                    </div>
+                    <div class="form-group">
+                        <input data-ng-model="img.title" type="text" placeholder="title" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <textarea data-ng-model="img.description" placeholder="description" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="form-group text-right">
+        <button data-ng-click="gallery.showMediaModal(group.form_name, f.data.name)" class="btn btn-default"><i class="fa fa-image"></i> Add Gallery Images</button>
+    </div>
+</div>

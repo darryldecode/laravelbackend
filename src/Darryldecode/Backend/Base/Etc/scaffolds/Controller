@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Backend\Components\{{componentNamespace}}\Controllers;
+
+use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Utility\Helpers;
+
+class {{componentNamespace}}Controller extends BaseController {
+
+    public function index()
+    {
+        if( ! $this->user->hasAnyPermission(['{{componentNamespace}}.manage']) )
+        {
+            return Helpers::redirectDashboard();
+        }
+
+        return view('{{componentNamespace}}::index');
+    }
+}

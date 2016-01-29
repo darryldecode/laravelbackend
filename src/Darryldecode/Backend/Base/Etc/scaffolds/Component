@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Backend\Components\{{componentNamespace}};
+
+use Darryldecode\Backend\Base\Registrar\ComponentInterface;
+use Darryldecode\Backend\Base\Registrar\ComponentNavigation;
+use Darryldecode\Backend\Base\Registrar\ComponentNavigationCollection;
+
+class Component implements ComponentInterface {
+
+    /**
+     * returns the component info
+     *
+     * @return array
+     */
+    public function getComponentInfo()
+    {
+        return array(
+            'name' => '{{componentTitle}}',
+            'description' => '{{componentDescription}}',
+        );
+    }
+
+    /**
+     * returns the available permissions of the component
+     *
+     * @return array
+     */
+    public function getAvailablePermissions()
+    {
+
+        // below are sample permissions, you can change them to fit your needs
+
+        $availablePermissions = array(
+
+             array(
+                 'title' => 'Manage {{componentTitle}}\'s Component',
+                 'description' => 'Enable\'s the user to manage {{componentTitle}}.',
+                 'permission' => '{{componentNamespace}}.manage',
+             ),
+
+             array(
+                  'title' => 'Delete {{componentTitle}}\'s Component entry',
+                  'description' => 'Enable\'s the user to delete {{componentTitle}} data.',
+                  'permission' => '{{componentNamespace}}.delete',
+              ),
+
+        );
+
+        return $availablePermissions;
+    }
+
+    /**
+     * the component navigation
+     *
+     * @return ComponentNavigationCollection
+     */
+    public function getNavigation()
+    {
+        $myComponentNavigation = new ComponentNavigation(
+            '{{componentTitle}}', // the component navigation title
+            '{{componentIcon}}', // the component icon (font awesome icons)
+            url(config('backend.backend.base_url').'/{{componentUrl}}') // the component url
+        );
+        $myComponentNavigation->setRequiredPermissions(['{{componentNamespace}}.manage']); // the required permission to access this component
+
+        $navCollection = new ComponentNavigationCollection();
+        $navCollection->push($myComponentNavigation);
+
+        return $navCollection;
+    }
+
+    /**
+     * returns the views path
+     *
+     * @return array
+     */
+    public function getViewsPath()
+    {
+        return array(
+            'dir' => __DIR__.'/Views',
+            'namespace' => '{{componentNamespace}}', // the namespace of your component view ( ex. view('{{componentNamespace}}::index') )
+        );
+    }
+
+    /**
+     * get components routes path
+     *
+     * @return array
+     */
+    public function getRoutesControl()
+    {
+        return array(
+            'dir' => __DIR__.'/routes.php',
+            'namespace' => 'App\\Backend\\Components\\{{componentNamespace}}\\Controllers',
+        );
+    }
+
+    /**
+     * you can add scripts or css links here on header
+     *
+     * @return array
+     */
+    public function getHeaderScripts()
+    {
+        /*
+        NOTE:
+
+        css and js are important keys to identify whether a link is a javascript or css
+        notice that forward slash in the beginning is present. Don't miss that!
+
+        example:
+
+        array(
+            'css' => array(
+                '/my-component/css/component-style.css',
+                '/my-component/css/component-style2.css',
+            ),
+            'js' => array(
+                '/my-component/js/component-js.css',
+                '/my-component/js/component-js.css',
+            )
+        );
+
+        */
+
+        return array();
+    }
+
+    /**
+     * you can add scripts or css links here on footer
+     *
+     * @return array
+     */
+    public function getFooterScripts()
+    {
+        /*
+        NOTE:
+
+        css and js are important keys to identify whether a link is a javascript or css
+        notice that forward slash in the beginning is present. Don't miss that!
+
+        example:
+
+        array(
+            'js' => array(
+                '/my-component/js/component-js.css',
+                '/my-component/js/component-js.css',
+            )
+        );
+
+        */
+
+        return array();
+    }
+}
+
+return new Component;

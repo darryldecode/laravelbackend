@@ -1,0 +1,68 @@
+<div class="form-group">
+
+    <!-- sort field handle -->
+    <div class="sort-handle">
+        <i class="fa fa-arrows"></i>
+    </div>
+
+    <!-- delete field / edit field control -->
+    <span class="pull-right">
+        <a href="" data-ng-click="fieldGroup.editField(f.key, $index)" class="btn btn-clear btn-xs">Edit</a>
+        <a href="" data-ng-click="fieldGroup.deleteField($index)" class="btn btn-clear btn-xs">Delete</a>
+    </span>
+
+    <!-- actual field -->
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+    <select data-ng-disabled="f.data.disabled" name="{{f.data.name}}" class="form-control">
+        <option value="">{{f.data.displayText}}</option>
+        <option data-ng-repeat="o in f.data.options" value="{{o.value}}">{{o.label}}</option>
+    </select>
+
+    <!-- edit mode -->
+    <div class="edit-field edit-field-{{f.key}}-{{$index}}">
+        <table class="table">
+            <tr>
+                <td>Label:</td>
+                <td><input data-ng-model="f.data.label" type="text"></td>
+            </tr>
+            <tr>
+                <td>Display Select Text:</td>
+                <td><input data-ng-model="f.data.displayText" type="text"></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input data-ng-model="f.data.name" type="text"></td>
+            </tr>
+            <tr>
+                <td>Required?</td>
+                <td><input data-ng-model="f.data.required" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td>Disabled?</td>
+                <td><input data-ng-model="f.data.disabled" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td>Options</td>
+                <td>
+                    <ul class="ul-clear">
+                        <li class="clearfix" data-ng-repeat="o in f.data.options">
+                            <i class="fa fa-circle"></i> Label: <b><i>{{o.label}}</i></b> Value: <b><i>{{o.value}}</i></b>
+                            <button data-ng-click="fieldGroup.removeOption($parent.$index, $index)" class="btn btn-clear btn-xs pull-right">Delete</button>
+                        </li>
+                    </ul>
+                    <table class="table">
+                        <tr>
+                            <td><input data-ng-model="fieldGroup.optionLabel" placeholder="label" type="text"></td>
+                            <td><input data-ng-model="fieldGroup.optionValue" placeholder="value" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="2">
+                                <button data-ng-click="fieldGroup.addOption($index)" class="btn btn-default">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
