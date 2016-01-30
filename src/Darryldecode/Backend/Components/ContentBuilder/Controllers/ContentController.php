@@ -92,8 +92,9 @@ class ContentController extends BaseController {
             $this->request->get('authorId'),
             $this->request->get('contentTypeId'),
             $this->request->get('permissionRequirements',null),
-            $this->request->get('taxonomies'),
-            $this->request->get('miscData'),
+            $this->request->get('taxonomies', array()),
+            $this->request->get('miscData', array()),
+            $this->request->get('metaData', array()),
             false
         ));
 

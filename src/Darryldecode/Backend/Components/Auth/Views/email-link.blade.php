@@ -1,0 +1,1 @@
+Click here to reset your password: {{ url(config('backend.backend.base_url').'/password/reset/'.$token) }}
