@@ -9,6 +9,9 @@
 namespace Darryldecode\Backend\Components\ContentBuilder\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentTypeCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteContentTypeCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\QueryContentTypeCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -44,12 +47,10 @@ class ContentTypeController extends BaseController {
     {
         if( $this->request->ajax() )
         {
-            $result = $this->dispatchFromArray(
-                'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryContentTypeCommand',
-                array(
-                    'type' => $this->request->get('type', null),
-                )
-            );
+            $result = $this->dispatch(new QueryContentTypeCommand(
+                $this->request->get('type', null),
+                false
+            ));
 
             return $this->response->json(array(
                 'data' => $result->getData()->toArray(),
@@ -69,13 +70,11 @@ class ContentTypeController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentTypeCommand',
-            array(
-                'type' => $this->request->get('type', null),
-                'enableRevision' => $this->request->get('enableRevision', false),
-            )
-        );
+        $result = $this->dispatch(new CreateContentTypeCommand(
+            $this->request->get('type', null),
+            $this->request->get('enableRevision', 'no'),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -91,12 +90,10 @@ class ContentTypeController extends BaseController {
      */
     public function delete($contentTypeId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteContentTypeCommand',
-            array(
-                'contentTypeId' => $contentTypeId,
-            )
-        );
+        $result = $this->dispatch(new DeleteContentTypeCommand(
+            $contentTypeId,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),

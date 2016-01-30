@@ -9,7 +9,10 @@
 namespace Darryldecode\Backend\Components\User\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\User\Commands\CreateGroupCommand;
+use Darryldecode\Backend\Components\User\Commands\DeleteGroupCommand;
 use Darryldecode\Backend\Components\User\Commands\QueryGroupsCommand;
+use Darryldecode\Backend\Components\User\Commands\UpdateGroupCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -72,10 +75,11 @@ class GroupController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFrom(
-            'Darryldecode\Backend\Components\User\Commands\CreateGroupCommand',
-            $this->request
-        );
+        $result = $this->dispatch(new CreateGroupCommand(
+            $this->request->get('name'),
+            $this->request->get('permissions'),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData(),
@@ -91,14 +95,12 @@ class GroupController extends BaseController {
      */
     public function putUpdate($groupId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\UpdateGroupCommand',
-            array(
-                'id' => $groupId,
-                'name' => $this->request->get('name', null),
-                'permissions' => $this->request->get('permissions', array()),
-            )
-        );
+        $result = $this->dispatch(new UpdateGroupCommand(
+            $groupId,
+            $this->request->get('name', null),
+            $this->request->get('permissions', array()),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData(),
@@ -114,12 +116,10 @@ class GroupController extends BaseController {
      */
     public function delete($groupId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\DeleteGroupCommand',
-            array(
-                'id' => $groupId,
-            )
-        );
+        $result = $this->dispatch(new DeleteGroupCommand(
+            $groupId,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData(),

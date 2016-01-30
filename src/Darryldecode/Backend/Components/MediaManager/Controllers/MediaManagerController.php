@@ -9,6 +9,12 @@
 namespace Darryldecode\Backend\Components\MediaManager\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\MediaManager\Commands\DeleteDirectoryCommand;
+use Darryldecode\Backend\Components\MediaManager\Commands\DeleteFileCommand;
+use Darryldecode\Backend\Components\MediaManager\Commands\ListCommand;
+use Darryldecode\Backend\Components\MediaManager\Commands\MakeDirectoryCommand;
+use Darryldecode\Backend\Components\MediaManager\Commands\MoveCommand;
+use Darryldecode\Backend\Components\MediaManager\Commands\UploadCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -44,12 +50,10 @@ class MediaManagerController extends BaseController {
     {
         if( $this->request->ajax() )
         {
-            $result = $this->dispatchFromArray(
-                'Darryldecode\Backend\Components\MediaManager\Commands\ListCommand',
-                array(
-                    'path' => $this->request->get('path', null),
-                )
-            );
+            $result = $this->dispatch(new ListCommand(
+                $this->request->get('path', null),
+                false
+            ));
 
             return $this->response->json(array(
                 'data' => $result->getData()->toArray(),
@@ -71,13 +75,11 @@ class MediaManagerController extends BaseController {
      */
     public function postMkDir()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\MediaManager\Commands\MakeDirectoryCommand',
-            array(
-                'path' => $this->request->get('path', null),
-                'dirName' => $this->request->get('dirName', null),
-            )
-        );
+        $result = $this->dispatch(new MakeDirectoryCommand(
+            $this->request->get('path', null),
+            $this->request->get('dirName', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -92,13 +94,11 @@ class MediaManagerController extends BaseController {
      */
     public function postUpload()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\MediaManager\Commands\UploadCommand',
-            array(
-                'path' => $this->request->get('path', null),
-                'files' => $this->request->files,
-            )
-        );
+        $result = $this->dispatch(new UploadCommand(
+            $this->request->files,
+            $this->request->get('path', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -113,12 +113,10 @@ class MediaManagerController extends BaseController {
      */
     public function delete()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\MediaManager\Commands\DeleteFileCommand',
-            array(
-                'paths' => $this->request->get('paths', null),
-            )
-        );
+        $result = $this->dispatch(new DeleteFileCommand(
+            $this->request->get('paths', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -133,12 +131,10 @@ class MediaManagerController extends BaseController {
      */
     public function deleteDirectory()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\MediaManager\Commands\DeleteDirectoryCommand',
-            array(
-                'paths' => $this->request->get('paths', null),
-            )
-        );
+        $result = $this->dispatch(new DeleteDirectoryCommand(
+            $this->request->get('paths', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -153,13 +149,11 @@ class MediaManagerController extends BaseController {
      */
     public function postMove()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\MediaManager\Commands\MoveCommand',
-            array(
-                'path' => $this->request->get('path', null),
-                'newPath' => $this->request->get('newPath', null),
-            )
-        );
+        $result = $this->dispatch(new MoveCommand(
+            $this->request->get('path', null),
+            $this->request->get('newPath', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),

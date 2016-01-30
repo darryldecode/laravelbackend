@@ -9,6 +9,8 @@
 namespace Darryldecode\Backend\Components\ContentBuilder\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentTypeTaxonomyCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteTaxonomyCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -42,15 +44,12 @@ class ContentTaxonomyController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\CreateContentTypeTaxonomyCommand',
-            array(
-                'taxonomy' => $this->request->get('taxonomy', null),
-                'description' => $this->request->get('description', null),
-                'parent' => $this->request->get('parent', null),
-                'contentTypeId' => $this->request->get('contentTypeId', null),
-            )
-        );
+        $result = $this->dispatch(new CreateContentTypeTaxonomyCommand(
+            $this->request->get('taxonomy', null),
+            $this->request->get('description', null),
+            $this->request->get('contentTypeId', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -66,12 +65,10 @@ class ContentTaxonomyController extends BaseController {
      */
     public function delete($taxonomyId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteTaxonomyCommand',
-            array(
-                'taxonomyId' => $taxonomyId
-            )
-        );
+        $result = $this->dispatch(new DeleteTaxonomyCommand(
+            $taxonomyId,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),

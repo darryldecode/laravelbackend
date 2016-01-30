@@ -9,6 +9,10 @@
 namespace Darryldecode\Backend\Components\ContentBuilder\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\CreateFormGroupCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteFormGroupCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\QueryFormGroupCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\UpdateFormGroupCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -44,14 +48,12 @@ class ContentTypeFormGroupController extends BaseController {
     {
         if( $this->request->ajax() )
         {
-            $result = $this->dispatchFromArray(
-                'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryFormGroupCommand',
-                array(
-                    'paginated' => $this->request->get('paginated', true),
-                    'perPage' => $this->request->get('perPage', 6),
-                    'contentTypeId' => $this->request->get('contentTypeId', null),
-                )
-            );
+            $result = $this->dispatch(new QueryFormGroupCommand(
+                $this->request->get('contentTypeId', null),
+                $this->request->get('paginated', true),
+                $this->request->get('perPage', 6),
+                false
+            ));
 
             return $this->response->json(array(
                 'data' => $result->getData()->toArray(),
@@ -71,16 +73,14 @@ class ContentTypeFormGroupController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\CreateFormGroupCommand',
-            array(
-                'name' => $this->request->get('name', null),
-                'formName' => $this->request->get('formName', null),
-                'conditions' => $this->request->get('conditions', array()),
-                'fields' => $this->request->get('fields', array()),
-                'contentTypeId' => $this->request->get('contentTypeId', null),
-            )
-        );
+        $result = $this->dispatch(new CreateFormGroupCommand(
+            $this->request->get('name', null),
+            $this->request->get('formName', null),
+            $this->request->get('conditions', array()),
+            $this->request->get('fields', array()),
+            $this->request->get('contentTypeId', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -96,17 +96,15 @@ class ContentTypeFormGroupController extends BaseController {
      */
     public function putUpdate($formGroupId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\UpdateFormGroupCommand',
-            array(
-                'id' => $formGroupId,
-                'name' => $this->request->get('name', null),
-                'formName' => $this->request->get('formName', null),
-                'conditions' => $this->request->get('conditions', array()),
-                'fields' => $this->request->get('fields', array()),
-                'contentTypeId' => $this->request->get('contentTypeId', null),
-            )
-        );
+        $result = $this->dispatch(new UpdateFormGroupCommand(
+            $formGroupId,
+            $this->request->get('name', null),
+            $this->request->get('formName', null),
+            $this->request->get('conditions', array()),
+            $this->request->get('fields', array()),
+            $this->request->get('contentTypeId', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -122,12 +120,10 @@ class ContentTypeFormGroupController extends BaseController {
      */
     public function delete($id)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteFormGroupCommand',
-            array(
-                'id' => $id,
-            )
-        );
+        $result = $this->dispatch(new DeleteFormGroupCommand(
+            $id,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),

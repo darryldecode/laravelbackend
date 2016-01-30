@@ -10,6 +10,7 @@ namespace Darryldecode\Backend\Components\User\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
 use Darryldecode\Backend\Components\User\Commands\CreateUserCommand;
+use Darryldecode\Backend\Components\User\Commands\DeleteUserCommand;
 use Darryldecode\Backend\Components\User\Commands\QueryUsersCommand;
 use Darryldecode\Backend\Components\User\Commands\UpdateUserCommand;
 use Illuminate\Http\Request;
@@ -131,12 +132,10 @@ class UserController extends BaseController {
      */
     public function delete($userId)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\User\Commands\DeleteUserCommand',
-            array(
-                'id' => $userId,
-            )
-        );
+        $result = $this->dispatch(new DeleteUserCommand(
+            $userId,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => null,

@@ -9,6 +9,9 @@
 namespace Darryldecode\Backend\Components\ContentBuilder\Controllers;
 
 use Darryldecode\Backend\Base\Controllers\BaseController;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\CreateTypeTaxonomyTerm;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteTaxonomyTermCommand;
+use Darryldecode\Backend\Components\ContentBuilder\Commands\QueryTermsByTaxonomyCommand;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
@@ -42,12 +45,10 @@ class ContentTaxonomyTermsController extends BaseController {
      */
     public function getByTaxonomyId()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\QueryTermsByTaxonomyCommand',
-            array(
-                'taxonomyId' => $this->request->get('taxonomyId', null)
-            )
-        );
+        $result = $this->dispatch(new QueryTermsByTaxonomyCommand(
+            $this->request->get('taxonomyId', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -62,14 +63,12 @@ class ContentTaxonomyTermsController extends BaseController {
      */
     public function postCreate()
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\CreateTypeTaxonomyTerm',
-            array(
-                'term' => $this->request->get('term', null),
-                'slug' => $this->request->get('slug', null),
-                'contentTypeTaxonomyId' => $this->request->get('contentTypeTaxonomyId', null),
-            )
-        );
+        $result = $this->dispatch(new CreateTypeTaxonomyTerm(
+            $this->request->get('term', null),
+            $this->request->get('slug', null),
+            $this->request->get('contentTypeTaxonomyId', null),
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
@@ -85,13 +84,11 @@ class ContentTaxonomyTermsController extends BaseController {
      */
     public function delete($id)
     {
-        $result = $this->dispatchFromArray(
-            'Darryldecode\Backend\Components\ContentBuilder\Commands\DeleteTaxonomyTermCommand',
-            array(
-                'taxonomyId' => $this->request->get('taxonomyId', null),
-                'termId' => $id,
-            )
-        );
+        $result = $this->dispatch(new DeleteTaxonomyTermCommand(
+            $this->request->get('taxonomyId', null),
+            $id,
+            false
+        ));
 
         return $this->response->json(array(
             'data' => $result->getData()->toArray(),
