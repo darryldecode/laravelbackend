@@ -52,6 +52,7 @@
             </div>
             <div class="form-group">
                 <input type="checkbox" name="remember"> Remember Me
+                <a class="pull-right" href="{{url('/'.config('backend.backend.base_url').'/password/email')}}">Forgot Password?</a>
             </div>
             <div class="form-group">
                 <input class="form-control" type="hidden" name="ru" value="{{(isset($_GET['ru']) ? $_GET['ru'] : '')}}">
