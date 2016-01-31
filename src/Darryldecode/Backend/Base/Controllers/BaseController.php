@@ -36,4 +36,14 @@ abstract class BaseController extends Controller {
             $hook($this->user);
         }
     }
+
+    public function dispatchFromArray($command, array $array)
+    {
+        return app('Darryldecode\Backend\Base\Contracts\Bus\Dispatcher')->dispatchFromArray($command,$array);
+    }
+
+    public function dispatchFrom($command, \ArrayAccess $source, array $extras)
+    {
+        return app('Darryldecode\Backend\Base\Contracts\Bus\Dispatcher')->dispatchFrom($command,$source,$extras);
+    }
 }

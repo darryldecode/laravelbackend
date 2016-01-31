@@ -14,7 +14,7 @@ class QueryContentCommandTest extends TestCase {
     protected $faker;
 
     /**
-     * @var Illuminate\Contracts\Bus\Dispatcher
+     * @var Darryldecode\Backend\Base\Contracts\Bus\Dispatcher
      */
     protected $commandDispatcher;
 
@@ -26,7 +26,7 @@ class QueryContentCommandTest extends TestCase {
         $this->application['config']->set('session.driver','array');
         $this->application['db']->setDefaultConnection('sqlite');
         $this->application->make('Illuminate\Contracts\Console\Kernel')->call('migrate');
-        $this->commandDispatcher = $this->application->make('Illuminate\Contracts\Bus\Dispatcher');
+        $this->commandDispatcher = $this->application->make('Darryldecode\Backend\Base\Contracts\Bus\Dispatcher');
 
         $this->createDummyData($this->createUserAndLoggedIn());
     }

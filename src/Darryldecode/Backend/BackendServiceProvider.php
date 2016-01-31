@@ -6,6 +6,7 @@ use Darryldecode\Backend\Base\Registrar\WidgetLoader;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Darryldecode\Backend\Base\Services\Bus\Dispatcher;
 
 class BackendServiceProvider extends ServiceProvider {
 
@@ -102,6 +103,11 @@ class BackendServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-
+        $this->app->singleton('Darryldecode\Backend\Base\Services\Bus\Dispatcher', function ($app) {
+            return new Dispatcher($app);
+        });
+        $this->app->alias(
+            'Darryldecode\Backend\Base\Services\Bus\Dispatcher', 'Darryldecode\Backend\Base\Contracts\Bus\Dispatcher'
+        );
     }
 }
