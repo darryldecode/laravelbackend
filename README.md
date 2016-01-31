@@ -1,4 +1,4 @@
-# LARAVEL BACKEND
+# LARAVEL BACKEND 2.0~
 
 Laravel Backend is an instant backend for laravel 5.1~. It is a component base architecture and is very flexible.
 
@@ -13,9 +13,12 @@ Laravel Backend is an instant backend for laravel 5.1~. It is a component base a
 
 http://laravelbackend.com/
 
+### Compatibility:
+
+for laravel 5.2
+
 ### Todos:
   - Improve Docs
 
 ## NOTE!
-### This software is in alpha and API may change anytime.
 ### When upgrading, please read carefully the notes on upgrading in each releases to avoid errors!
