@@ -1,0 +1,51 @@
+<div class="form-group">
+
+    <!-- sort field handle -->
+    <div class="sort-handle">
+        <i class="fa fa-arrows"></i>
+    </div>
+
+    <!-- delete field / edit field control -->
+    <span class="pull-right">
+        <a href="" data-ng-click="fieldGroup.editField(f.key, $index)" class="btn btn-clear btn-xs">Edit</a>
+        <a href="" data-ng-click="fieldGroup.deleteField($index)" class="btn btn-clear btn-xs">Delete</a>
+    </span>
+
+    <!-- actual field -->
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+    <textarea data-ng-disabled="f.data.disabled" name="{{f.data.name}}" rows="{{f.data.rows}}" placeholder="{{f.data.placeHolder}}" class="form-control"></textarea>
+
+    <!-- edit mode -->
+    <div class="edit-field edit-field-{{f.key}}-{{$index}}">
+        <table class="table">
+            <tr>
+                <td>Label:</td>
+                <td><input data-ng-model="f.data.label" type="text"></td>
+            </tr>
+            <tr>
+                <td>Place Holder:</td>
+                <td><input data-ng-model="f.data.placeHolder" type="text"></td>
+            </tr>
+            <tr>
+                <td>Default Value:</td>
+                <td><input data-ng-model="f.data.value" type="text"></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input data-ng-model="f.data.name" type="text"></td>
+            </tr>
+            <tr>
+                <td>Rows:</td>
+                <td><input data-ng-model="f.data.rows" type="text"></td>
+            </tr>
+            <tr>
+                <td>Required?</td>
+                <td><input data-ng-model="f.data.required" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td>Disabled?</td>
+                <td><input data-ng-model="f.data.disabled" type="checkbox"></td>
+            </tr>
+        </table>
+    </div>
+</div>

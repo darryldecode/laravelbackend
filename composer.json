@@ -1,0 +1,25 @@
+{
+    "name": "darryldecode/laravelbackend",
+    "description": "Laravel 5 Backend",
+    "keywords": ["laravel", "laravel admin package", "backend", "administrator", "dashboard", "admin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Darryl Fernandez",
+            "email": "engrdarrylfernandez@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "illuminate/html": "^5.0@dev",
+        "intervention/image": "^2.3@dev"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Darryldecode\\": "src/Darryldecode"
+        }
+    },
+    "minimum-stability": "dev"
+}

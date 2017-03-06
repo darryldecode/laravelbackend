@@ -1,0 +1,8 @@
+<div class="form-group">
+    <!-- actual field -->
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+        <input ui-date data-ng-model="content.customFields[group.form_name][f.data.name]" data-ng-disabled="f.data.disabled" type="{{::f.data.type}}" name="{{f.data.name}}" placeholder="{{f.data.placeHolder}}" class="form-control">
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="form-group">
+
+    <!-- actual field -->
+    <label>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</label>
+    <select multiple data-ng-model="content.customFields[group.form_name][f.data.name]" data-ng-options="o.value as o.label for o in f.data.options" data-ng-disabled="f.data.disabled" name="{{f.data.name}}" class="form-control">
+        <option value="">{{f.data.displayText}}</option>
+    </select>
+</div>

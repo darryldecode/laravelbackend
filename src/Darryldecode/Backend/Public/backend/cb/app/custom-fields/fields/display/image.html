@@ -1,0 +1,42 @@
+<div class="form-group text-right">
+    <!-- sort field handle -->
+    <div class="sort-handle">
+        <i class="fa fa-arrows"></i>
+    </div>
+
+    <!-- delete field / edit field control -->
+    <span class="pull-right">
+        <a href="" data-ng-click="fieldGroup.editField(f.key, $index)" class="btn btn-clear btn-xs">Edit</a>
+        <a href="" data-ng-click="fieldGroup.deleteField($index)" class="btn btn-clear btn-xs">Delete</a>
+    </span>
+
+    <!-- actual field -->
+    <div class="image-upload-description pull-left text-left">
+        <h4>{{f.data.label}} {{(f.data.required) ? '*' : ''}}</h4>
+        <p>{{f.data.description}}</p>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <button class="btn btn-default"><i class="fa fa-image"></i> Add Image</button>
+
+    <!-- edit mode -->
+    <div class="edit-field edit-field-{{f.key}}-{{$index}}">
+        <div class="form-group text-left">
+            <label>Field Key:</label>
+            <textarea class="form-control" data-ng-model="f.data.name"></textarea>
+        </div>
+        <div class="form-group text-left">
+            <label>Label:</label>
+            <textarea class="form-control" data-ng-model="f.data.label"></textarea>
+        </div>
+        <div class="form-group text-left">
+            <label>Description:</label>
+            <textarea class="form-control" data-ng-model="f.data.description"></textarea>
+        </div>
+        <div class="form-group text-left">
+            <td>Required?</td>
+            <td><input data-ng-model="f.data.required" type="checkbox"></td>
+        </div>
+    </div>
+</div>

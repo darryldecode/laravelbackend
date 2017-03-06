@@ -1,0 +1,109 @@
+<?php namespace App\Backend\Widgets\{{widgetNamespace}};
+
+use Darryldecode\Backend\Base\Registrar\WidgetInterface;
+
+class Widget implements WidgetInterface
+{
+    /**
+     * get the widget information
+     *
+     * @return array
+     */
+    public function getWidgetInfo()
+    {
+        return array(
+            'name' => '{{widgetTitle}}',
+            'description' => '{{widgetDescription}}'
+        );
+    }
+
+    /**
+     * get the widget template
+     *
+     * @return string
+     */
+    public function getWidgetTemplate()
+    {
+        return __DIR__.'/widget-view.blade.php';
+    }
+
+    /**
+     * the widget position
+     *
+     * @return int
+     */
+    public function getWidgetPosition()
+    {
+        return 5;
+    }
+
+    /**
+     * determine if widget is needed to be loaded or not
+     *
+     * @return bool
+     */
+    public function isWidgetActive()
+    {
+        return true;
+    }
+
+    /**
+     * you can add scripts or css links here on header
+     *
+     * @return array
+     */
+    public function getHeaderScripts()
+    {
+        /*
+        NOTE:
+
+        css and js are important keys to identify whether a link is a javascript or css
+        notice that forward slash in the beginning is present. Don't miss that!
+
+        example:
+
+        array(
+            'css' => array(
+                '/my-component/css/component-style.css',
+                '/my-component/css/component-style2.css',
+            ),
+            'js' => array(
+                '/my-component/js/component-js.js',
+                '/my-component/js/component-js.js',
+            )
+        );
+
+        */
+
+        return array();
+    }
+
+    /**
+     * you can add scripts or css links here on footer
+     *
+     * @return array
+     */
+    public function getFooterScripts()
+    {
+        /*
+        NOTE:
+
+        css and js are important keys to identify whether a link is a javascript or css
+        notice that forward slash in the beginning is present. Don't miss that!
+
+        example:
+
+        array(
+            'js' => array(
+                '/my-component/js/component-js.js',
+                '/my-component/js/component-js.js',
+            )
+        );
+
+        */
+
+        return array();
+    }
+}
+
+return new Widget();
