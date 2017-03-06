@@ -1,6 +1,6 @@
-# LARAVEL BACKEND 2.0~
+# LARAVEL BACKEND 3.0~
 
-Laravel Backend is an instant backend for laravel 5.1~. It is a component base architecture and is very flexible.
+Laravel Backend is an instant backend for laravel 5.4~. It is a component base architecture and is very flexible.
 
 ### Built-in Components:
   - User Management with Roles & Permissions (base on individual module), throotling
@@ -15,7 +15,7 @@ http://laravelbackend.com/
 
 ### Compatibility:
 
-for laravel 5.2
+for laravel 5.4
 
 ### Todos:
   - Improve Docs
