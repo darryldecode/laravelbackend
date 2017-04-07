@@ -17,6 +17,11 @@
 <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" />
 <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css" />
 
+<!-- elFinder -->
+<link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/elFinder-2.1.23/css/elfinder.min.css" />
+<link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/elFinder-2.1.23/css/theme-bootstrap-libreicons-svg.css" />
+<link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/elFinder-2.1.23/css/theme-bootstrap-libreicons-svg-overrides.css" />
+
 <link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/bootstrap-markdown-2.8.0/bootstrap-markdown.min.css" />
 <link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/font-awesome-4.3.0/css/font-awesome.min.css" />
 <link type="text/css" rel="stylesheet" href="/darryldecode/backend/vendor/animatecss/animate.css" />

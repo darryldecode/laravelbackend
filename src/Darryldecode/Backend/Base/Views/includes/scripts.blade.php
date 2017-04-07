@@ -26,6 +26,7 @@
 <script type="text/javascript" src="/darryldecode/backend/vendor/bootstrap-markdown-2.8.0/to-markdown.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/bootstrap-markdown-2.8.0/bootstrap-markdown.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/vendor/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/vendor/elFinder-2.1.23/js/elfinder.min.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/js/backend.js"></script>
 
 <script type="text/javascript" src="/darryldecode/backend/cb/app/common/directives/angular-boostrap-switch.js"></script>
@@ -58,9 +59,9 @@
 <script type="text/javascript" src="/darryldecode/backend/cb/app/contents/controller.contents.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/contents/modals/controller.gallery.js"></script>
 
-<script type="text/javascript" src="/darryldecode/backend/cb/app/media-manager/media-manager.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/cb/app/media-manager/factory.js"></script>
-<script type="text/javascript" src="/darryldecode/backend/cb/app/media-manager/controller.manage.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/cb/app/media/media.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/cb/app/media/factory.js"></script>
+<script type="text/javascript" src="/darryldecode/backend/cb/app/media/controller.manage.js"></script>
 
 <script type="text/javascript" src="/darryldecode/backend/cb/app/custom-fields/custom-fields.js"></script>
 <script type="text/javascript" src="/darryldecode/backend/cb/app/custom-fields/factory.js"></script>

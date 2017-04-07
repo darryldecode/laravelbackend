@@ -27,7 +27,7 @@ angular.module('cb',[
     'cb.user',
     'cb.content',
     'cb.customFields',
-    'cb.mediaManager',
+    'cb.media',
     'cb.navigation',
     'cb.dashboard'
 ])

@@ -12,7 +12,8 @@
     "require": {
         "php": ">=5.6.0",
         "illuminate/html": "^5.0@dev",
-        "intervention/image": "^2.3@dev"
+        "intervention/image": "^2.3@dev",
+        "studio-42/elfinder": "~2.1.10"
     },
     "require-dev": {
     },

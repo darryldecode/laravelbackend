@@ -17,16 +17,6 @@ class BackendServiceProvider extends ServiceProvider {
         $this->loadViewsFrom(__DIR__.'/Base/Views', 'backend');
         $this->bootBackend();
 
-//        $this->app['router']->middleware(
-//            'backend.guest',
-//            'Darryldecode\Backend\Base\Middleware\RedirectIfAuthenticated'
-//        );
-//
-//        $this->app['router']->middleware(
-//            'backend.authenticated',
-//            'Darryldecode\Backend\Base\Middleware\Authenticate'
-//        );
-
         $this->publishes([
             __DIR__.'/Public/backend/cb' => public_path('darryldecode/backend/cb'),
             __DIR__.'/Public/backend/vendor' => public_path('darryldecode/backend/vendor'),
@@ -51,12 +41,20 @@ class BackendServiceProvider extends ServiceProvider {
      */
     public function bootBackend()
     {
+        $disabled_components = [];
+        $options = array(
+            'disabled_components' => array_merge(
+                $disabled_components,
+                ($this->app['config']->get('backend.backend.disabled_components')) ? $this->app['config']->get('backend.backend.disabled_components') : []
+            )
+        );
+
         // load built-in components
-        $componentLoader = new ComponentLoader(__DIR__.'/Components', new Filesystem());
+        $componentLoader = new ComponentLoader(__DIR__.'/Components', new Filesystem(),$options);
         $builtInComponents = $componentLoader->getAvailableComponentInstances();
 
         // load custom components
-        $componentLoader = new ComponentLoader(app_path().'/Backend/Components', new Filesystem());
+        $componentLoader = new ComponentLoader(app_path().'/Backend/Components', new Filesystem(),$options);
         $customComponents = $componentLoader->getAvailableComponentInstances();
 
         // add those loaded components to backend registrar

@@ -13,6 +13,13 @@ return [
     'login_route' => 'login', // this will be "backend/login"
 
     /*
+     * Disabled components
+     */
+    'disabled_components' => array(
+        //'Media Manager'
+    ),
+
+    /*
      * Disabled widgets
      */
     'disabled_widgets' => array(
@@ -25,12 +32,12 @@ return [
     'backend_title' => 'Laravel Backend',
 
     /*
-     * Media Manager thumbnails
+     * Media rules
      */
-    'thumb_sizes' => array(
-        'small' => array(150,120),
-        'medium' => array(300,200),
-        'large' => array(600,450),
+    'upload_rules' => array(
+        'uploadDeny' => array(),
+        'uploadAllow' => array('all'),
+        'uploadOrder' => array('deny','allow'),
     ),
 
     /*

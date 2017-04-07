@@ -28,13 +28,22 @@ class ComponentLoader {
     protected $componentInterface = 'Darryldecode\Backend\Base\Registrar\ComponentInterface';
 
     /**
+     * List of options
+     *
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * @param $path
      * @param Filesystem $filesystem
+     * @param array $options [disabled_components => ['Component Name']]
      */
-    public function __construct($path, Filesystem $filesystem)
+    public function __construct($path, Filesystem $filesystem, array $options = [])
     {
         $this->path = $path;
         $this->filesystem = $filesystem;
+        $this->options = $options;
     }
 
     /**
@@ -67,10 +76,13 @@ class ComponentLoader {
 
                     if( $componentInstance instanceof ComponentInterface )
                     {
-                        array_push(
-                            $componentInstances,
-                            $componentInstance
-                        );
+                        if(!in_array($componentInstance->getComponentInfo()['name'],$this->options['disabled_components']))
+                        {
+                            array_push(
+                                $componentInstances,
+                                $componentInstance
+                            );
+                        }
                     }
                 }
             }
