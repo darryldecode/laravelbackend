@@ -204,17 +204,12 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
         });
 
         m.result.then(function (selectedFiles) {
-
-            for(var prop in selectedFiles) {
-                if( selectedFiles[prop] == true ) {
-                    var imageSrc = STORAGE_URL + prop;
-                    $scope.content.customFields[formGroup][galleryFieldName].push({
-                        relativePath: prop,
-                        fullPath: imageSrc
-                    });
-                }
-            }
-
+            angular.forEach(selectedFiles,function(item) {
+                $scope.content.customFields[formGroup][galleryFieldName].push({
+                    relativePath: item.relative_path,
+                    fullPath: item.url
+                });
+            });
         });
     };
 
@@ -257,19 +252,11 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
         });
 
         m.result.then(function (selectedFiles) {
-            for(var prop in selectedFiles) {
 
-                if( $scope.image.limit > 1 ) continue;
-
-                if( selectedFiles[prop] == true ) {
-                    var imageSrc = STORAGE_URL + prop;
-                    $scope.content.customFields[formGroup][imageFieldName].push({
-                        relativePath: prop,
-                        fullPath: imageSrc
-                    });
-                    $scope.image.limit++;
-                }
-            }
+            $scope.content.customFields[formGroup][imageFieldName].push({
+                relativePath: selectedFiles[0].relative_path,
+                fullPath: selectedFiles[0].url
+            });
         });
     };
 
@@ -318,12 +305,9 @@ angular.module('cb.group').controller('ContentsController', ['$scope','$timeout'
                     });
 
                     m.result.then(function (selectedFiles) {
-                        for(var prop in selectedFiles) {
-                            if( selectedFiles[prop] == true ) {
-                                var imageSrc = STORAGE_URL + prop;
-                                ed.execCommand('mceInsertContent', false, "<img src='"+imageSrc+"'>");
-                            }
-                        }
+                        angular.forEach(selectedFiles,function(item) {
+                            ed.execCommand('mceInsertContent', false, "<img src='"+item.url+"'>");
+                        });
                     });
                 }
             });

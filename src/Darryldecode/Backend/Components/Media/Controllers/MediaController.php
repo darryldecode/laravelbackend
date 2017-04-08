@@ -63,7 +63,7 @@ class MediaController extends BaseController {
                 array(
                     'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
                     'path'          => storage_path('app/public'), // path to files (REQUIRED)
-                    'URL'           => public_path('storage'), // URL to files (REQUIRED)
+                    'URL'           => url('storage'), // URL to files (REQUIRED)
                     'uploadDeny'    => config('backend.backend.upload_rules.uploadDeny'),                // All Mimetypes not allowed to upload
                     'uploadAllow'   => config('backend.backend.upload_rules.uploadAllow'), // Mimetype `image` and `text/plain` allowed to upload
                     'uploadOrder'   => config('backend.backend.upload_rules.uploadOrder'),      // allowed Mimetype `image` and `text/plain` only

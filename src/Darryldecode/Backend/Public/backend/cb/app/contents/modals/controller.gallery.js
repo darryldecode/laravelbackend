@@ -1,123 +1,61 @@
-angular.module('cb.content').controller('GalleryModalController', ['$scope','$timeout','$window','$filter','$modal','$modalInstance','GlobalLoaderService','AlertService','MediaManagerFactory', function ($scope,$timeout,$window,$filter,$modal,$modalInstance,GlobalLoaderService,AlertService,MediaManagerFactory) {
+angular.module('cb.content').controller('GalleryModalController', ['$scope','$timeout','$window','$filter','$modal','$modalInstance','GlobalLoaderService','AlertService','_CSRF', function ($scope,$timeout,$window,$filter,$modal,$modalInstance,GlobalLoaderService,AlertService,_CSRF) {
 
     console.log('GalleryModalController Init');
 
     // files
-    $scope.files = [];
+    $scope.media = {
 
-    /**
-     * Media Manager
-     *
-     * @type {{}}
-     */
-    $scope.mediaManager = {};
-    $scope.mediaManager.currentPath = '';
-    $scope.mediaManager.paths = [];
-    $scope.mediaManager.isDoing = false;
-    $scope.mediaManager.isEmpty = true;
+        init: function() {
 
-    // list dir handle from folder click
-    $scope.mediaManager.ls = function (path) {
-        if (path == '/' ) {
-            queryFiles('/');
-        } else {
-            queryFiles(path);
-        }
-    };
+            var opts = {
+                url : '/backend/media/elFinder',
+                customData: {'_token': _CSRF},
+                getFileCallback: function(file) {
+                    console.log('getFileCallback');
+                    console.log(file);
+                },
+                handlers : {
+                    select : function(event, elfinderInstance) {
+                        var selected = event.data.selected;
+                        if (selected.length) {
 
-    // list dir handle from breadcrumbs click
-    $scope.mediaManager.lsBc = function (index) {
+                            // empty first to make sure no duplicates
+                            $scope.media.data.selectedFiles = [];
 
-        var copiedPaths = angular.copy($scope.mediaManager.paths);
+                            // iterate to all selected items and push it to selectedFiles
+                            angular.forEach(selected,function(item) {
+                                $scope.$apply(function() {
+                                    $scope.media.data.selectedFiles.push({
+                                        file: elfinderInstance.file(item),
+                                        relative_path: elfinderInstance.path(item).replace('public\\','\\'), // remove public from path
+                                        url: elfinderInstance.url(item).replace('/storage/public','/storage') // remove public from path
+                                    });
+                                });
+                            });
+                        }
+                    }
+                }
+            };
 
-        copiedPaths.splice(index + 1, copiedPaths.length);
+            $timeout(function() {
+                angular.element('#media-loader').hide();
+                angular.element('#elfinder').elfinder(opts);
+            },3000);
+        },
 
-        copiedPaths.shift();
+        data: {
+            selectedFiles: []
+        },
 
-        queryFiles('/'+copiedPaths.join('/'));
-    };
-
-    // modal control
-    // -----------------------------
-
-    // the selected files
-    $scope.selectedFiles = [];
-
-    // handles modal ok button and pass the selected images
-    $scope.ok = function () {
-        $modalInstance.close($scope.selectedFiles);
-    };
-
-    // handles modal cancel button, nothing here, just cancels the modal
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-
-    /**
-     * Uploader
-     *
-     * @type {{}}
-     */
-    $scope.uploader = {};
-    $scope.uploader.files = [];
-
-    // watch the files values so if it changes we can trigger upload
-    $scope.$watch('uploader.files', function () {
-        upload($scope.uploader.files, {path: $scope.mediaManager.currentPath});
-    });
-
-    // just a helper on view
-    $scope.getLastSegment = function (path) {
-
-        var separators = ["/","\\\\"];
-
-        return path.split(new RegExp(separators.join('|'), 'g')).pop();
-    };
-
-    // get size name. Eg. ( name_large.jpg -> large )
-    $scope.getSizeName = function(path) {
-        var sizeName = 'Original';
-        var fileName = $scope.getLastSegment(path);
-
-        if( isImage(fileName) ) {
-            var f = fileName.split('_');
-            if(f.length >= 2) {
-                sizeName = f[f.length - 1].split('.')[0];
+        buttons: {
+            ok: function () {
+                $modalInstance.close($scope.media.data.selectedFiles);
+            },
+            cancel: function () {
+                $modalInstance.dismiss('cancel');
             }
         }
-
-        return sizeName;
-
-        function isImage(src) {
-            return (/(.*)\.(?:jpe?g|gif|png)$/i).test(src);
-        }
     };
 
-    // uploads the files
-    function upload (files, path) {
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                MediaManagerFactory.upload(file, path).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    queryFiles($scope.mediaManager.currentPath);
-                });
-            }
-        }
-    }
-
-    // query files in a given dir
-    function queryFiles (path) {
-        MediaManagerFactory.ls({path:path}).then(function (success) {
-            $scope.files = success.data.data;
-            $scope.mediaManager.currentPath = $scope.files.current_path;
-            $scope.mediaManager.paths = $scope.files.paths;
-            $scope.mediaManager.isEmpty = $scope.files.is_empty;
-        }, function (error) {
-            GlobalLoaderService.show(error.data.message || 'An error has occurred.','danger').hide(4000);
-        });
-    }
-    queryFiles('/');
+    $scope.media.init();
 }]);
