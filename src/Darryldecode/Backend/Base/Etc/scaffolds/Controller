@@ -7,9 +7,16 @@ use Darryldecode\Backend\Utility\Helpers;
 
 class {{componentNamespace}}Controller extends BaseController {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('backend.authenticated');
+        $this->triggerBeforeBackendHook();
+    }
+
     public function index()
     {
-        if( ! $this->user->hasAnyPermission(['{{componentNamespace}}.manage']) )
+        if( ! \Auth::user()->hasAnyPermission(['{{componentNamespace}}.manage']) )
         {
             return Helpers::redirectDashboard();
         }
