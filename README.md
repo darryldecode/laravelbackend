@@ -11,7 +11,7 @@ Laravel Backend is an instant backend for laravel 5.4~. It is a component base a
 
 ### WEBSITE
 
-http://laravelbackend.com/
+https://laravelbackend.darrylfernandez.com
 
 ### Compatibility:
 
