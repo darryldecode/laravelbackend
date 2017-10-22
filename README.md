@@ -1,3 +1,9 @@
+# [DEPRECATED]
+
+#NOTICE:
+
+This project is no longer maintained. Please use the "Laravel Starter Kit" instead.
+
 # LARAVEL BACKEND 3.0~
 
 Laravel Backend is an instant backend for laravel 5.4~. It is a component base architecture and is very flexible.
