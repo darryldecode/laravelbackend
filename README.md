@@ -1,8 +1,8 @@
 # [DEPRECATED]
 
-#NOTICE:
+# NOTICE:
 
-This project is no longer maintained. Please use the "Laravel Starter Kit" instead.
+This project is no longer maintained. Please use the <a href="https://github.com/darryldecode/laravel-starter-kit">"Laravel Starter Kit"</a> instead.
 
 # LARAVEL BACKEND 3.0~
 
